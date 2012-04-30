@@ -8,6 +8,7 @@ website.
 
 Version History
 ===============
-4/29/2012 - Inital upload. This version doesn't actually function as there is
+4/29/2012 - Initial upload. This version doesn't actually function as there is
 no way to create the tables needed for the databases without manually creating
-them.
+them. Basically this code has just been resurrected from a scrapped project and
+I at least want to start the version history here until I can get it working.
