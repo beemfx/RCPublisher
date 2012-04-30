@@ -1,0 +1,165 @@
+/* Designed by Fran�ois PLANQUE - http://fplanque.net/ */
+
+@import url("../../rsc/css/basic.css");	/* Import basic styles */
+@import url("../../rsc/css/blog_base.css");	/* Default styles for the blog navigation */
+@import url("../../rsc/css/item_base.css");	/* Default styles for the post CONTENT */
+
+
+/* We begin with the basic layout.*/
+body {
+    background: #7bcff7;
+    padding: 0px;
+    margin: 0px;
+    color: black;
+    /*font: 84% Arial, Helvetica, sans-serif;*/
+    font:normal normal normal 12pt/120% Times;
+}
+
+a {
+    color:#aa0000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+div#rc_wrapper {
+    background-color:white;
+    width: 800px;
+    margin: 10px auto;
+    padding: 0;
+    border: 0;
+}
+
+div#rc_section_posts{
+    width:600px;
+    display:inline-block;
+    padding:5px;
+    margin:0;
+    border:0px solid black
+}
+
+div#rc_section_sidebar{
+    display:inline-block;
+    float:right;
+    width:20%;
+    padding:5px;
+    margin:0;
+    border:0px solid red;
+    font-size:10pt;
+
+}
+
+div#rc_section_page_top{
+    border:0;
+    margin:0;
+    padding:0;
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+}
+
+
+div#rc_section_page_top a{
+    color: #000;
+    background: #fff;
+    width: 65px;
+    display:inline-block;
+    border: 0;
+    margin:0;
+    padding: 6px 0 4px;
+    text-align:center;
+    font:normal normal normal 8pt/100% Arial;
+    font-weight:bold;
+    font-size:8pt;
+    background:#f5f5f5 url('img/menu_button_u.png') no-repeat center center;
+}
+
+div#rc_section_menu{
+    border:0;
+    margin:0;
+    padding:4px 2px;
+    font-size:10pt;
+    background-color:#dddddd;
+}
+
+div#rc_section_menu a{
+    border:0;
+    margin:0;
+    padding:5px 5px;
+
+    color:black;
+}
+
+div#rc_section_page_top a:hover{
+    color: black;
+    text-decoration:none;
+    background:#f5f5f5 url('img/menu_button_d.png') no-repeat center center;
+}
+
+div#rc_section_footer{
+    margin:0 100px;
+    border:0;
+    padding:0;
+    font-size:8pt;
+    color:#999999;
+    width:400px;
+    border-top:1px solid #999999;
+    border-bottom:1px solid #999999;
+}
+
+div#rc_section_footer a{
+
+    color:#888888;
+}
+
+div.rc_item_block{
+    margin:0 0 2em 0;
+}
+
+div.rc_item_title h1, div.rc_item_title a{
+    margin:0px;
+    padding: 0px 5px;
+    border: 0px solid black;
+    color: white;
+    font-size: 24pt;
+    line-height:120%;
+}
+
+div.rc_item_title h1 {
+    background: #707070 url('img/h1_top_black.png') repeat-x left top;
+    color:white;
+    display:block;
+}
+
+div.rc_item_content h1
+,div.rc_item_content h2{
+    color:black;
+    background:inherit;
+    font-weight:bold;
+    font-size:12pt;
+    padding:0;
+    border:0;
+    margin:0;
+    display:inline-block;
+}
+
+
+div.rc_item_content h1{
+    font-size:120%;
+}
+
+div.rc_item_content p{
+    margin:.25em 0 .75em 0;
+    border:0;
+    padding:0;
+    border:0px solid black;
+}
+
+div.rc_item_footer{
+    margin:0 2em;
+    padding:.2em 0;
+    border-top:1px dotted #555555;
+    border-bottom:1px dotted #555555;
+    font-size:10pt;
+}
