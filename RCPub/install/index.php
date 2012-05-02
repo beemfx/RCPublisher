@@ -172,7 +172,7 @@ function DoInstall()
 
 	//Saving configuration:
 	echo '<p>Saving configuration file...</p>';
-	$fout = fopen('news_config.php', 'w');
+	$fout = fopen('config.php', 'w');
 	if(!$fout)
 	{
 		echo '<p>Could not create settings file for writing.</p>';
@@ -181,11 +181,13 @@ function DoInstall()
 	}
 
 	fprintf($fout, "<?php\n");
-	fprintf($fout, "\t\$rcPrefix = \"%s\";\n\n", $_POST['rc_prefix']);
-	fprintf($fout, "\t\$rcDBHost = \"%s\";\n", $_POST['db_host']);
-	fprintf($fout, "\t\$rcDBUser = \"%s\";\n", $_POST['db_user']);
-	fprintf($fout, "\t\$rcDBPass = \"%s\";\n", $_POST['db_pass']);
-	fprintf($fout, "\t\$rcDBName = \"%s\";\n", $_POST['db_dbname']);
+	fprintf($fout, "\t\$g_rcPrefix = \"%s\";\n\n", $_POST['rc_prefix']);
+	fprintf($fout, "\t\$g_rcFilepath = \"%s\";\n\n", $_POST['rc_filepath']);
+	fprintf($fout, "\t\$g_rcDBHost = \"%s\";\n", $_POST['db_host']);
+	fprintf($fout, "\t\$g_rcDBUser = \"%s\";\n", $_POST['db_user']);
+	fprintf($fout, "\t\$g_rcDBPwd = \"%s\";\n", $_POST['db_pass']);
+	fprintf($fout, "\t\$g_rcDBName = \"%s\";\n", $_POST['db_dbname']);
+	
 	fprintf($fout, "?>\n");
 	fclose($fout);
 	
@@ -216,34 +218,39 @@ function DoSetup()
 //DB Table prefix.
 //Home stories, the number of stories displayed on the home page (or
 //whatever page the stories are displayed on).
-	global $GLOBAL_SETTINGS_SQLUSER;
-	global $GLOBAL_SETTINGS_SQLPWD;
-	global $GLOBAL_SETTINGS_SQLSERVER;
-	global $GLOBAL_SETTINGS_SQLDB;
+	global $g_rcPrefix;
+	global $g_rcFilepath;
+	global $g_rcDBHost;
+	global $g_rcDBPwd;
+	global $g_rcDBUser;
+	global $g_rcDBUser;
 	?>
-<h1>Beem News Installer</h1>
+<h1>RC Publisher Installer</h1>
 <form method="post" action="index.php">
 	<input type="hidden" name="stage" value="1" />
 	<h3>Database Setup</h3>
 	<table>
 		<tr>
-			<th>Username:</th><td><input type="text" name="db_user" value="<?php echo $GLOBAL_SETTINGS_SQLUSER;?>"/></td>
+			<th>Username:</th><td><input type="text" name="db_user" value="<?php echo $g_rcDBUser;?>"/></td>
 		</tr>
 		<tr>
-			<th>Password:</th><td><input type="text" name="db_pass" value="<?php echo $GLOBAL_SETTINGS_SQLPWD;?>" /></td>
+			<th>Password:</th><td><input type="text" name="db_pass" value="<?php echo $g_rcDBPwd;?>" /></td>
 		</tr>
 		<tr>
-			<th>Host address:</th><td><input type="text" name="db_host" value="<?php echo $GLOBAL_SETTINGS_SQLSERVER;?>"/></td>
+			<th>Host address:</th><td><input type="text" name="db_host" value="<?php echo $g_rcDBHost;?>"/></td>
 		</tr>
 		<tr>
-			<th>Database:</th><td><input type="text" name="db_dbname" value="<?php echo $GLOBAL_SETTINGS_SQLDB;?>"/></td>
+			<th>Database:</th><td><input type="text" name="db_dbname" value="<?php echo $g_rcDBUser;?>"/></td>
 		</tr>
 		<tr>
 			<th>Engine:</th><td><select name="db_engine"><option>innodb</option><option>myisam</option></select>
 		</tr>
 	</table>
-	<h3>News Server Setup</h3>
+	<h3>RC Publisher Setup</h3>
 	<table>
+		<tr>
+			<th>Files Location (relative to base URL not this software):</th><td><input type="text" name="rc_filepath" value="<?php echo strlen($g_rcFilepath) > 0 ? $g_rcFilepath : "rcfiles";?>"/></td>
+		</tr>
 		<tr>
 			<th>Table prefix:</th><td><input type="text" name="rc_prefix" value="rc2_"/></td>
 		</tr>
