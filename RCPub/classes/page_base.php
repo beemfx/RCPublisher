@@ -42,25 +42,26 @@ abstract class CPageBase
 	//Public interface:
 	public function Display()
 	{
-		global $GLOBAL_SETTINGS_SQLSERVER;
-		global $GLOBAL_SETTINGS_SQLUSER;
-		global $GLOBAL_SETTINGS_SQLPWD;
-		global $GLOBAL_SETTINGS_SQLDB;
+		global $g_rcDBHost;
+		global $g_rcDBUser;
+		global $g_rcDBPwd;
+		global $g_rcDBName;
+
 							
 		if($this->m_bUseDB)
 		{
 			// Connect to the database:
 			@ $this->m_db = new mysqli(
-					$GLOBAL_SETTINGS_SQLSERVER,
-					$GLOBAL_SETTINGS_SQLUSER,
-					$GLOBAL_SETTINGS_SQLPWD,
-					$GLOBAL_SETTINGS_SQLDB);
+					$g_rcDBHost,
+					$g_rcDBUser,
+					$g_rcDBPwd,
+					$g_rcDBName);
 
 			if(mysqli_connect_errno())
 			{
 				unset($this->m_db);
 				print('A problem occured while connecting to the database. Try again later.');
-				echo($GLOBAL_SETTINGS_SQLSERVER.'\n');
+				echo($g_rcDBHost."\n");
 				return;
 			}
 		}
@@ -125,7 +126,8 @@ abstract class CPageBase
 	}
 
 	protected function GetGlobalSetting($strSettingName){
-		$strQuery = 'select '.$strSettingName.' as s from tblGlobalSettings where id=1';
+		global $g_rcPrefix;
+		$strQuery = 'select '.$strSettingName.' as s from '.$g_rcPrefix.'tblGlobalSettings where id=1';
 		$res = $this->DoQuery($strQuery);
 
 		if(true == $res)

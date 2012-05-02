@@ -9,6 +9,7 @@
 require_once('page_base.php');
 require('mysqlex.php');
 require_once('php_ex.php');
+require('table_news.php');
 
 class CPageHome extends CPageBase {
 	public function CPageHome() {
@@ -57,26 +58,29 @@ class CPageHome extends CPageBase {
 		<?php
 	}
 
-	private function ShowNews() {
-
+	private function ShowNews() 
+	{
+		$NewsTable = new CTableNews($this->m_db);
+		$nNumStories = $this->GetGlobalSetting('nHomeNewsStories');
+		$nNumStories = $NewsTable->ObtainRecentNews($nNumStories);
 		print('<div class="news">');
 		printf('<h2><a class="tlink" href=%s>News</a></h2>', CreateHREF(PAGE_NEWS, 'archive'));
-		//Query for news and post the # of news stories in the settings.
-		$nNewsStories = $this->GetGlobalSetting('nHomeNewsStories');
-		$res = $this->DoQuery('select txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody from tblNews order by dtPosted desc limit '.$nNewsStories);
-		if($res == true) {
-			for($i = 0; $i < $res->num_rows && $i < $nNewsStories; $i++) {
-				$row = $res->fetch_assoc();
-				printf("<h3>%s - <i><small>%s</small></i></h3>\n",
-					 $row['txtTitle'],
-					 $row['dt']);
 
-				print('<p>');
-				print($row['txtBody']);
-				print('</p>');
-			}
-			$res->free();
+		for($i = 0; $i < $nNumStories; $i++)
+		{
+			$story = $NewsTable->GetRecentNewsStory($i);
+			printf("<h3>%s - <i><small>%s</small></i></h3>\n",
+					 $story['title'],
+					 $story['date']);
+
+			print('<p>');
+			print($story['formatted']);
+			print('</p>');
 		}
+		
+		if(0 == $nNumStories)
+			echo 'No news.';
+		
 		print('</div>');
 
 		print '<a class="big_link" href='.CreateHREF(PAGE_NEWS, 'archive').'>more news</a>';

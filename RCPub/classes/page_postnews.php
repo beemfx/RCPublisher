@@ -1,17 +1,22 @@
 <?php
 require_once('page_base.php');
 require_once('php_ex.php');
+require('table_news.php');
 
 class CPostNewsPage extends CPageBase
 {
+	private $m_NewsTable;
+		
 	public function CPostNewsPage()
 	{
 		parent::CPageBase('Post News', true, 5);
+		$this->m_NewsTable = null;
 	}
 
 	protected function DisplayContent()
 	{
-
+		$this->m_NewsTable = new CTableNews($this->m_db);
+		
 		if($_GET['mode']=='edit')
 		{
 			print("<h1>Updating News Item</h1>\n");
@@ -41,8 +46,6 @@ class CPostNewsPage extends CPageBase
 			print('</div>');
 		}
 	}
-
-
 
 	private function Display_Stage0()
 	{
@@ -94,22 +97,20 @@ class CPostNewsPage extends CPageBase
 		private function Dislpay_Stage0_Edit()
 	{
 		//Query for the information on the current article:
-		$res=$this->DoQuery('select txtTitle, txtBody from tblNews where id='.$_GET['id']);
-		if(!$res)
+		$story = $this->m_NewsTable->GetStory((int)$_GET['id']);
+		
+		if(null == $story)
 		{
 			$this->ShowWarning('Trying to edit an invalid news article.');
 			return;
 		}
 
-		$row = $res->fetch_assoc();
-		$res->free();
-
 		?>
 		<form action=<?php print CreateHREF(PAGE_POSTNEWS, 'mode=edit&id='.$_GET['id'])?> method="post">
 		<input type="hidden" name="stage" value="1"/>
-		<p><b>Article Title: </b><input type="text" name="title" value=<?php printf('"%s"', $row['txtTitle'])?> style="width:50%"/></p>
+		<p><b>Article Title: </b><input type="text" name="title" value=<?php printf('"%s"', $story['txtTitle'])?> style="width:50%"/></p>
 		<p><b>News Article (Limited HTML allowed):</b></br>
-		<textarea style="height:200px;width:100%" name="body" cols="80" rows="20"><?php print $row['txtBody']?></textarea>
+		<textarea style="height:200px;width:100%" name="body" cols="80" rows="20"><?php print $story['txtBody']?></textarea>
 		</p>
 		<center><input class="button" type="submit" value="Post"/></center>
 		</form>
@@ -118,34 +119,15 @@ class CPostNewsPage extends CPageBase
 
 	private function Display_Stage1_Edit()
 	{
-		print '<p>Updating news item...</p>';
-
-		if(get_magic_quotes_gpc())
-		{
-			$_POST['title'] = striplashes($_POST['title']);
-			$_POST['body']  = stripslashes($_POST['body']);
-		}
-
-		//The news item needs to be modifed so that it can be stored in html
-		//and retrived, and displayed.
-		$strBody = $this->NewlinesToHTMLBreaks($_POST['body']);
-
-		//Need some slashes so that it can be posted into MySQL.
-		$strTitle = addslashes($_POST['title']);
-		$strBody  = addslashes($strBody);
-
-		$qry = sprintf('update tblNews set txtTitle="%s", txtBody="%s" where id=%s',
-			$strTitle,
-			$strBody,
-			$_GET['id']);
-
-		$this->DoQuery($qry);
-
+		print '<p>Updating news item...</p>';		
+		$this->m_NewsTable->UpdateStory((int)$_GET['id'], $_POST['title'], $_POST['body']);
 		print('<p>New item updated. Return <a href='.CreateHREF(PAGE_HOME).'>home</a>.</p>');
 	}
 
 	function PostToTwitter($strTitle, $strBody)
 	{
+		return;
+		
 		//First form the message:
 		$msg = strip_tags(sprintf("New web update, \"%s\" @ http://www.roughconcept.com: %s", $strTitle, $strBody));
 		//If the sentance is way too, long, which it almost always will be, do a neat trim.
