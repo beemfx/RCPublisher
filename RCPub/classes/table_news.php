@@ -1,6 +1,6 @@
 <?php
 
-require( 'table_base.php' );
+require_once( 'table_base.php' );
 
 class CTableNews extends CTable
 {

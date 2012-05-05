@@ -79,12 +79,10 @@ function DoInstall()
 		 
 		'struct' => 
 				'`id` int(11) NOT NULL auto_increment,
-			  `nHomeNewsStories` int(11) NOT NULL COMMENT \'The number of news stories to be shown on the home page.\',
-			  `txtTwitterUser` text NOT NULL,
-			  `txtTwitterPwd` text NOT NULL,
-			  `txtNav` text NOT NULL,
-			  `txtMiniNav` text NOT NULL,
-			  PRIMARY KEY  (`id`)',	  
+			  `txtName` char(20) NOT NULL,
+			  `txtSetting` char(60)NOT NULL,
+			  PRIMARY KEY  (`id`),
+			  KEY `txtName` (`txtName`)',	  
 	);
 	
 	$TABLES['message'] = array
@@ -136,6 +134,21 @@ function DoInstall()
 		  PRIMARY KEY  (`id`,`txtUserName`)',	  
 	);
 	
+	$TABLES['files'] = array
+	( 
+		'name' => 'tblFiles',
+		 
+		'struct' => 
+			'`id` int(11) NOT NULL auto_increment,
+		  `txtUserName` char(32) NOT NULL,
+		  `txtPassword` char(41) NOT NULL,
+		  `txtAlias` varchar(32) NOT NULL,
+		  `txtEmail` char(32) NOT NULL,
+		  `nAccessLevel` int(11) NOT NULL,
+		  `txtLastIP` char(16) NOT NULL,
+		  PRIMARY KEY  (`id`,`txtUserName`)',	  
+	);
+	
 
 
 
@@ -165,15 +178,22 @@ function DoInstall()
 		return false;
 	}
 	
-	//Now insert the default settings:
-	$qry = sprintf('insert into '.$_POST['rc_prefix'].'tblGlobalSettings (id, nHomeNewsStories, txtNav, txtMiniNav, txtTwitterUser, txtTwitterPwd) values (1, "%s", "%s", "%s", "%s", "%s")',
-					  '5',
-					  addslashes('[[home Home]][[newpage Create a Page]]'),
-					  addslashes('[[contact Contact]]'),
-					  '',
-					  '');
-			
-	$db->query($qry);
+	$InitialSettings = array
+	(
+		 'nHomeNewsStories' => addslashes('5'),
+		 'txtNav'           => addslashes('[[home Home]][[newpage Create a Page]]'),
+		 'txtMiniNav'       => addslashes('[[contact Contact]]'),
+		 'txtTwitterUser'   => addslashes(''),
+		 'txtTwitterPwd'    => addslashes(''),
+			 
+	);
+	
+	foreach($InitialSettings as $Setting => $Value)
+	{
+		$qry = sprintf('insert into '.$_POST['rc_prefix'].'tblGlobalSettings (txtName, txtSetting) values ("%s", "%s")', $Setting, $Value);
+		$db->query($qry);
+	}			
+	
 
 
 	//Saving configuration:

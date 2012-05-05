@@ -92,7 +92,7 @@ abstract class CPageBase
 
 	protected function GetGlobalSetting($strSettingName){
 		global $g_rcPrefix;
-		$strQuery = 'select '.$strSettingName.' as s from '.$g_rcPrefix.'tblGlobalSettings where id=1';
+		$strQuery = 'select txtSetting as s from '.$g_rcPrefix.'tblGlobalSettings where txtName="'.$strSettingName.'"';
 		$res = $this->DoQuery($strQuery);
 
 		if(true == $res)
@@ -117,7 +117,7 @@ abstract class CPageBase
 	protected function ChangeGlobalSetting($strSettingName, $strNewValue)
 	{
 		global $g_rcPrefix;
-		$qry = 'update '.$g_rcPrefix.'tblGlobalSettings set '.$strSettingName.' = '.$strNewValue.' where id=1';
+		$qry = 'update '.$g_rcPrefix.'tblGlobalSettings set txtSetting = "'.addslashes($strNewValue).'" where txtName="'.addslashes($strSettingName).'"';
 		$this->DoQuery($qry);
 	}
 

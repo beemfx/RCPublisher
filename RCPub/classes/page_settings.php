@@ -24,17 +24,13 @@ class CPageSettings extends CPageBase
 		//If submit was pressed, we update the settings.
 		if(isset($_POST['stage']) && $_POST['stage'] == 1)
 		{
-			echo '<p style="background-color:#0c0">Saving settings...</p>';
-			global $g_rcPrefix;
-			$qry = sprintf('update '.$g_rcPrefix.'tblGlobalSettings set nHomeNewsStories="%s", txtNav="%s", txtMiniNav="%s", txtTwitterUser="%s", txtTwitterPwd="%s" where id=1',
-					  $_POST['news_stories'],
-					  addslashes($_POST['nav_bar']),
-					  addslashes($_POST['mini_nav_bar']),
-					  $_POST['twitter_user'],
-					  $_POST['twitter_pw']);
+			$this->ChangeGlobalSetting('nHomeNewsStories', $_POST['news_stories']);
+			$this->ChangeGlobalSetting('txtNav', $_POST['nav_bar']);
+			$this->ChangeGlobalSetting('txtMiniNav', $_POST['mini_nav_bar']);
+			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
+			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
 			
-			$this->DoQuery($qry);
-					
+			echo '<p style="background-color:#0c0">Saving settings...</p>';		
 		}
 		
 		//No matter what we display the form.

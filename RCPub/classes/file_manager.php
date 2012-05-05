@@ -1,24 +1,24 @@
 <?php
 
-class CFileManager
+require_once('table_base.php');
+
+class CFileManager extends CTable
 {
-	public function CFileManager($db)
+	public function CFileManager()
 	{
-		$this->m_db = $db;
+		parent::CTable('tblFiles');
 	}
 	
 	public function ResolveFileInfo($strSlug)
 	{
-		$qry = 'select concat(txtName,".",txtExt) as txtFilename, concat(txtLocalPath,"/",txtName,".",txtExt) as txtPath, txtExt, txtType, txtDesc from tblFiles where txtSlug="'.$strSlug.'"';
+		$this->DoSelect('concat(txtName,".",txtExt) as txtFilename, concat(txtLocalPath,"/",txtName,".",txtExt) as txtPath, txtExt, txtType, txtDesc', 'txtSlug="'.$strSlug.'"');
 		
-		$res = $this->DoQuery($qry);
-		
-		if(!$res || $res->num_rows == 0)
+		if(count($this->m_rows) == 0)
 		{
 			return null;
 		}
 		
-		$row = $res->fetch_assoc();
+		$row = $this->m_rows[0];
 		
 		$Out['filename'] = $row['txtFilename'];
 		$Out['url'] = $this->GetURLFileRoot().$row['txtPath'];
@@ -79,16 +79,12 @@ class CFileManager
 	
 	public function ListFiles()
 	{
-		$qry = 'select concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath from tblFiles order by txtSlug';
-		
-		$res = $this->DoQuery($qry);
-		
-		if(!$res)return;
-		
+		$this->DoSelect('concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath', '', 'txtSlug');
+				
 		print '<ul>';
-		for($i=0; $i < $res->num_rows; $i++)
+		for($i=0; $i < count($this->m_rows); $i++)
 		{
-			$row = $res->fetch_assoc();
+			$row = $this->m_rows[$i];//$res->fetch_assoc();
 			
 			//Lets verify the file exists.
 			$bExists = file_exists($this->GetServerFileRoot().$row['txtPath']);
@@ -99,7 +95,6 @@ class CFileManager
 				printf('<li>WARNING: %s does not exist.', $this->GetURLFileRoot().$row['txtPath']);
 		}
 		print '</ul>';
-		$res->free();
 	}
 	
 	public function ClearDatabase()
@@ -239,18 +234,7 @@ class CFileManager
 		unlink($strFileTemp);
 		return true;
 	}
-	
-	protected function DoQuery($qry)
-	{
-		$res = $this->m_db->query($qry);
-		if(!$res)
-		{
-			print($qry."<br/>\n");
-			printf("MySQL Querry Error: %s.<br/>\n", $this->m_db->error);
-		}
-		return $res;
-	}
-	
+		
 	protected static function GetServerFileRoot()
 	{
 		global $GLOBAL_SETTINGS_FILEPATH;

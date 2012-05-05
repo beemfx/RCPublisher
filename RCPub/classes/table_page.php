@@ -1,5 +1,5 @@
 <?php
-require('table_base.php');
+require_once('table_base.php');
 
 class CTablePage extends CTable
 {

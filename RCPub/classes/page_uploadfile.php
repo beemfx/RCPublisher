@@ -7,7 +7,6 @@
  * Copyright (C) 2012 Beem Software
  ******************************************************************************/
 require_once('page_base.php');
-require('file_manager.php');
 
 class CPageUploadFile extends CPageBase
 {

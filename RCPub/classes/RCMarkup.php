@@ -1,7 +1,5 @@
 <?php
 
-require( 'file_manager.php' );
-
 class CRCMarkup
 {
 	public function CRCMarkup($sText)
