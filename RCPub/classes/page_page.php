@@ -32,7 +32,7 @@ class CPagePage extends CPageBase
 
 	public function CPagePage()
 	{
-		parent::CPageBase('Misc Page', true, 0);
+		parent::CPageBase('Misc Page', 0);
 	}
 	
 	protected function ProcessInput()

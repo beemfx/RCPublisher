@@ -6,7 +6,7 @@ class CContactPage extends CPageBase
 {
 	public function CContactPage()
 	{
-		parent::CPageBase('Contact', true, 0);
+		parent::CPageBase('Contact', 0);
 	}
 
 	protected function DisplayContent()

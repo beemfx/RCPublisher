@@ -12,7 +12,7 @@ class CPageSample extends CPageBase
 {
 	public function CPageSample()
 	{
-		parent::CPageBase('Sample', true, 0);
+		parent::CPageBase('Sample', 0);
 	}
 
 	protected function DisplayContent()

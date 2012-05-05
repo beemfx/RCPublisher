@@ -8,7 +8,7 @@ class CNewsPage extends CPageBase
 	
 	public function CNewsPage()
 	{
-		parent::CPageBase('News', true, 0);
+		parent::CPageBase('News', 0);
 		
 		$this->m_NewsTable = null;
 	}

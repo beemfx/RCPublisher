@@ -140,13 +140,15 @@ function DoInstall()
 		 
 		'struct' => 
 			'`id` int(11) NOT NULL auto_increment,
-		  `txtUserName` char(32) NOT NULL,
-		  `txtPassword` char(41) NOT NULL,
-		  `txtAlias` varchar(32) NOT NULL,
-		  `txtEmail` char(32) NOT NULL,
-		  `nAccessLevel` int(11) NOT NULL,
-		  `txtLastIP` char(16) NOT NULL,
-		  PRIMARY KEY  (`id`,`txtUserName`)',	  
+		  `txtSlug` varchar(20) NOT NULL,
+		  `txtName` varchar(20) NOT NULL,
+		  `txtExt` varchar(10) NOT NULL,
+		  `txtType` varchar(20) NOT NULL,
+		  `dt` datetime NOT NULL,
+		  `txtLocalPath` varchar(128) NOT NULL,
+		  `txtDesc` text NOT NULL,
+		  PRIMARY KEY  (`id`),
+		  UNIQUE KEY `txtSlug` (`txtSlug`)',  
 	);
 	
 

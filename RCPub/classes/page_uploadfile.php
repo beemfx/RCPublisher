@@ -12,7 +12,7 @@ class CPageUploadFile extends CPageBase
 {
 	public function CPageUploadFile()
 	{
-		parent::CPageBase('File Manager', true, 5);
+		parent::CPageBase('File Manager', 5);
 	}
 
 	protected function DisplayContent()

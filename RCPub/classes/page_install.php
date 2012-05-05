@@ -5,7 +5,7 @@ class CInstallPage extends CPageBase
 {
 	public function CInstallPage()
 	{
-		parent::CPageBase('Install', true, 5);
+		parent::CPageBase('Install', 5);
 	}
 
 	protected function DisplayContent()

@@ -14,7 +14,7 @@ class CPageSettings extends CPageBase
 	
 	public function CPageSettings()
 	{
-		parent::CPageBase('Settings', true, self::RQ_USERLEVEL);
+		parent::CPageBase('Settings', self::RQ_USERLEVEL);
 	}
 
 	protected function DisplayContent()

@@ -5,7 +5,7 @@ class CEmailPage extends CPageBase
 {
 	public function CEmailPage()
 	{
-		parent::CPageBase('Email', true, 1);
+		parent::CPageBase('Email', 1);
 	}
 
 	protected function DisplayContent()

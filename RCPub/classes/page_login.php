@@ -5,7 +5,7 @@ class CLoginPage extends CPageBase
 {
 	public function CLoginPage()
 	{
-		parent::CPageBase('Login', true, 0);
+		parent::CPageBase('Login', 0);
 	}
 
 	protected function DisplayPre()

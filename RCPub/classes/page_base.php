@@ -86,6 +86,8 @@ abstract class CPageBase
 
 	protected function CPageBase($strTitle, $nUserLevel=0)
 	{
+		assert('integer' == gettype($nUserLevel));
+		
 		$this->m_strTitle = $strTitle;
 		$this->m_nUserLevel = $nUserLevel;
 	}

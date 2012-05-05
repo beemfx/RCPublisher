@@ -13,7 +13,7 @@ require('table_news.php');
 
 class CPageHome extends CPageBase {
 	public function CPageHome() {
-		parent::CPageBase('Home', true, 0);
+		parent::CPageBase('Home', 0);
 	}
 
 	protected function DisplayContent()

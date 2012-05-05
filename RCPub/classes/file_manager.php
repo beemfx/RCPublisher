@@ -26,54 +26,39 @@ class CFileManager extends CTable
 		$Out['desc'] = $row['txtDesc'];
 		$Out['type'] = $row['txtType'];
 		$Out['ext'] = $row['txtExt'];
-
-		$res->free();
 		
 		return $Out;
 	}
 	
 	public function ResolveSlugToURL($strSlug)
 	{
-		$qry = 'select concat(txtLocalPath,"/",txtName,".",txtExt) as txtPath from tblFiles where txtSlug="'.$strSlug.'"';
+		$this->DoSelect('concat(txtLocalPath,"/",txtName,".",txtExt) as txtPath', 'txtSlug="'.$strSlug.'"');
 		
-		$res = $this->DoQuery($qry);
-		if(!$res)
+		if(count($this->m_rows) == 0)
 		{
-			return '';	
-		}
-		
-		if($res->num_rows == 0)
-		{
-				$sOut = '';
+			$sOut = '';
 		}
 		else
 		{
-			$row = $res->fetch_assoc();	
-			$sOut = $this->GetURLFileRoot().$row['txtPath'];
+			$sOut = $this->GetURLFileRoot().$this->m_rows[0]['txtPath'];
 		}
-		$res->free();
+		
 		return $sOut;
 	}
 	
 	public function ResolveSlugToServerName($strSlug)
 	{
-		$qry = 'select concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath from tblFiles where txtSlug="'.$strSlug.'"';
+		$this->DoSelect( 'concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath' , 'txtSlug="'.$strSlug.'"');
 		
-		$res = $this->DoQuery($qry);
-		if(!$res)
+		if(count($this->m_rows) == 0)
 		{
-			return '';	
-		}
-		if($res->num_rows == 0)
-		{
-				$sOut = '';
+			$sOut = '';
 		}
 		else
 		{
-			$row = $res->fetch_assoc();
-			$sOut = $this->GetServerFileRoot().$row['txtPath'];
+			$sOut = $this->GetServerFileRoot().$this->m_rows[0]['txtPath'];
 		}
-		$res->free();
+
 		return $sOut;
 	}
 	
@@ -84,7 +69,7 @@ class CFileManager extends CTable
 		print '<ul>';
 		for($i=0; $i < count($this->m_rows); $i++)
 		{
-			$row = $this->m_rows[$i];//$res->fetch_assoc();
+			$row = $this->m_rows[$i];
 			
 			//Lets verify the file exists.
 			$bExists = file_exists($this->GetServerFileRoot().$row['txtPath']);
@@ -97,13 +82,6 @@ class CFileManager extends CTable
 		print '</ul>';
 	}
 	
-	public function ClearDatabase()
-	{
-		print 'Perging database... This is final and cannot be undone. Files are not deleted, they must be deleted manually.';
-		$qry = 'delete from tblFiles';
-		$this->DoQuery($qry);
-	}
-	
 	public function InsertFileIntoSQL($strSlug, $strExt, $strType,$strPath,$strDesc)
 	{
 		//Now add slashes to necessary fields.
@@ -113,38 +91,29 @@ class CFileManager extends CTable
 		$strPath = '"'.addslashes($strPath).'"';
 		$strDesc = '"'.addslashes($strDesc).'"';
 		
-		$strColumns = 'txtSlug,txtName,txtExt,txtType,dt,txtLocalPath,txtDesc';
-		$strValues = sprintf('%s,%s,%s,%s,%s,%s,%s',
-			$strSlug,
-			$strSlug,
-			$strExt,
-			$strType,
-			'now()',
-			$strPath,
-			$strDesc);
+		$data = array
+		(
+			 'txtSlug' => $strSlug,
+			 'txtName' => $strSlug,
+			 'txtExt'  => $strExt,
+			 'txtType' => $strType,
+			 'txtLocalPath' => $strPath,
+			 'dt' => 'now()',
+			 'txtDesc' => $strDesc,
+		);
 		
-		$this->DoQuery('lock tables tblFiles write');
-		$qry = 'insert into tblFiles ('.$strColumns.') values ('.$strValues.')';
-		$this->DoQuery($qry);
+		$this->DoInsert($data);
+		
 		$nID = $this->m_db->insert_id;
-		$this->DoQuery('unlock tables');
+
 		return $nID;
 	}
 	
 	public function DoesFileExist($strSlug)
 	{
-		$qry = 'select txtSlug from tblFiles where txtSlug="'.$strSlug.'"';
+		$this->DoSelect('txtSlug' , 'txtSlug="'.$strSlug.'"');
 		
-		$res = $this->DoQuery($qry);
-		if(!$res)
-		{
-			return false;		
-		}
-		
-		$bExists = 1 == $res->num_rows;
-		
-		$res->free();
-		return $bExists;
+		return 1 == count($this->m_rows);
 	}
 	
 	public static function CopyUploadToTempFile($FILE)
@@ -205,8 +174,8 @@ class CFileManager extends CTable
 	{
 		//The final destination path is made up of a combination of the root
 		//directory and the settings path.
-		global $GLOBAL_SETTINGS_FILEPATH;
-		$strFinalPath = $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBAL_SETTINGS_FILEPATH.'/'.$strPathDest;
+		global $g_rcFilepath;
+		$strFinalPath = $_SERVER['DOCUMENT_ROOT'].'/'.$g_rcFilepath.'/'.$strPathDest;
 		//First thing to do is make sure the destination path exists.
 		if(!is_dir($strFinalPath))
 		{
@@ -237,15 +206,15 @@ class CFileManager extends CTable
 		
 	protected static function GetServerFileRoot()
 	{
-		global $GLOBAL_SETTINGS_FILEPATH;
-		return $_SERVER['DOCUMENT_ROOT'].'/'.$GLOBAL_SETTINGS_FILEPATH.'/';
+		global $g_rcFilepath;
+		return $_SERVER['DOCUMENT_ROOT'].'/'.$g_rcFilepath.'/';
 	}
 	
 	protected static function GetURLFileRoot()
 	{
-		global $GLOBAL_SETTINGS_FILEPATH;
+		global $g_rcFilepath;
 		$p = $_SERVER['HTTPS'] ? "https" : "http";
-		return $p.'://'.$_SERVER['HTTP_HOST'].'/'.$GLOBAL_SETTINGS_FILEPATH.'/';
+		return $p.'://'.$_SERVER['HTTP_HOST'].'/'.$g_rcFilepath.'/';
 	}
 	
 	var $m_db;
