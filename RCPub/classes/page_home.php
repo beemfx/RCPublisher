@@ -88,7 +88,7 @@ class CPageHome extends CPageBase {
 
 	private function ShowTwitter() 
 	{			
-		echo '<h2><a class="tlink" href="http://twitter.com/RoughConcept">On Twitter</a></h2>';
+		echo '<h2><a class="tlink" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'">On Twitter</a></h2>';
 		echo '<ul id="twitter_update_list"></ul>';
 		echo '<a class="big_link" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'" id="twitter-link" style="text-align:right;">follow me on Twitter</a>';
 	}
