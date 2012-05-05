@@ -1,7 +1,5 @@
 <?php
 
-require_once('config/config.php');
-
 function ShowBlogEntry() 
 {
 	global $GLOBAL_SETTINGS_B2HOST;

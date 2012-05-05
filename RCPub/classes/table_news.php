@@ -1,7 +1,6 @@
 <?php
 
 require( 'table_base.php' );
-require_once( 'RCMarkup.php' );
 
 class CTableNews extends CTable
 {
@@ -17,7 +16,6 @@ class CTableNews extends CTable
 		
 		$out = (0 == count($this->m_rows)) ? null : $this->m_rows[0];
 		$this->m_rows = null;
-		//if(null != $out)$out['formatted'] = preg_replace('/\r?\n/s' , '<br />', $out['txtBody']);
 		return $out;
 	}
 	
@@ -40,9 +38,7 @@ class CTableNews extends CTable
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
 		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
-		
-		//Should probably also create a cached version.
-		
+				
 		$data = array
 		(
 			 'txtTitle' => $title,

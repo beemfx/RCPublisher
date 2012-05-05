@@ -1,7 +1,5 @@
 <?php
 
-require_once( 'config/config.php' );
-
 abstract class CTable
 {
 	public function CTable($sTableName)

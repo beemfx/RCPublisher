@@ -102,6 +102,7 @@ class CPageHome extends CPageBase {
 	private function ShowFeature()
 	{
 		?>
+		<h2>Feature!</h2>
 		A feature goes here.
 		<?php
 	}

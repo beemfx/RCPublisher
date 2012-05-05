@@ -7,7 +7,6 @@
  * 
  * Copryight (c) 2012, Beem Software
  */
-require_once( 'config/config.php' );
 
 $g_rcSQL = null;
 

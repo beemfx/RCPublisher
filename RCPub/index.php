@@ -4,10 +4,13 @@ assert_options(ASSERT_BAIL, 1);
 
 assert(!get_magic_quotes_gpc());
 
-require_once( 'classes/rcsql.php');
-RCSql_Connect();
+require_once('config/config.php');    //Must be included first.
+require_once('classes/RCMarkup.php');
+require_once('classes/rcsql.php');
+require_once('classes/pages.php');
 
-require('classes/pages.php');
+
+RCSql_Connect();
 
 $strContent = isset($_GET['c'])?$_GET['c']:$_GET['content'];
 

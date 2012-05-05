@@ -1,6 +1,5 @@
 <?php
 require('table_base.php');
-require('RCMarkup.php');
 
 class CTablePage extends CTable
 {

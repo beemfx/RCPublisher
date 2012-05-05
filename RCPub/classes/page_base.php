@@ -9,8 +9,6 @@
  * Copyright (C) 2009 Blaine Myers
  ******************************************************************************/
 
-require('config/config.php');
-
 abstract class CPageBase
 {
 	//Abstract interface:
@@ -181,42 +179,10 @@ abstract class CPageBase
 		}
 		return $row;
 	}
-	
-
-	//Private attributes:	
-		static private function PIL_Replace($matches)
-		{
-			//The first thing to do is go through all the built in links, then try to do a page link.
-			$strRef = '';
-			switch($matches[1])
-			{
-				case 'home': $strRef = CreateHREF(PAGE_HOME);break;
-				case 'blog': $strRef='"http://www.roughconcept.com/blog/"';break;
-				case 'toc': $strRef = CreateHREF(PAGE_TOC);break;
-				case 'contact': $strRef = CreateHREF(PAGE_CONTACT);break;
-				case 'login': $strRef = CreateHREF(PAGE_LOGIN);break;
-				case 'news': $strRef = CreateHREF(PAGE_NEWS, 'archive');break;
-				default: $strRef = CreateHREF(PAGE_PAGE, 'p='.$matches[1]);
-			}
-			
-			return sprintf('<a href=%s>%s</a>', $strRef, isset($matches[2])?$matches[2]:$matches[1]);
-		}
-	static protected function ProcessInternalLinks($strIn)
-	{
 		
-		//ProcessInternalLinks is a regular expression replacement function that
-		//attemps to find internal links, and replace them appropriately.
-		//Internal links are in the form [[link link text]] where link text is optional.
-		//Global links are attempted to be resolved first, then the link is assumed to be
-		//a page link.
-		
-		return preg_replace_callback('/\[\[([A-Za-z0-9_]*)( [^\]\[]*)?\]\]/', "CPageBase::PIL_Replace", $strIn);
-	}
-	
 	protected function GetUserLevel()
 	{
-		//We should probably do some kind of IP verification or something here.
-		
+		//We should probably do some kind of IP verification or something here.	
 		return (int)$_SESSION['user_level'];
 	}
 	
@@ -249,6 +215,11 @@ abstract class CPageBase
 
 	private function DisplayNavigation()
 	{
+		$Markup = new CRCMarkup($this->GetGlobalSetting('txtNav'));
+		$sNav    = $Markup->GetHTML();
+		$Markup = new CRCMarkup($this->GetGlobalSetting('txtMiniNav'));
+		$sSubNav =  $Markup->GetHTML();
+		
 		?>
 		<div id="menu_main">
 			<!-- Load the background image, so that there isn't that delay when
@@ -257,10 +228,10 @@ abstract class CPageBase
 				  alt="bg_down" title="bg_down"
 				  style="display:none" />
 		<p>
-		<?php echo $this->ProcessInternalLinks($this->GetGlobalSetting('txtNav'));?>
+		<?php echo $sNav;?>
 		</div>
 		<div id="menu_sub">
-		<?php echo $this->ProcessInternalLinks($this->GetGlobalSetting('txtMiniNav'));?>
+		<?php echo $sSubNav;?>
 
 		<!-- Should only be displayed if an administrator is logged on. -->
 		</div>
@@ -270,7 +241,7 @@ abstract class CPageBase
 	//Private Methods:
 	private function StartHTML()
 	{
-		echo '		<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		//echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
 		?>
