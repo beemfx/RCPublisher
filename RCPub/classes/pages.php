@@ -11,7 +11,6 @@
 
 define('PAGE_HOME',      'home');
 define('PAGE_EMAIL',     'email');
-define('PAGE_CLEAR',     'clear');
 define('PAGE_CONTACT',   'contact');
 define('PAGE_LOGIN',     'login');
 define('PAGE_POSTNEWS',  'postnews');

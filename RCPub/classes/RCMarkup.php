@@ -4,10 +4,10 @@ require( 'file_manager.php' );
 
 class CRCMarkup
 {
-	public function CRCMarkup($sText, $db)
+	public function CRCMarkup($sText)
 	{
 		$this->m_sText = $sText;
-		self::$m_db = $db;
+		self::$m_db = RCSql_GetDb();
 		$this->ResolveTags();
 	}
 	

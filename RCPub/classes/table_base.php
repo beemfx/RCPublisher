@@ -4,12 +4,11 @@ require_once( 'config/config.php' );
 
 abstract class CTable
 {
-	public function CTable($db, $sTableName)
+	public function CTable($sTableName)
 	{
 		global $g_rcPrefix;
-		assert(get_class($db) == 'mysqli');
 		assert(gettype($sTableName) == 'string');
-		$this->m_db = $db;
+		$this->m_db = RCSql_GetDb();
 		$this->m_sTableName = $g_rcPrefix.$sTableName;
 		
 		$this->m_res = null;

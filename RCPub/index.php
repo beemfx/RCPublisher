@@ -1,10 +1,13 @@
 <?php
 
-require('classes/pages.php');
-
 assert_options(ASSERT_BAIL, 1);
 
 assert(!get_magic_quotes_gpc());
+
+require_once( 'classes/rcsql.php');
+RCSql_Connect();
+
+require('classes/pages.php');
 
 $strContent = isset($_GET['c'])?$_GET['c']:$_GET['content'];
 
@@ -54,5 +57,7 @@ case 'settings':
 }
 
 $Page->Display();
+
+RCSql_Disconnect();
 
 ?>

@@ -21,7 +21,7 @@ class CPageUploadFile extends CPageBase
 		if(!isset($_REQUEST['mode']))$_REQUEST['mode'] = 'list';
 		if($_REQUEST['mode'] == 'list')
 		{
-			$F = new CFileManager($this->m_db);
+			$F = new CFileManager();
 			?>
 			<h1>File Manager</h1>
 			<div style="margin:1em">
@@ -135,7 +135,7 @@ class CPageUploadFile extends CPageBase
 		$_POST['uslug'] = $sFilename = strtolower($sFilenameParts[0]);
 		$_POST['uext']  = strtoupper($sFilenameParts[1]);
 		
-		$F = new CFileManager($this->m_db);
+		$F = new CFileManager();
 
 		if($F->DoesFileExist($_POST['uslug']))
 		{
@@ -201,7 +201,7 @@ class CPageUploadFile extends CPageBase
 		
 		print('Inserting entry into database...<br/>');
 		
-		$F = new CFileManager($this->m_db);
+		$F = new CFileManager();
 		$nID = $F->InsertFileIntoSQL($_POST['uslug'], $_POST['uext'], $_POST['ucontenttype'],$_POST['upath'],$_POST['udesc']);
 		
 		printf("Inserted at %d.<br/>\n", $nID);

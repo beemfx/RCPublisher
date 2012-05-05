@@ -5,9 +5,9 @@ require_once( 'RCMarkup.php' );
 
 class CTableNews extends CTable
 {
-	public function CTableNews($db)
+	public function CTableNews()
 	{
-		parent::CTable($db, 'tblNews');
+		parent::CTable('tblNews');
 	}
 	
 	public function GetStory($nID)
@@ -35,7 +35,7 @@ class CTableNews extends CTable
 	
 	public function UpdateStory($nID, $title, $body)
 	{
-		$Cached = new CRCMarkup($body, $this->m_db);
+		$Cached = new CRCMarkup($body);
 			
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
@@ -55,7 +55,7 @@ class CTableNews extends CTable
 	
 	public function InsertStory($title, $body)
 	{
-		$Cached = new CRCMarkup($body, $this->m_db);
+		$Cached = new CRCMarkup($body);
 		
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';

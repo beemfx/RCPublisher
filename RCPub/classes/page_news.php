@@ -17,7 +17,7 @@ class CNewsPage extends CPageBase
 	{
 		//There are basically two news pages, this list page, and
 		//the news article page.
-		$this->m_NewsTable = new CTableNews($this->m_db);
+		$this->m_NewsTable = new CTableNews();
 
 		print('<div class="news">');
 		$this->DisplayYearList();

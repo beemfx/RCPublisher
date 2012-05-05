@@ -4,9 +4,9 @@ require('RCMarkup.php');
 
 class CTablePage extends CTable
 {
-	public function CTablePage($db)
+	public function CTablePage()
 	{
-		parent::CTable($db, 'tblPage');
+		parent::CTable('tblPage');
 	}
 	
 	public function IsSlugTaken($strSlug)
@@ -17,7 +17,7 @@ class CTablePage extends CTable
 	
 	public function CreatePage($strSlug, $strTitle, $strBody)
 	{
-		$Cached = new CRCMarkup($strBody, $this->m_db);
+		$Cached = new CRCMarkup($strBody);
 		
 		$strSlug   = '"'.addslashes($strSlug).'"';
 		$strTitle  = '"'.addslashes($strTitle).'"';
@@ -37,7 +37,7 @@ class CTablePage extends CTable
 	
 	public function UpdatePage($nID, $strSlug, $strTitle, $strBody)
 	{
-		$Cached = new CRCMarkup($strBody, $this->m_db);
+		$Cached = new CRCMarkup($strBody);
 		
 		$strSlug   = '"'.addslashes($strSlug).'"';
 		$strTitle  = '"'.addslashes($strTitle).'"';

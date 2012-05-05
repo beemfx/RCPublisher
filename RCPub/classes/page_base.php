@@ -42,30 +42,6 @@ abstract class CPageBase
 	//Public interface:
 	public function Display()
 	{
-		global $g_rcDBHost;
-		global $g_rcDBUser;
-		global $g_rcDBPwd;
-		global $g_rcDBName;
-
-							
-		if($this->m_bUseDB)
-		{
-			// Connect to the database:
-			@ $this->m_db = new mysqli(
-					$g_rcDBHost,
-					$g_rcDBUser,
-					$g_rcDBPwd,
-					$g_rcDBName);
-
-			if(mysqli_connect_errno())
-			{
-				unset($this->m_db);
-				print('A problem occured while connecting to the database. Try again later.');
-				echo($g_rcDBHost."\n");
-				return;
-			}
-		}
-
 		$this->PageStartup();
 
 		$this->StartHTML();
@@ -103,25 +79,16 @@ abstract class CPageBase
 		print("</div>\n");
 		$this->DisplayUserOptions();
 		$this->EndHTML();
-
-		if(isset($this->m_db))
-		{
-			$this->m_db->close();
-		}
 	}
 
 	//Protected attributes.
-	//m_db: This is the database it is loaded in the construtor, unless false
-	//is specified as the second parameter.
-	protected $m_db;       //Database.
 	protected $m_strTitle; //Title of the page.
 	protected $m_nUserLevel; //This is the user level required to view the page.
 
 
-	protected function CPageBase($strTitle, $bOpenDB=true, $nUserLevel=0)
+	protected function CPageBase($strTitle, $nUserLevel=0)
 	{
 		$this->m_strTitle = $strTitle;
-		$this->m_bUseDB = $bOpenDB;
 		$this->m_nUserLevel = $nUserLevel;
 	}
 
@@ -156,50 +123,9 @@ abstract class CPageBase
 		$this->DoQuery($qry);
 	}
 
-	protected function FormatTextToHTML($strIn)
-	{
-		//The first thing to do is to enclose the text in paragraph tag,
-		//also want to strip an whitespace from the beginning and end.
-		$strOut = preg_replace("/(^(\r?\n)*)/", "<p>", $strIn);
-		$strOut = preg_replace("/((\r?\n)*$)/", "</p>", $strOut);
-
-		return $this->NewlinesToHTMLBreaks($strOut);
-	}
-
-	protected function NewlinesToHTMLBreaks($strIn)
-	{
-		//Replace all line breaks with <br />s.
-		return preg_replace('/(\r?\n)/', '<br />', $strIn);
-	}
-
-	protected function HTMLBreaksToNewlines($strIn)
-	{
-		return preg_replace('/(<br\s*\/>)/', "\n", $strIn);
-
-	}
-
 	protected function ShowWarning($str)
 	{
 		printf("<p style=\"color:red\">%s</p>\n", $str);
-	}
-
-	protected function GenreToName($nGenreID)
-	{
-		$strQuery = sprintf(
-			'select txtDesc from tblGenre where id = %d',
-			$nGenreID);
-
-		$res = $this->m_db->query($strQuery);
-
-		$strOut = 'No Genre';
-		if(true == $res)
-		{
-			$row = $res->fetch_assoc();
-			$strOut = $row['txtDesc'];
-			$res->free();
-		}
-
-		return $strOut;
 	}
 
 	protected function GetNumMessages($nUserID)
@@ -215,11 +141,13 @@ abstract class CPageBase
 
 	protected function DoQuery($qry)
 	{
-		$res = $this->m_db->query($qry);
+		$db = RCSql_GetDb();
+		
+		$res = $db->query($qry);
 		if(!$res)
 		{
 			print($qry."<br/>\n");
-			printf("MySQL Querry Error: %s.<br/>\n", $this->m_db->error);
+			printf("MySQL Querry Error: %s.<br/>\n", $db->error);
 		}
 		return $res;
 	}
@@ -255,9 +183,7 @@ abstract class CPageBase
 	}
 	
 
-	//Private attributes:
-	private $m_bUseDB; //Flag to determine if database should be used.
-	
+	//Private attributes:	
 		static private function PIL_Replace($matches)
 		{
 			//The first thing to do is go through all the built in links, then try to do a page link.

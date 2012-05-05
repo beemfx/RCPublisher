@@ -74,7 +74,7 @@ class CPagePage extends CPageBase
 	protected function DisplayPre()
 	{		
 		$this->m_strTitle = '';
-		$this->m_PageTable = new CTablePage($this->m_db);
+		$this->m_PageTable = new CTablePage();
 		//The page slug should be passed in the p parameter.
 		$this->m_strPageSlug = $_GET['p'];
 		
@@ -117,7 +117,6 @@ class CPagePage extends CPageBase
 			//Now if we are displaying a page, we process all the macros.
 			if(self::MODE_PAGE == $this->m_nMode)
 			{
-				//$Markup = new CRCMarkup($Page['txtPageContent'], $this->m_db);
 				$this->m_strContent = $Page['formatted'];
 				$this->m_strTitle   = $Page['title'];
 				$this->m_nID        = (int)$Page['id'];

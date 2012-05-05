@@ -15,7 +15,7 @@ class CPostNewsPage extends CPageBase
 
 	protected function DisplayContent()
 	{
-		$this->m_NewsTable = new CTableNews($this->m_db);
+		$this->m_NewsTable = new CTableNews();
 		
 		if($_GET['mode']=='edit')
 		{

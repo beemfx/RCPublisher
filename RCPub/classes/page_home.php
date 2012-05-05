@@ -60,7 +60,7 @@ class CPageHome extends CPageBase {
 
 	private function ShowNews() 
 	{
-		$NewsTable = new CTableNews($this->m_db);
+		$NewsTable = new CTableNews();
 		$nNumStories = $this->GetGlobalSetting('nHomeNewsStories');
 		$nNumStories = $NewsTable->ObtainRecentNews($nNumStories);
 		print('<div class="news">');
