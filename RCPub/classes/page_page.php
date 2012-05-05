@@ -10,7 +10,7 @@
  * Copyright (C) 2010 Blaine Myers
  ******************************************************************************/
 require_once('page_base.php');
-require('RCMarkup.php');
+require_once('table_page.php');
 
 class CPagePage extends CPageBase
 {
@@ -27,6 +27,8 @@ class CPagePage extends CPageBase
 	private $m_nID;
 	private $m_nMode = self::MODE_UNK;
 	
+	private $m_PageTable;
+	
 
 	public function CPagePage()
 	{
@@ -38,57 +40,41 @@ class CPagePage extends CPageBase
 		//If the stage was set then we are most likely dealing with a situation
 		//where either an update or a new post occured.
 		$this->m_strContent   = $_POST['content'];
-		$this->m_strPageSlug = $_POST['pageslug'];
-		$this->m_strTitle         = $_POST['title'];
-		$this->m_nID              = (int)$_POST['id'];
-		$this->m_nMode         = (1 == $_post['stage'])?self::MODE_EDIT:self::MODE_NEW;
+		$this->m_strPageSlug  = $_POST['pageslug'];
+		$this->m_strTitle     = $_POST['title'];
+		$this->m_nID          = (int)$_POST['id'];
+		$this->m_nMode        = (1 == $_post['stage'])?self::MODE_EDIT:self::MODE_NEW;
 
 		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
 		if(!preg_match('/^[A-Za-z0-9_]*$/', $this->m_strPageSlug))
 		{
 			//If the slug isn't okay, we want to go back to the edit page.
-			$this->ShowWarning($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.');
-			
+			$this->ShowWarning($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.');	
 		}
 		else
 		{
-
-			//echo 'The slug is '.$this->m_strPageSlug;
-			//echo 'The content is: '.$this->m_strContent;
 			if(1 == $_POST['stage'])
 			{
 				//We are updating an entry.
-				$qry = sprintf('update tblPage set txtPageContent="%s", txtPageSlug="%s", txtPageTitle="%s" where id="%d"', 
-						addslashes($this->m_strContent), 
-						  $this->m_strPageSlug, 
-						  addslashes($this->m_strTitle), 
-						  $this->m_nID);
-
-				$this->DoQuery($qry);
+				$this->m_PageTable->UpdatePage( $this->m_nID, $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
 			else if(2 == $_POST['stage'])
 			{
-				//We are inserting a new page.
-				$qry = sprintf('insert into tblPage (txtPageContent, txtPageSlug, txtPageTitle) values ("%s", "%s", "%s")',
-						  addslashes($this->m_strContent),
-						  $this->m_strPageSlug,
-						  addslashes($this->m_strTitle));
-				
-				$this->DoQuery($qry);
+				$this->m_PageTable->CreatePage( $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
 
 			//Now that we've updated the table, we want the page to appear, so we set the mode to
 			//page, and process the content.
 			$this->m_nMode = self::MODE_PAGE;
-			$Markup = new CRCMarkup($this->m_strContent, $this->m_db);
-			$this->m_strContent = $Markup->GetHTML();
-			
-			//$this->m_strContent = $this->ProcessContent($this->m_strContent);
+			$Page = $this->m_PageTable->GetPage($this->m_strPageSlug);
+			$this->m_strContent = $Page['formatted'];
 		}
 	}
 
 	protected function DisplayPre()
 	{		
+		$this->m_strTitle = '';
+		$this->m_PageTable = new CTablePage($this->m_db);
 		//The page slug should be passed in the p parameter.
 		$this->m_strPageSlug = $_GET['p'];
 		
@@ -111,18 +97,16 @@ class CPagePage extends CPageBase
 
 
 			//We now attempt to get the page.
-			{
-				$row = $this->DoSingleRowQueryEx('tblPage', 'txtPageSlug', '"'.$this->m_strPageSlug.'"');
-			}
+			$Page = $this->m_PageTable->GetPage($this->m_strPageSlug);
 
 			//Now if the mode was page, and the page didn't exist, and the user level
 			//is high enough, we can do a new page instead.
-			if(self::MODE_PAGE == $this->m_nMode && null == $row && self::CRNW_RQ_LEVEL <= $_SESSION['user_level'])
+			if(self::MODE_PAGE == $this->m_nMode && null == $Page && self::CRNW_RQ_LEVEL <= $_SESSION['user_level'])
 			{
 				$this->m_nMode = self::MODE_NEW;
 				$this->m_nID = 0;
 			}
-			else if($row==null)
+			else if($Page==null)
 			{
 				$this->m_strTitle = 'Unknown Page';
 				$this->m_strContent = "Couldn't find the specified page.";
@@ -133,16 +117,16 @@ class CPagePage extends CPageBase
 			//Now if we are displaying a page, we process all the macros.
 			if(self::MODE_PAGE == $this->m_nMode)
 			{
-				$Markup = new CRCMarkup($row['txtPageContent'], $this->m_db);
-				$this->m_strContent = $Markup->GetHTML();
-				$this->m_strTitle = $row['txtPageTitle'];
-				$this->m_nID = (int)$row['id'];
+				//$Markup = new CRCMarkup($Page['txtPageContent'], $this->m_db);
+				$this->m_strContent = $Page['formatted'];
+				$this->m_strTitle   = $Page['title'];
+				$this->m_nID        = (int)$Page['id'];
 			}
 			else if(self::MODE_EDIT == $this->m_nMode)
 			{
-				$this->m_strContent = $row['txtPageContent'];
-				$this->m_strTitle = $row['txtPageTitle'];
-				$this->m_nID = (int)$row['id'];
+				$this->m_strContent = $Page['body'];
+				$this->m_strTitle   = $Page['title'];
+				$this->m_nID        = (int)$Page['id'];
 			}
 			else if(self::MODE_NEW == $this->m_nMode)
 			{
@@ -160,8 +144,8 @@ class CPagePage extends CPageBase
 	protected function DisplayNewPage()
 	{
 		//This function is to create a new page.
-		$this->m_strContent = '';
-		$this->m_strTitle = '';
+		//$this->m_strContent = '';
+		//$this->m_strTitle = '';
 		echo 'Creating new page...';
 		$this->DisplayEditForm();
 	}
