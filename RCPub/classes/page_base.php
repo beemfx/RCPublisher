@@ -306,7 +306,6 @@ abstract class CPageBase
 			<a href=<?php print CreateHREF(PAGE_EMAIL)?>>Inbox (<?php print $this->GetNumMessages($_SESSION['user_id'])?>)</a>
 			<a href=<?php print CreateHREF(PAGE_POSTNEWS)?>>Post News</a>
 			<a href=<?php print CreateHREF(PAGE_UPLOADFILE)?>>File Manager</a>
-			<a href=<?php print CreateHREF(PAGE_EDITG)?>>Genres</a>
 			<a href=<?php print CreateHREF(PAGE_SETTINGS)?>>Settings</a>
 			<a href=<?php print CreateHREF(PAGE_LOGIN, 'logout')?>>Logout</a>
 			<?php

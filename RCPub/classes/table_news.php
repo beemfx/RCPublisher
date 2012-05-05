@@ -1,6 +1,7 @@
 <?php
 
 require( 'table_base.php' );
+require_once( 'RCMarkup.php' );
 
 class CTableNews extends CTable
 {
@@ -12,11 +13,11 @@ class CTableNews extends CTable
 	public function GetStory($nID)
 	{
 		assert('integer' == gettype($nID));		
-		$this->DoSelect('id,date_format(dtPosted, "%M %e, %Y") as dt,txtTitle,txtBody', 'id='.$nID);
+		$this->DoSelect('id,date_format(dtPosted, "%M %e, %Y") as dt,txtTitle,txtBody,txtBodyHTMLCache as formatted', 'id='.$nID);
 		
 		$out = (0 == count($this->m_rows)) ? null : $this->m_rows[0];
 		$this->m_rows = null;
-		if(null != $out)$out['formatted'] = preg_replace('/\r?\n/s' , '<br />', $out['txtBody']);
+		//if(null != $out)$out['formatted'] = preg_replace('/\r?\n/s' , '<br />', $out['txtBody']);
 		return $out;
 	}
 	
@@ -34,8 +35,11 @@ class CTableNews extends CTable
 	
 	public function UpdateStory($nID, $title, $body)
 	{
+		$Cached = new CRCMarkup($body, $this->m_db);
+			
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
+		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
 		
 		//Should probably also create a cached version.
 		
@@ -43,6 +47,7 @@ class CTableNews extends CTable
 		(
 			 'txtTitle' => $title,
 			 'txtBody'  => $body,
+			 'txtBodyHTMLCache' => $strCached,
 		);
 		
 		$this->DoUpdate($nID, $data);
@@ -50,14 +55,18 @@ class CTableNews extends CTable
 	
 	public function InsertStory($title, $body)
 	{
+		$Cached = new CRCMarkup($body, $this->m_db);
+		
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
+		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
 		
 		$insert = array
 		(
 			 'txtTitle' => $title,
 			 'txtBody'  => $body,
-			 'dtPosted' => 'now()' 
+			 'dtPosted' => 'now()',
+			 'txtBodyHTMLCache' => $strCached,
 		);
 		
 		$this->DoInsert($insert);
@@ -66,7 +75,7 @@ class CTableNews extends CTable
 	public function ObtainRecentNews($count)
 	{
 		//$res = $this->DoQuery('select txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody from tblNews order by dtPosted desc limit '.$nNewsStories);
-		return $this->DoSelect('txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody', '', 'dtPosted desc', (int)$count);
+		return $this->DoSelect('txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody, txtBodyHTMLCache as formatted', '', 'dtPosted desc', (int)$count);
 	}
 	
 	public function GetRecentNewsStory($n)
@@ -77,7 +86,7 @@ class CTableNews extends CTable
 		$story['title'] = $this->m_rows[$n]['txtTitle'];
 		$story['date']  = $this->m_rows[$n]['dt'];
 		$story['body']  = $this->m_rows[$n]['txtBody'];
-		$story['formatted'] = preg_replace('/\r?\n/s' , '<br />', $story['body']);
+		$story['formatted'] = $this->m_rows[$n]['formatted'];
 		
 		return $story;
 	}

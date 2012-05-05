@@ -10,19 +10,13 @@
 //$strIndex = 'index/';
 
 define('PAGE_HOME',      'home');
-define('PAGE_TOC',       'toc');
-define('PAGE_CONTENT',   'content');
 define('PAGE_EMAIL',     'email');
 define('PAGE_CLEAR',     'clear');
 define('PAGE_CONTACT',   'contact');
-define('PAGE_EDITC',     'editc');
-define('PAGE_EDITG',     'editg');
 define('PAGE_LOGIN',     'login');
 define('PAGE_POSTNEWS',  'postnews');
-define('PAGE_UPLOAD',    'upload');
 define('PAGE_UPLOADFILE','uploadfile');
 define('PAGE_NEWS',      'news');
-define('PAGE_ABOUT',     'about');
 define('PAGE_PAGE',      'page');
 define('PAGE_SETTINGS',  'settings');
 
