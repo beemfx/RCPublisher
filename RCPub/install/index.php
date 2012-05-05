@@ -7,8 +7,6 @@
 //install.php should be deleted after it is used, also after it is installed
 //the entire directory can be closed off from the rest of the web.
 
-require('../config/config.php'); //This is just temporary so I can quickly test this.
-
 StartHTML();
 
 if(1==$_POST['stage']) {
@@ -81,9 +79,7 @@ function DoInstall()
 		 
 		'struct' => 
 				'`id` int(11) NOT NULL auto_increment,
-			  `nNextUL` int(11) NOT NULL COMMENT \'This is the number for the next file to be uploaded.\',
 			  `nHomeNewsStories` int(11) NOT NULL COMMENT \'The number of news stories to be shown on the home page.\',
-			  `nContentPerPage` int(11) NOT NULL COMMENT \'The amount of content displayed per page in the table of contents.\',
 			  `txtTwitterUser` text NOT NULL,
 			  `txtTwitterPwd` text NOT NULL,
 			  `txtNav` text NOT NULL,
@@ -168,6 +164,16 @@ function DoInstall()
 		$db->close();
 		return false;
 	}
+	
+	//Now insert the default settings:
+	$qry = sprintf('insert into '.$_POST['rc_prefix'].'tblGlobalSettings (id, nHomeNewsStories, txtNav, txtMiniNav, txtTwitterUser, txtTwitterPwd) values (1, "%s", "%s", "%s", "%s", "%s")',
+					  '5',
+					  addslashes('[[home Home]][[newpage Create a Page]]'),
+					  addslashes('[[contact Contact]]'),
+					  '',
+					  '');
+			
+	$db->query($qry);
 
 
 	//Saving configuration:

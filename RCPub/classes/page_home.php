@@ -62,7 +62,9 @@ class CPageHome extends CPageBase {
 	{
 		$NewsTable = new CTableNews($this->m_db);
 		$nNumStories = $this->GetGlobalSetting('nHomeNewsStories');
+		echo 'There should be '.$nNumStories.' stories.';
 		$nNumStories = $NewsTable->ObtainRecentNews($nNumStories);
+		echo 'There are '.$nNumStories.' stories.';
 		print('<div class="news">');
 		printf('<h2><a class="tlink" href=%s>News</a></h2>', CreateHREF(PAGE_NEWS, 'archive'));
 

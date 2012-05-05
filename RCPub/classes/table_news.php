@@ -48,7 +48,7 @@ class CTableNews extends CTable
 		$this->DoUpdate($nID, $data);
 	}
 	
-	public function InsertNewsStory($title, $body)
+	public function InsertStory($title, $body)
 	{
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
@@ -66,7 +66,7 @@ class CTableNews extends CTable
 	public function ObtainRecentNews($count)
 	{
 		//$res = $this->DoQuery('select txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody from tblNews order by dtPosted desc limit '.$nNewsStories);
-		return $this->DoSelect('txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody', '', 'dtPosted', 2);
+		return $this->DoSelect('txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody', '', 'dtPosted desc', (int)$count);
 	}
 	
 	public function GetRecentNewsStory($n)

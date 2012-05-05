@@ -65,29 +65,11 @@ class CPostNewsPage extends CPageBase
 	{
 		print '<p>Posting news item...</p>';
 
-		if(get_magic_quotes_gpc())
-		{
-			$_POST['title'] = striplashes($_POST['title']);
-			$_POST['body']  = stripslashes($_POST['body']);
-		}
-
 		//The news item needs to be modifed so that it can be stored in html
 		//and retrived, and displayed.
-		$strBody = $this->NewlinesToHTMLBreaks($_POST['body']);
 		
-		//Need some slashes so that it can be posted into MySQL.
-		$strTitle = addslashes($_POST['title']);
-		$strBody  = addslashes($strBody);
-
-		$qry = sprintf('insert into tblNews
-			(idUser, dtPosted, txtTitle, txtBody)
-			values ("%s", now(), "%s", "%s")',
-			$_SESSION['user_id'],
-			$strTitle,
-			$strBody);
-
-		$this->DoQuery($qry);
-
+		$this->m_NewsTable->InsertStory($_POST['title'], $_POST['body']);
+		
 		print('<p>Notifying Twitter...</p>');
 		$this->PostToTwitter($_POST['title'], $_POST['body']);
 

@@ -149,8 +149,10 @@ abstract class CPageBase
 	//if the new value is just a number it can be passed in directly, but if
 	//it is a string then the string must have quotes around the characters
 	//for exampe ChangeGlobalSetting('strOwner', '"Jack"').
-	protected function ChangeGlobalSetting($strSettingName, $strNewValue){
-		$qry = 'update tblGlobalSettings set '.$strSettingName.' = '.$strNewValue.' where id=1';
+	protected function ChangeGlobalSetting($strSettingName, $strNewValue)
+	{
+		global $g_rcPrefix;
+		$qry = 'update '.$g_rcPrefix.'tblGlobalSettings set '.$strSettingName.' = '.$strNewValue.' where id=1';
 		$this->DoQuery($qry);
 	}
 
@@ -202,11 +204,13 @@ abstract class CPageBase
 
 	protected function GetNumMessages($nUserID)
 	{
+		/*
 		$qry = 'select id from tblMessage where idUser_To='.$nUserID.' and bRead=false';
 		$res = $this->DoQuery($qry);
 		$nRows = $res==true?$res->num_rows:0;
 		$res->free();
-		return $nRows;
+		*/
+		return 0;//$nRows;
 	}
 
 	protected function DoQuery($qry)
@@ -381,7 +385,7 @@ abstract class CPageBase
 		owners.
 		</p>
 		<p style="text-align:center;border-top:none;border-bottom:none;">
-		<a href=<?php print CreateHREF(PAGE_PAGE, 'p=about')?>>About &amp; Copryight,
+		<a href=<?php print CreateHREF(PAGE_PAGE, 'p=about')?>>About &amp; Copyright,
 			Privacy Policy, and Terms of Service</a>.
 		</p>
 		<br/>

@@ -43,12 +43,6 @@ class CPagePage extends CPageBase
 		$this->m_nID              = (int)$_POST['id'];
 		$this->m_nMode         = (1 == $_post['stage'])?self::MODE_EDIT:self::MODE_NEW;
 
-		if(get_magic_quotes_gpc())
-		{
-			$this->m_strContent    = striplashes($this->m_strContent);
-			$this->m_strPageSlug  = stripslashes($this->m_strPageSlug);
-		}
-
 		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
 		if(!preg_match('/^[A-Za-z0-9_]*$/', $this->m_strPageSlug))
 		{

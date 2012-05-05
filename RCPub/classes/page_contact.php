@@ -103,12 +103,9 @@ class CContactPage extends CPageBase
 		//replace all newlines with <br/>s.
 		$_POST['message'] = str_replace(array("\r\n", "\n", "\r"), '<br/>', $_POST['message']);
 
-		if(!get_magic_quotes_gpc())
-		{
-			$_POST['subject'] = addslashes($_POST['subject']);
-			$_POST['message'] = addslashes($_POST['message']);
-			$_POST['name'] = addslashes($_POST['name']);
-		}
+		$_POST['subject'] = addslashes($_POST['subject']);
+		$_POST['message'] = addslashes($_POST['message']);
+		$_POST['name'] = addslashes($_POST['name']);
 
 		//Create the query.
 

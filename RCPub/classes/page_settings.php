@@ -25,18 +25,14 @@ class CPageSettings extends CPageBase
 		if(isset($_POST['stage']) && $_POST['stage'] == 1)
 		{
 			echo '<p style="background-color:#0c0">Saving settings...</p>';
-			
-			$qry = sprintf('update tblGlobalSettings set nHomeNewsStories="%s", nContentPerPage="%s", txtNav="%s", txtMiniNav="%s", txtTwitterUser="%s", txtTwitterPwd="%s" where id=1',
+			global $g_rcPrefix;
+			$qry = sprintf('update '.$g_rcPrefix.'tblGlobalSettings set nHomeNewsStories="%s", txtNav="%s", txtMiniNav="%s", txtTwitterUser="%s", txtTwitterPwd="%s" where id=1',
 					  $_POST['news_stories'],
-					  $_POST['content_pp'],
 					  addslashes($_POST['nav_bar']),
 					  addslashes($_POST['mini_nav_bar']),
 					  $_POST['twitter_user'],
 					  $_POST['twitter_pw']);
 			
-			//$qry = 'update tblGlobalSettings set txtTwitterUser = "Funcom", txtTwitterPwd="TestPW", nContentPerPage="3" where id=1';
-			
-			//echo $qry;
 			$this->DoQuery($qry);
 					
 		}
@@ -52,7 +48,6 @@ class CPageSettings extends CPageBase
 		<form action=<?php print CreateHREF(PAGE_SETTINGS)?> method="post">
 		<input type="hidden" name="stage" value="1"/>
 		<p><b>Home Page News Stories: </b><select name="news_stories" size="1"><?php $this->ShowNumberList($this->GetGlobalSetting('nHomeNewsStories'))?></select></p>
-		<p><b>Content Per TOC Page: </b><select name="content_pp" size="1"><?php $this->ShowNumberList($this->GetGlobalSetting('nContentPerPage'))?></select></p>
 		<p><b>Navigation Bar:</b></br>
 		<textarea style="height:5em;width:90%" name="nav_bar" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtNav') ?></textarea>
 		</p>
