@@ -12,19 +12,16 @@ class CLoginPage extends CPageBase
 	{
 		if(isset($_GET['logout']))
 		{
-			session_destroy();
-			setcookie('rclogs', '', -1);
-			$_SESSION['user_level']=0;
+			RCSession_Disconnect();
 		}
 
-		if($_POST['stage']==1 && $_SESSION['user_level']==0){
-			$this->m_bLoggedIn = $this->AuthenticateUser();
-			if($this->m_bLoggedIn)
-			{
-				//Now set a cookie that the user is logged in, may want to add a checkbox
-				//that says "Remember me".
-				setcookie('rclogs', $_SESSION['user_id'], time()+3600*24*365);
-			}
+		if($_POST['stage']==1 && RCSession_GetUserProp('user_level')==0)
+		{
+			$user_name = $_POST['uname'];
+			$pwd =       $_POST['pwd_hash'];
+			$pwd_salt =  $_POST['pwd_salt'];
+		
+			$this->m_bLoggedIn = RCSession_Connect($user_name, $pwd, $pwd_salt, true);
 		}
 	}
 
@@ -71,13 +68,11 @@ class CLoginPage extends CPageBase
 
 		if(isset($_GET['logout']))
 		{
-			//session_destroy();
-			//$_SESSION['user_level']=0;
 			print("<p>Successfully logged out.</p>\n");
 			$nStage=0;
 		}
 
-		if($_SESSION['user_level']>0 && $nStage!=1)
+		if(RCSession_GetUserProp('user_level')>0 && $nStage!=1)
 		{
 			print("<p>Already logged in. ");
 			print('<a href='.CreateHREF(PAGE_LOGIN, 'logout').'>Log out</a>');
@@ -111,87 +106,17 @@ class CLoginPage extends CPageBase
 
 	private function DisplayLoginForm()
 	{
-		if(!isset($_SESSION['login_key']))
-		{
-			$code = 'abcdefghijklmnopqrstuvwxyz12345678';
-			$key='';
-			srand(time());
-			for($i=0; $i<64; $i++)
-			{
-				$key = $key.$code[rand()%(strlen($code))];
-			}
-			$_SESSION['login_key'] = $key;
-		}
 		?>
 		<form action=<?php print CreateHREF(PAGE_LOGIN)?> method="post" name="LoginForm">
 		<p>Username: <input style="width:30%" type="text" name="uname"/></p>
 		<p>Password: <input style="width:30%" type="password" name="pword"/></p>
 		<input type="hidden" name="pwd_hash" id="pwd_hash"/>
-		<input type="hidden" name="pwd_salt" id="pwd_salt" value=<?php printf('"%s"', $_SESSION['login_key'])?>/>
+		<input type="hidden" name="pwd_salt" id="pwd_salt" value=<?php printf('"%s"', RCSession_GetUserProp('login_key'))?>/>
 		<input type="hidden" name="stage" value="1"/>
 		<!--<p><input class="button" type="submit" value="Login"/></p>-->
 		<p><input type="button" onclick="javascript:onSubmit()" value="Login"/></p>
 		</form>
 		<?php
-	}
-
-	private function AuthenticateUser()
-	{
-		$bRes = false;
-
-		$user_name = $_POST['uname'];
-		$pwd =       $_POST['pwd_hash'];
-		$pwd_salt =  $_POST['pwd_salt'];
-		//printf("The username: %s has password: %s (%s), %s\n", $user_name, $pwd, $_POST['pword'], $pwd_salt);
-		//The password now needs to be authenticated:
-
-		$strQ = 'select id, txtPassword from tblUser where txtUserName = "'.$user_name.'"';
-		$res = $this->DoQuery($strQ);
-		if(!$res)
-		{
-			return false;
-		}
-		//Should only have gotten one row.
-		if($res->num_rows==1)
-			$row = $res->fetch_assoc();
-
-		$res->free();
-
-		if(!isset($row))
-			return false;
-
-		//Encrypt the retrieved password using the salt:
-		$ep=sha1($row['txtPassword'].$pwd_salt);
-		//printf("<p>Submitted: %s, Retrieved: %s</p>\n", $pwd, $ep);
-		if(!($ep==$pwd))
-				return false;
-
-		//So we authenticated, now run the login.
-
-
-		$strQ = 'select id, txtUserName, nAccessLevel, txtAlias from tblUser where id="'.$row['id'].'"';
-		$res = $this->DoQuery($strQ);
-		if(true == $res)
-		{
-			//Should only have gotten one row.
-			if($res->num_rows == 1)
-			{
-				$row = $res->fetch_assoc();
-				$_SESSION['user'] = $row['txtUserName'];
-				$_SESSION['user_alias'] = $row['txtAlias'];
-				$_SESSION['user_id'] = $row['id'];
-				$_SESSION['user_level'] = $row['nAccessLevel'];
-				$bRes=true;
-			}
-			$res->free();
-		}
-
-		//Update the IP address where login occured.
-
-		$qry = 'update tblUser set txtLastIP="'.$_SERVER['REMOTE_ADDR'].'" where id='.$row['id'];
-		$this->DoQuery($qry);
-
-		return $bRes;
 	}
 }
 ?>

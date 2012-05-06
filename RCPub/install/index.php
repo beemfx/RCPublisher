@@ -180,6 +180,7 @@ function DoInstall()
 		return false;
 	}
 	
+	//Set the inital settings.
 	$InitialSettings = array
 	(
 		 'nHomeNewsStories' => addslashes('5'),
@@ -196,8 +197,19 @@ function DoInstall()
 		$db->query($qry);
 	}			
 	
-
-
+	//Create the default user.
+	$DefaultUser = array
+	(
+		 'txtUserName'  => '"'.addslashes('admin').'"',
+		 'txtPassword'  => 'MD5("admin")',
+		 'txtAlias'     => '"'.addslashes('Administrator Account').'"',
+		 'txtEmail'     => '"'.addslashes('admin@beemsoft.com').'"',
+		 'nAccessLevel' => '"'.addslashes('10').'"',
+	);
+	
+	$qry = 'insert into '.$_POST['rc_prefix'].'tblUser ('.implode(',',array_keys($DefaultUser)).') values ('.implode(',',array_values($DefaultUser)).')';
+	$db->query($qry);
+	
 	//Saving configuration:
 	echo '<p>Saving configuration file...</p>';
 	$fout = fopen('config.php', 'w');

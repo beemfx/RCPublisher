@@ -9,9 +9,11 @@ require_once('classes/file_manager.php'); //Must be before RCMarkup
 require_once('classes/RCMarkup.php');
 require_once('classes/rcsql.php');
 require_once('classes/pages.php');
+require_once('classes/rcsession.php');
 
 
 RCSql_Connect();
+RCSession_Begin();
 
 $strContent = isset($_GET['c'])?$_GET['c']:$_GET['content'];
 
@@ -23,12 +25,8 @@ default:
 	$Page = new CPageHome();
 	break;
 case 'login':
-	require('classes/login_page.php');
+	require('classes/page_login.php');
 	$Page = new CLoginPage();
-	break;
-case 'clear':
-	require('classes/clear_page.php');
-	$Page = new CClearPage();
 	break;
 case 'contact':
 	require('classes/contact_page.php');

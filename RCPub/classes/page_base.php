@@ -15,25 +15,7 @@ abstract class CPageBase
 	protected abstract function DisplayContent();
 
 	protected function PageStartup()
-	{
-		session_start();
-
-		//Check if there is a login cookie, and if not already logged in
-		//automatically login if the ip address is the same.
-		if(isset($_COOKIE['rclogs']) && $_SESSION['user_level']==0)
-		{
-			$row=$this->DoSingleRowQuery('tblUser', $_COOKIE['rclogs']);
-			if($row != null)
-			{
-				if($row['txtLastIP']==$_SERVER['REMOTE_ADDR'])
-				{
-					$_SESSION['user'] = $row['txtUserName'];
-					$_SESSION['user_alias'] = $row['txtAlias'];
-					$_SESSION['user_id'] = $row['id'];
-					$_SESSION['user_level'] = $row['nAccessLevel'];
-				}
-			}
-		}
+	{		
 		$this->DisplayPre();
 	}
 	
@@ -53,7 +35,7 @@ abstract class CPageBase
 		//it affects the options on the navigation.
 		$this->DisplayNavigation();
 		print("<div id=\"content\">\n");
-		if($_SESSION['user_level']>=$this->m_nUserLevel)
+		if($this->GetUserLevel() >= $this->m_nUserLevel)
 		{
 			$this->DisplayContent();
 		}
@@ -128,7 +110,7 @@ abstract class CPageBase
 		printf("<p style=\"color:red\">%s</p>\n", $str);
 	}
 
-	protected function GetNumMessages($nUserID)
+	protected function GetNumMessages()
 	{
 		/*
 		$qry = 'select id from tblMessage where idUser_To='.$nUserID.' and bRead=false';
@@ -185,7 +167,7 @@ abstract class CPageBase
 	protected function GetUserLevel()
 	{
 		//We should probably do some kind of IP verification or something here.	
-		return (int)$_SESSION['user_level'];
+		return (int)  RCSession_GetUserProp('user_level');
 	}
 	
 	protected function DisplayUserOptions()
@@ -196,8 +178,8 @@ abstract class CPageBase
 			echo '<div id="UO">';
 			echo '<b>RC Publisher:</b> ';
 			?>
-			<b>[<?php print $_SESSION['user']?>]</b>
-			<a href=<?php print CreateHREF(PAGE_EMAIL)?>>Inbox (<?php print $this->GetNumMessages($_SESSION['user_id'])?>)</a>
+<b>[<?php print RCSession_GetUserProp('user')?>]</b>
+			<a href=<?php print CreateHREF(PAGE_EMAIL)?>>Inbox (<?php print $this->GetNumMessages()?>)</a>
 			<a href=<?php print CreateHREF(PAGE_POSTNEWS)?>>Post News</a>
 			<a href=<?php print CreateHREF(PAGE_UPLOADFILE)?>>File Manager</a>
 			<a href=<?php print CreateHREF(PAGE_SETTINGS)?>>Settings</a>

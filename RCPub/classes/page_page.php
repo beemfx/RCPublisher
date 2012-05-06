@@ -53,12 +53,12 @@ class CPagePage extends CPageBase
 		}
 		else
 		{
-			if(1 == $_POST['stage'])
+			if(1 == $_POST['stage'] && $this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
 			{
 				//We are updating an entry.
 				$this->m_PageTable->UpdatePage( $this->m_nID, $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
-			else if(2 == $_POST['stage'])
+			else if(2 == $_POST['stage'] && $this->GetUserLevel()>=self::CRNW_RQ_LEVEL)
 			{
 				$this->m_PageTable->CreatePage( $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
@@ -101,13 +101,28 @@ class CPagePage extends CPageBase
 
 			//Now if the mode was page, and the page didn't exist, and the user level
 			//is high enough, we can do a new page instead.
-			if(self::MODE_PAGE == $this->m_nMode && null == $Page && self::CRNW_RQ_LEVEL <= $_SESSION['user_level'])
+			if(self::MODE_PAGE == $this->m_nMode && null == $Page && self::CRNW_RQ_LEVEL <= $this->GetUserLevel())
 			{
 				$this->m_nMode = self::MODE_NEW;
 				$this->m_nID = 0;
 			}
 			else if($Page==null)
 			{
+				$this->m_strTitle = 'Unknown Page';
+				$this->m_strContent = "Couldn't find the specified page.";
+				$this->m_nID = 0;
+				return;
+			}
+			
+			//Bail out if the operation is not allowed.
+			if
+			(
+				($this->GetUserLevel() < self::EDIT_RQ_LEVEL && self::MODE_EDIT == $this->m_nMode)
+				||
+				($this->GetUserLevel() < self::CRNW_RQ_LEVEL && self::MODE_NEW  == $this->m_nMode)	  
+			)
+			{
+				$this->m_nMode = self::MODE_PAGE;
 				$this->m_strTitle = 'Unknown Page';
 				$this->m_strContent = "Couldn't find the specified page.";
 				$this->m_nID = 0;
@@ -151,7 +166,7 @@ class CPagePage extends CPageBase
 	
 	protected function DisplayPage()
 	{
-		if($_SESSION['user_level']>=self::EDIT_RQ_LEVEL)
+		if($this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
 		{
 			$strEditLink = sprintf(
 				' [<a href=%s>Edit</a>]',
