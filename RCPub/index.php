@@ -29,11 +29,11 @@ case 'login':
 	$Page = new CLoginPage();
 	break;
 case 'contact':
-	require('classes/contact_page.php');
+	require('classes/page_contact.php');
 	$Page = new CContactPage();
 	break;
 case 'email':
-	require('classes/email_page.php');
+	require('classes/page_email.php');
 	$Page = new CEmailPage();
 	break;
 case 'postnews':
