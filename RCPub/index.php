@@ -23,6 +23,10 @@ $strContent = isset($_GET['c'])?$_GET['c']:$_GET['content'];
 
 switch($strContent)
 {
+case 'page':
+	require('classes/page_page.php');
+	$Page = new CPagePage();
+	break;
 case 'home':
 default:
 	require('classes/page_home.php');
@@ -51,10 +55,6 @@ case 'uploadfile':
 case 'news':
 	require('classes/page_news.php');
 	$Page = new CNewsPage();
-	break;
-case 'page':
-	require('classes/page_page.php');
-	$Page = new CPagePage();
 	break;
 case 'settings':
 	require('classes/page_settings.php');
