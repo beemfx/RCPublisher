@@ -118,7 +118,8 @@ abstract class CPageBase
 		$nRows = $res==true?$res->num_rows:0;
 		$res->free();
 		*/
-		return 0;//$nRows;
+		$Mail = new CTableMail();
+		return $Mail->GetNumUnreadMessage((int)RCSession_GetUserProp('user_id'));
 	}
 
 	protected function DoQuery($qry)

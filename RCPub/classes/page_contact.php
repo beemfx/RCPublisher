@@ -1,5 +1,7 @@
 <?php
 require_once('page_base.php');
+require_once('table_user.php' );
+require_once('table_mail.php' );
 //require('smtp_validate.php');
 
 class CContactPage extends CPageBase
@@ -24,21 +26,27 @@ class CContactPage extends CPageBase
 		print('</div>');
 	}
 
-	private function CreateSendToChoices()
+	private function CreateSendToChoices($Selected)
 	{
-		$qry = 'select id, txtAlias from tblUser';
-		$res = $this->DoQuery($qry);
-		if(!$res)
-			return;
+		$UserTable = new CTableUser();
+		
+		$Users = $UserTable->GetUsers();
+	
 
-		for($i=0; $i<$res->num_rows; $i++)
+		for($i=0; $i<count($Users); $i++)
 		{
-			$row=$res->fetch_assoc();
-			printf("<option value=\"%d\">%s</option>\n",
-				$row['id'],
-				$row['txtAlias']);
+			$row=$Users[$i];
+			
+			//If we are trying to contact a specific user we only display that option
+			//otherwise we just display the entire list.
+			if((null == $Selected) || (null != $Selected && ($Selected == $row['txtUserName'] || $Selected == $row['id'])))
+			{
+				printf("<option value=\"%d\"%s>%s</option>\n",
+					$row['id'],
+					$Selected == $row['txtUserName']?' selected="selected"':'',
+					$row['txtAlias']);
+			}
 		}
-		$res->free();
 	}
 
 	private function DisplayStage0()
@@ -52,7 +60,7 @@ class CContactPage extends CPageBase
 		<td>
 		<select name="send_to" size="1">
 		<?php
-		$this->CreateSendToChoices();
+		$this->CreateSendToChoices(isset($_GET['to'])?$_GET['to']:null);
 		?>
 		</select>
 		</td>
@@ -94,61 +102,14 @@ class CContactPage extends CPageBase
 		if(!$this->ValidateInput())
 		{
 			$this->ShowWarning('One or more required fields was missing.');
+			$_GET['to'] = (int)$_POST['send_to'];
 			$this->DisplayStage0();
 			return;
 		}
-
-		$strOrgMsg = $_POST['message'];
-		//Modify the message so that it has paragraph markers
-		//replace all newlines with <br/>s.
-		$_POST['message'] = str_replace(array("\r\n", "\n", "\r"), '<br/>', $_POST['message']);
-
-		$_POST['subject'] = addslashes($_POST['subject']);
-		$_POST['message'] = addslashes($_POST['message']);
-		$_POST['name'] = addslashes($_POST['name']);
-
-		//Create the query.
-
-		//The following query does two things, first it insures that the user that the mail is going to is
-		//valid, and secondily it is used to forward the mail to the actual email.
-
-		$resto = $this->DoQuery('select txtEmail from tblUser where id='.$_POST['send_to']);
-
-		if(!$resto)
-		{
-			$this->ShowWarning('User does not exist, email most likely sent by bot, deleting message.');
-			return;
-		}
-
-		$qry = sprintf('insert into tblMessage (idUser_To, idUser_From, txtName, txtEmail, txtSubject, txtMessage, bRead, dtSent)
-					                       values ("%s",         %s,          %s,      "%s",  "%s",      "%s",         false, now())',
-													       $_POST['send_to'],
-															 'null',
-			                                     strlen($_POST['name'])>0?'"'.$_POST['name'].'"':'null',
-															 $_POST['reply_email'],
-															 $_POST['subject'],
-															 $_POST['message']);
-		$this->DoQuery($qry);
-
-		//Now send the message by acutal mail:
-		if($resto==true)
-		{
-			$row = $resto->fetch_assoc();
-
-
-			$msg = sprintf("From: %s\nReply Email: %s\nSubject: %s\n\n%s",
-				$_POST['name'],
-				$_POST['reply_email'],
-				$_POST['subject'],
-				$strOrgMsg);
-
-			$headers = 'From: '.$_POST['reply_email']."\r\n" .
-			'Reply-To: '.$_POST['reply_email']. "\r\n" .
-			'X-Mailer: PHP/'. phpversion();
-			mail($row['txtEmail'], 'RC Mail: '.$_POST['subject'], $msg, $headers);
-			$resto->free();
-		}
-
+		
+		$MailTable = new CTableMail();
+		
+		$MailTable->PostMail(null, (int)$_POST['send_to'], $_POST['name'], $_POST['reply_email'], $_POST['subject'], $_POST['message']);
 
 		print('<p>Message sent. Return <a href='.CreateHREF(PAGE_HOME).'>home</a>.</p>');
 	}

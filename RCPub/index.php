@@ -11,6 +11,9 @@ require_once('classes/rcsql.php');
 require_once('classes/pages.php');
 require_once('classes/rcsession.php');
 
+require_once( 'classes/table_base.php' );
+require_once( 'classes/table_mail.php' );
+
 
 RCSql_Connect();
 RCSession_Begin();

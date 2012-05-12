@@ -8,6 +8,12 @@ class CTableUser extends CTable
 		parent::CTable('tblUser');
 	}
 	
+	public function GetUsers()
+	{
+		$this->DoSelect('id,txtUserName,txtAlias', '', 'txtAlias');
+		return $this->m_rows;
+	}
+	
 	public function GetUserId($strUser, $strFullHashPwd, $strSalt)
 	{
 		$this->DoSelect('id,txtUserName' , 'txtUserName="'.$strUser.'" and sha1(concat(txtPassword, "'.$strSalt.'")) = "'.$strFullHashPwd.'"');
