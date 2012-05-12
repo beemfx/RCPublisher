@@ -17,7 +17,7 @@ abstract class CTable
 	protected $m_sTableName;
 	protected $m_rows;
 	
-	protected function DoUpdate($nID, $data)
+	protected function DoUpdate($nID, $data, $strAdditionalQualifier ='')
 	{		
 		assert('integer' == gettype($nID));
 		
@@ -27,7 +27,22 @@ abstract class CTable
 			$cols[] = $key.'='.$val;
 		}
 		$qry = 'update '.$this->m_sTableName.' set '.implode(', ', $cols).' where id='.$nID;
+		if(strlen($strAdditionalQualifier) > 0)
+		{
+			$qry .= ' and '.$strAdditionalQualifier;
+		}
 		
+		$this->DoQuery($qry);
+	}
+	
+	protected function DoDelete($nID, $strAdditionalQualifier ='')
+	{
+		assert('integer' == gettype($nID));
+		$qry = 'delete from '.$this->m_sTableName.' where id='.$nID;
+		if(strlen($strAdditionalQualifier) > 0)
+		{
+			$qry .= ' and '.$strAdditionalQualifier;
+		}
 		$this->DoQuery($qry);
 	}
 	

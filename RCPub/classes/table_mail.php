@@ -18,6 +18,52 @@ class CTableMail extends CTable
 		return count($this->m_rows);
 	}
 	
+	
+	public function GetMessageList($nUser)
+	{
+		assert('integer' == gettype($nUser));
+		
+		$this->DoSelect(
+			'* , date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt , if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName',
+			'idUser_To='.$nUser,
+			'dtSent desc');
+		
+		return $this->m_rows;		
+	}
+	
+	public function GetMessage($nUser, $nMsg)
+	{
+		assert('integer' == gettype($nUser));
+		assert('integer' == gettype($nMsg));
+		
+		$this->DoSelect(
+			'*, date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt, if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName',
+			'idUser_To='.$nUser.' and id='.$nMsg);
+		
+		return count($this->m_rows)!=1 ? false : $this->m_rows[0];
+	}
+	
+	public function MarkAsRead($nUser, $nMsg)
+	{
+		assert('integer' == gettype($nUser));
+		assert('integer' == gettype($nMsg));
+		
+		$data = array
+		(
+			 'bRead' => '1',
+		); 
+		
+		$this->DoUpdate($nMsg, $data, 'idUser_To='.$nUser);
+	}
+	
+	public function DeleteMessage($nUser, $nMsg)
+	{
+		assert('integer' == gettype($nUser));
+		assert('integer' == gettype($nMsg));
+		$this->DoDelete($nMsg, 'idUser_To='.$nUser);
+	}
+		
+	
 	public function PostMail($nFromUser, $nToUser, $strName, $strFromEmail, $strSubject, $strMessage)
 	{
 		assert('integer' == gettype($nToUser));
@@ -66,26 +112,6 @@ class CTableMail extends CTable
 		
 		$this->DoInsert($insert);
 	}
-	
-	/*
-	public function GetStory($nID)
-	{
-		assert('integer' == gettype($nID));		
-		$this->DoSelect('id,date_format(dtPosted, "%M %e, %Y") as dt,txtTitle,txtBody,txtBodyHTMLCache as formatted', 'id='.$nID);
-		
-		$out = (0 == count($this->m_rows)) ? null : $this->m_rows[0];
-		$this->m_rows = null;
-		return $out;
-	}
-	
-		
-	public function ObtainRecentNews($count)
-	{
-		//$res = $this->DoQuery('select txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody from tblNews order by dtPosted desc limit '.$nNewsStories);
-		$this->DoSelect('txtTitle as title, date_format(dtPosted, "%M %e, %Y") as date, txtBody as body, txtBodyHTMLCache as formatted', '', 'dtPosted desc', (int)$count);
-		return $this->m_rows;
-	}
-	*/
 }
 
 ?>

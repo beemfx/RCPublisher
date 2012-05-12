@@ -3,9 +3,16 @@ require_once('page_base.php');
 
 class CEmailPage extends CPageBase
 {
+	private $m_MailTable;
+	
 	public function CEmailPage()
 	{
 		parent::CPageBase('Email', 1);
+	}
+	
+	protected function DisplayPre()
+	{
+		$this->m_MailTable = new CTableMail();
 	}
 
 	protected function DisplayContent()
@@ -15,42 +22,30 @@ class CEmailPage extends CPageBase
 		//Check to see if we want to delete:
 		if(isset($_GET['delete']) && isset($_GET['message']))
 		{
-			//If so do the delete
-			$qry = 'delete from tblMessage where id='.$_GET['message'].' and idUser_To='.$_SESSION['user_id'];
-			$this->DoQuery($qry);
+			$this->m_MailTable->DeleteMessage((int)$_SESSION['user_id'], (int)$_GET['message']);
 			unset($_GET['message']);
 		}
 
 		if(isset($_GET['message']))
 		{
-			$this->ShowMessage($_SESSION['user_id'], $_GET['message']);
+			$this->ShowMessage((int)$_SESSION['user_id'], (int)$_GET['message']);
 		}
 		else
 		{
-			$this->ShowMessageList($_SESSION['user_id']);
+			$this->ShowMessageList((int)$_SESSION['user_id']);
 		}
 	}
 
 	private function ShowMessageList($nUserID)
 	{
-		$qry = 'select *
-				, date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt
-				, if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName
-			from tblMessage where idUser_To='.$nUserID.' order by dtSent desc';
-		$res = $this->DoQuery($qry);
-
-		if(!$res)
-		{
-			$this->ShowWarning('Could not get message list.');
-			return;
-		}
-
+		$Messages = $this->m_MailTable->GetMessageList($nUserID);
+		
 		//Show all the messages in a table.
 		print("<table>\n");
 		print("<tr><th>Action<th>From</th><th>Subject</th><th>Sent</th></tr>\n");
-		for($i=0; $i<$res->num_rows; $i++)
+		for($i=0; $i<count($Messages); $i++)
 		{
-			$row = $res->fetch_assoc();
+			$row = $Messages[$i];
 
 			$strClass = $row['bRead']?'elink_read':'elink_unread';
 			print("<tr>\n");
@@ -77,7 +72,6 @@ class CEmailPage extends CPageBase
 			printf("</tr>\n");
 		}
 		print("</table>\n");
-		$res->free();
 	}
 
 	private function ShowButtons($nMsgID)
@@ -93,23 +87,18 @@ class CEmailPage extends CPageBase
 
 	private function ShowMessage($nUserID, $nMsgID)
 	{
-		$qry = 'select *
-				, date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt
-				, if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName
-			from tblMessage where idUser_To='.$nUserID.' and id='.$nMsgID;
-		$res = $this->DoQuery($qry);
-
-		if(!$res)
+		$Message = $this->m_MailTable->GetMessage($nUserID, $nMsgID);
+		
+		if(!$Message)
 		{
 			$this->ShowWarning('The specified message did not exist.');
 			return;
 		}
 
-		$row = $res->fetch_assoc();
-		$res->free();
+		$row = $Message;
 
 		//Since we got a result mark the message as read.
-		$this->DoQuery('update tblMessage set bRead=true where id='.$nMsgID);
+		$this->m_MailTable->MarkAsRead($nUserID, $nMsgID);
 
 		//Just show the message:
 		echo '<h3>', $row['txtSubject'], '</h3>', "\n";

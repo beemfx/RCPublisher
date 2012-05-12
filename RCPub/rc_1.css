@@ -397,6 +397,16 @@ a.big_link
 	margin:6px 0px;
 }
 
+/*******************
+*** EMAIL STYLES ***
+*******************/
+
+div#content a.elink_unread,
+div#content a:visited.elink_unread
+{
+	font-weight: bold;
+}
+
 
 
 /********************
