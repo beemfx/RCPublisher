@@ -26,6 +26,7 @@ class CRCMarkup
 		$this->m_sText = $this->ProcessFileTags($this->m_sText);
 		$this->m_sText = $this->ProcessBlogTags($this->m_sText);
 		$this->m_sText = $this->ProcessLinkTags($this->m_sText);
+		$this->m_sText = $this->ProcessContactTags($this->m_sText);
 	}
 	
 	private function Texturize()
@@ -176,6 +177,22 @@ class CRCMarkup
 		//ProcessFile tags turns a file tag into a link or embeds the file.
 		
 		return preg_replace_callback('/\[\[(link|site):([^ \]\[]+)?( ([^\]\]]*))?\]\]/', "CRCMarkup::PLT_Replace", $strIn);
+	}
+	
+	static private function PCT_Replace($matches)
+	{
+		$Desc = strlen($matches[4]) > 0 ? $matches[4] : $matches[1].':'.$matches[2];
+				
+		$sLink = CreateHREF(PAGE_CONTACT, 'to='.$matches[2]);
+		
+		return sprintf('<a href=%s>%s</a>', $sLink, $Desc);
+	}
+		
+	static protected function ProcessContactTags($strIn)
+	{
+		//ProcessFile tags turns a file tag into a link or embeds the file.
+		
+		return preg_replace_callback('/\[\[(contact):([^ \]\[]+)?( ([^\]\]]*))?\]\]/', "CRCMarkup::PCT_Replace", $strIn);
 	}
 	
 	var $m_sText;
