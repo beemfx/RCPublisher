@@ -211,7 +211,7 @@ class CFileManager extends CTable
 	protected static function GetURLFileRoot()
 	{
 		global $g_rcFilepath;
-		$p = $_SERVER['HTTPS'] ? "https" : "http";
+		$p = !empty($_SERVER['HTTPS']) ? "https" : "http";
 		return $p.'://'.$_SERVER['HTTP_HOST'].'/'.$g_rcFilepath.'/';
 	}
 	

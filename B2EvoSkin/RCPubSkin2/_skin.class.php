@@ -19,23 +19,24 @@ if (!defined('EVO_MAIN_INIT'))
  *
  * ATTENTION: if you make a new skin you have to change the class name below accordingly
  */
-class rc_pub_skin_Skin extends Skin {
+class RCPubSkin2_Skin extends Skin {
 
     /**
      * Get default name for the skin.
      * Note: the admin can customize it.
      */
-    function get_default_name() {
-	return 'Rough Concept (b2evo)';
-    }
+	function get_default_name()
+	{
+		return 'Rough Concept v 2.0';
+	}
 
     /**
      * Get default type for the skin.
      */
-    function get_default_type() {
-	return 'normal';
-    }
-
+   function get_default_type()
+	{
+		return 'normal';
+   }
 }
 
 ?>

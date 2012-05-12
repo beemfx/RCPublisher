@@ -15,7 +15,7 @@ if (!defined('EVO_MAIN_INIT'))
  *
  * This plugin displays
  */
-class rcpub_plugin extends Plugin {
+class rcwidget_plugin extends Plugin {
 
 	/**
 	 * Variables below MUST be overriden by plugin implementations,
@@ -35,7 +35,8 @@ class rcpub_plugin extends Plugin {
 	/**
 	 * Init
 	 */
-	function PluginInit(& $params) {
+	function PluginInit(& $params)
+	{
 		$this->name = T_('RC Publisher Widget');
 		$this->short_desc = T_('This skin tag displays menus from RC Publisher.');
 		$this->long_desc = T_('Menus must be edited in the RC Publishder software.');
@@ -51,7 +52,8 @@ class rcpub_plugin extends Plugin {
 	 * @see Plugin::GetDefaultSettings()
 	 * @param local params like 'for_editing' => true
 	 */
-	function get_widget_param_definitions($params) {
+	function get_widget_param_definitions($params)
+	{
 		$r = array(
 			 'navtype' => array(
 				  'label' => T_('Nav Menu'),

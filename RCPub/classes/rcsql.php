@@ -30,6 +30,7 @@ function RCSql_Connect()
 	if(mysqli_connect_errno())
 	{
 		print('A problem occured while connecting to the database. Try again later.');
+		echo( ' DB: '.$g_rcDBHost );
 		$g_rcSQL = null;
 		return;
 	}

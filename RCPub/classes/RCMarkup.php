@@ -3,7 +3,7 @@
 class CRCMarkup
 {
 	public function CRCMarkup($sText)
-	{
+	{	
 		$this->m_sText = $sText;
 		self::$m_db = RCSql_GetDb();
 		$this->ResolveTags();
@@ -119,7 +119,7 @@ class CRCMarkup
 		
 		$sCaptionBlock = $bHasCaption ? sprintf('<div style="margin:0;border:0;padding:.25em .75em">%s</div>', $sDescString) : '';
 		
-		return $Debug.sprintf('<div class="image_block" style="%s%s"><a href="%s"><img src="%s" style="width:100%%"/></a>%s</div>', 
+		return sprintf('<div class="image_block" style="%s%s"><a href="%s"><img src="%s" style="width:100%%"/></a>%s</div>', 
 					$sSizeString, $sPoseString, $Info['url'], $Info['url'], $sCaptionBlock);
 	}
 	
