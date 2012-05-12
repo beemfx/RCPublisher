@@ -1,5 +1,4 @@
 <?php
-require_once( 'table_base.php' );
 
 class CTableUser extends CTable
 {

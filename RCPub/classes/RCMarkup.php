@@ -134,17 +134,17 @@ class CRCMarkup
 		
 		if(preg_match('/image\/.*/' , $Info['type']))
 		{
-			return self::FormImageTag($Info, preg_split('/\|/' , $matches[2]));
+			return self::FormImageTag($Info, preg_split('/\|/' , $matches[3]));
 		}
-		
-		return sprintf('<a href="%s">%s</a>', $Info['url'], $Info['filename']);
+				
+		return sprintf('<a href="%s">%s</a>', $Info['url'], strlen($matches[3])>0?$matches[3]:$Info['filename']);
 	}
 		
 	static protected function ProcessFileTags($strIn)
 	{
 		//ProcessFile tags turns a file tag into a link or embeds the file.
 		
-		return preg_replace_callback('/\[\[file:([^ \]\[]+)? ([^\]\]]*)\]\]/', "CRCMarkup::PFT_Replace", $strIn);
+		return preg_replace_callback('/\[\[file:([^ \]\[]+)?( ([^\]\]]*))?\]\]/', "CRCMarkup::PFT_Replace", $strIn);
 	}
 	
 	static private function PBT_Replace($matches)

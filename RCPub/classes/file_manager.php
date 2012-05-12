@@ -1,7 +1,5 @@
 <?php
 
-require_once('table_base.php');
-
 class CFileManager extends CTable
 {
 	public function CFileManager()

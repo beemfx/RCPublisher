@@ -4,6 +4,9 @@ assert_options(ASSERT_BAIL, 1);
 
 assert(!get_magic_quotes_gpc());
 
+require_once( 'classes/table_base.php' );
+require_once( 'classes/table_mail.php' );
+
 require_once('config/config.php');    //Must be included first.
 require_once('classes/file_manager.php'); //Must be before RCMarkup
 require_once('classes/RCMarkup.php');
@@ -11,8 +14,6 @@ require_once('classes/rcsql.php');
 require_once('classes/pages.php');
 require_once('classes/rcsession.php');
 
-require_once( 'classes/table_base.php' );
-require_once( 'classes/table_mail.php' );
 
 
 RCSql_Connect();

@@ -1,6 +1,5 @@
 <?php
 
-require_once( 'table_base.php' );
 require_once( 'table_user.php' );
 
 class CTableMail extends CTable

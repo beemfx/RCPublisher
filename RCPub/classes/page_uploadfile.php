@@ -155,6 +155,19 @@ class CPageUploadFile extends CPageBase
 			//$FILE = fopen( $_POST['urlfile'], 'r');
 			
 			$_POST['ucontenttype'] = 'unknown';//mime_content_type($_POST['urlfile']);// $FILE['type'];
+			
+			switch(strtoupper($_POST['uext']))
+			{
+			case 'PNG':
+			case 'BMP':
+			case 'JPG':
+			case 'GIF':
+			case 'TGA':
+			case 'JPEG':
+			case 'XMB':
+				$_POST['ucontenttype'] = 'image/unknown';
+				break;
+			}
 			//fclose($FILE);
 		}
 		$_POST['stage'] = 2;
