@@ -9,11 +9,11 @@ website.
 This software is not really ready to power a website at this time. The following
 features are still in development.
 
-[ ] Contact page.
-[ ] Email pages for logged in users.
-
 Version History
 ===============
+5/12/2012 - The software is mostly functional. Most of the non-generic code has
+bee cleaned out.
+
 5/5/2012 - Quite a bit of progress made. Contact page and email pages need to
 bee implemented to get the software as functional as it was previously. From
 there everything will be new.
