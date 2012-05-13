@@ -7,8 +7,7 @@
  *
  * Copyright (c) 2011 Blaine Myers
  */
-if (!defined('EVO_MAIN_INIT'))
-	die('Please, do not access this page directly.');
+if (!defined('EVO_MAIN_INIT'))die('Please, do not access this page directly.');
 
 /**
  * RC Publishder Widget Plugin
@@ -22,7 +21,7 @@ class rcwidget_plugin extends Plugin {
 	 * either in the subclass declaration or in the subclass constructor.
 	 */
 	var $name;
-	var $code = 'beem_rcpub';
+	var $code = 'rcwidget';
 	var $priority = 20;
 	var $version = '1.0';
 	var $author = 'Beem Software';
@@ -40,12 +39,31 @@ class rcwidget_plugin extends Plugin {
 		$this->name = T_('RC Publisher Widget');
 		$this->short_desc = T_('This skin tag displays menus from RC Publisher.');
 		$this->long_desc = T_('Menus must be edited in the RC Publishder software.');
-
-		//$this->dbtable = 'T_items__item';
-		//$this->dbprefix = 'post_';
-		//$this->dbIDname = 'post_ID';
 	}
 
+	 function GetDefaultSettings(& $params)
+	 {
+		 $r = array
+		 (
+			'rcroot' => array
+			(
+				'label' => T_('RC Root Directory'),
+				'note'  => T_('The full path to the settings file for the RC Software (eg /apache/html/rc/)'),
+				'type'  => 'text',
+				'defaultvalue' => '',
+			),
+			  
+			'rcurl' => array
+			(
+				'label' => T_('RC Root URL'),
+				'note'  => T_('The full path to the settings file for the RC Software (eg http://www.site.com/rc/)'),
+				'type'  => 'text',
+				'defaultvalue' => 'http://',
+			),
+		);
+		return $r;
+    }
+	 
 	/**
 	 * Get definitions for widget specific editable params
 	 *
@@ -62,152 +80,42 @@ class rcwidget_plugin extends Plugin {
 				  'options' => array('m' => 'Mini Menu', 'n' => 'Menu',),
 				  'defaultvalue' => 'n',
 			 ),
-			 'sqlserv' => array(
-				  'label' => T_('SQL Address'),
-				  'note' => T_('The address of the SQL database for RC Publisher.'),
-				  'type' => 'text',
-				  'defaultvalue' => '',
-			 ),
-			  'sqluser' => array(
-				  'label' => T_('SQL User'),
-				  'note' => T_('User name.'),
-				  'type' => 'text',
-				  'defaultvalue' => '',
-			 ),
-			 'sqlpass' => array(
-				  'label' => T_('SQL Password'),
-				  'note' => T_('Password.'),
-				  'type' => 'text',
-				  'defaultvalue' => '',
-			 ),
-			 'sqldb' => array(
-				  'label' => T_('SQL Database'),
-				  'note' => T_('Databse (often same as user name).'),
-				  'type' => 'text',
-				  'defaultvalue' => '',
-			 ),
-			  'baseurl' => array(
-				  'label' => T_('RC Publisher Base URL'),
-				  'note' => T_('The base URL for the RC Publisher content.'),
-				  'type' => 'text',
-				  'defaultvalue' => 'http://',
-			 ),
 		);
 		return $r;
 	}
 
-	function SkinTag($params) {
-		/*
-		  // Connect to the database:
-		  @ $this->m_db = new mysqli(
-		  'p50mysql281.secureserver.net',
-		  'RCPublisher',
-		  'Pub#435',
-		  'RCPublisher');
-
-		  if(mysqli_connect_errno())
-		  {
-		  unset($this->m_db);
-		  print('A problem occured while connecting to the database. Try again later.');
-		  return;
-		  }
-		 */
-		$RCPubPlug = new CRCPubPlug(
-				$params['navtype'],
-				$params['sqlserv'], 
-				$params['sqluser'],
-				$params['sqlpass'],
-				$params['sqldb'],
-				$params['baseurl']);
-		
-		
-		echo $params['block_start'];
-		echo $RCPubPlug->GetText();
-		echo $params['block_end'];
+	function SkinTag($params)
+	{
+		$rcPath = $this->Settings->get( 'rcroot' );
+		 	 
+		 //Make sure all this stuff is in the global scope.
+		 global $g_rcPrefix;
+		 global $g_rcDBHost;
+		 global $g_rcDBUser;
+		 global $g_rcDBPwd;
+		 global $g_rcDBName;
+		 global $g_rcFilepath;
+		 
+		 require_once($rcPath.'classes/pages.php');
+		 require_once($rcPath.'config/config.php');
+		 require_once($rcPath.'classes/rcsql.php');
+		 require_once($rcPath.'classes/RCMarkup.php');
+		 require_once($rcPath.'classes/table_base.php');
+		 require_once($rcPath.'classes/file_manager.php');
+		 
+		 global $g_rcBaseUrl;
+		 $g_rcBaseUrl = $this->Settings->get( 'rcurl' );
+		 
+		 RCSql_Connect();
+		 
+		 $Formatter = new CRCMarkup( '[[home Home]][[file:title3 Home]]' );
+		 
+		 $c = $Formatter->GetHTML();
+		 
+		 RCSql_Disconnect();
+		 
+		echo $c;//'Custom RCPlugin: '.$params['navtype'];
 		return true;
-	}
-
-}
-
-class CRCPubPlug
-{
-	private $m_db;
-	private $m_strText;
-	static private $m_strURL;
-	
-	public function CRCPubPlug($strMenu, $strServ, $strUser, $strPass, $strDB, $strBaseURL)
-	{
-		CRCPubPlug::$m_strURL = $strBaseURL;
-		@$this->m_db = new mysqli($strServ, $strUser, $strPass, $strDB);
-
-		  if(mysqli_connect_errno())
-		  {
-			  unset($this->m_db);
-			  $this->m_strText = 'Database Error';
-		  }
-		  else
-		  {
-			  $this->m_strText = 'No problem!';
-			  
-			  $qry = sprintf('select %s as s from tblGlobalSettings where id=1', ($strMenu=='m')?'txtMiniNav':'txtNav');
-			  $res = $this->m_db->query($qry);
-			  
-			  if(true == $res)
-			  {
-				  $row = $res->fetch_assoc();
-				  $this->m_strText = $row['s'];
-				  $res->free();
-			  }
-			  else
-			  {
-				  $this->m_strText = 'Invalid query.';
-			  }
-			  
-			  $this->m_db->close(); //Close the database.
-		  }
-		  
-		  $this->m_strText = $this->ProcessInternalLinks($this->m_strText);
-		  
-	}
-	
-	public function GetText()
-	{
-		return $this->m_strText;
-	}
-	
-	static private function PIL_Replace($matches)
-	{
-		//The first thing to do is go through all the built in links, then try to do a page link.
-		$strRef = '';
-		switch($matches[1])
-		{
-			case 'home': $strRef = 'index.php?c=home';break;
-			case 'blog': $strRef='"http://www.roughconcept.com/blog/index.php"';break;
-			case 'toc': $strRef = 'index.php?c=toc';break;
-			case 'contact': $strRef = 'index.php?c=contact';break;
-			case 'login': $strRef = 'index.php?c=login';break;
-			case 'news': $strRef = 'index.php?c=news&archive';break;
-			default: $strRef = 'index.php?c=page&p='.$matches[1];break;
-		}
-		
-		if($matches[1] !='blog')
-		{
-			$strRef = sprintf('"%s%s"', CRCPubPlug::$m_strURL, $strRef);
-		}
-			
-		return sprintf('<a href=%s>%s</a>', $strRef, isset($matches[2])?$matches[2]:$matches[1]);
-	}
-	
-	static protected function ProcessInternalLinks($strIn)
-	{
-		
-		//ProcessInternalLinks is a regular expression replacement function that
-		//attemps to find internal links, and replace them appropriately.
-		//Internal links are in the form [[link link text]] where link text is optional.
-		//Global links are attempted to be resolved first, then the link is assumed to be
-		//a page link.
-		
-		return preg_replace_callback('/\[\[([A-Za-z0-9_]*)( [^\]\[]*)?\]\]/', "CRCPubPlug::PIL_Replace", $strIn);
 	}
 }
 

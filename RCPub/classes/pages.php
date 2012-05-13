@@ -16,6 +16,8 @@ define('PAGE_NEWS',      'news');
 define('PAGE_PAGE',      'page');
 define('PAGE_SETTINGS',  'settings');
 
+$g_rcBaseUrl = '';
+
 //CreateHREF:
 //Creates a link for the page.
 //$strContent should be one of the definitions in pages.php.
@@ -29,7 +31,8 @@ define('PAGE_SETTINGS',  'settings');
 
 function CreateHREF($strContent, $strVars=null)
 {
-	$strIndex = 'index.php?c='.$strContent;
+	global $g_rcBaseUrl;
+	$strIndex = $g_rcBaseUrl.'index.php?c='.$strContent;
 	$strLink = '"'.$strIndex;
 	if(strlen($strVars)>0)
 		$strLink.='&'.$strVars;

@@ -1,22 +1,18 @@
 <?php
 
-/* Beem Format Plugin
- * (c) 2011 Beem Software by Blaine Myers (http://www.beemsoft.com)
+/* RC Format Plugin
+ * (c) 2012 Beem Software by Blaine Myers (http://www.beemsoft.com)
  *
- * The Beem Format Plugin is a rendering plugin for b2evolution. The idea behind
- * it is to replace HTML markup in blog posts with an easier to use wiki type
- * markup language. It also creates better looking apostrophes and so forth.
+ * The Format Plugin is a rendering plugin for b2evolution. The idea behind
+ * it is to replace HTML markup in blog posts with RC Markup.
  *
  * Instead of html tags we use a double bracket for special code for example
  * [[img srcfile|formatoptions|Description]]
  */
-if (!defined('EVO_MAIN_INIT'))
-    die('Please, do not access this page directly.');
+if (!defined('EVO_MAIN_INIT'))die('Please, do not access this page directly.');
 
-//require('beemformatter.php');
-
-class rcformat_plugin extends Plugin {
-
+class rcformat_plugin extends Plugin
+{
     var $code = 'rcformat';
     var $name = 'RC Formatter';
     var $priority = 10;
@@ -44,16 +40,18 @@ class rcformat_plugin extends Plugin {
 			'rcroot' => array
 			(
 				'label' => T_('RC Root Directory'),
-				'note'  => T_('The full path to the settings file for the RC Software (/?/html/rc/)'),
+				'note'  => T_('The full path to the settings file for the RC Software (eg /apache/html/rc/)'),
 				'type'  => 'text',
 				'defaultvalue' => '',
 			),
 		);
 		return $r;
     }
-
+	 
     function RenderItemAsHtml(& $params)
 	 {
+		//Hopefully this is only being called once per page, it should only
+		 //be getting called when updating and saving the blog.
 		 $c = & $params['data'];
 		
 		 $rcPath = $this->Settings->get( 'rcroot' );
@@ -87,7 +85,6 @@ class rcformat_plugin extends Plugin {
 	 {
         return $this->RenderItemAsHtml($params);
     }
-
 }
 
 ?>
