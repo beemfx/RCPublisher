@@ -14,7 +14,8 @@ if (!defined('EVO_MAIN_INIT'))die('Please, do not access this page directly.');
  *
  * This plugin displays
  */
-class rcwidget_plugin extends Plugin {
+class rcwidget_plugin extends Plugin
+{
 
 	/**
 	 * Variables below MUST be overriden by plugin implementations,
@@ -102,19 +103,24 @@ class rcwidget_plugin extends Plugin {
 		 require_once($rcPath.'classes/RCMarkup.php');
 		 require_once($rcPath.'classes/table_base.php');
 		 require_once($rcPath.'classes/file_manager.php');
+		 require_once($rcPath.'classes/table_settings.php');
 		 
 		 global $g_rcBaseUrl;
 		 $g_rcBaseUrl = $this->Settings->get( 'rcurl' );
 		 
 		 RCSql_Connect();
 		 
-		 $Formatter = new CRCMarkup( '[[home Home]][[file:title3 Home]]' );
+		 $Settings = new CTableSettings();
 		 
-		 $c = $Formatter->GetHTML();
-		 
+		
+		 if('n' == $params['navtype'] || 'm' == $params['navtype'])
+		 {
+			 $Formatter = new CRCMarkup( $Settings->GetSetting( 'n' == $params['navtype'] ? 'txtNav' : 'txtMiniNav' ) );
+			 $c = $Formatter->GetHTML();
+		 }
 		 RCSql_Disconnect();
 		 
-		echo $c;//'Custom RCPlugin: '.$params['navtype'];
+		echo $c;
 		return true;
 	}
 }

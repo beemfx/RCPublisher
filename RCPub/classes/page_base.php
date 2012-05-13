@@ -74,24 +74,10 @@ abstract class CPageBase
 		$this->m_nUserLevel = $nUserLevel;
 	}
 
-	protected function GetGlobalSetting($strSettingName){
-		global $g_rcPrefix;
-		$strQuery = 'select txtSetting as s from '.$g_rcPrefix.'tblGlobalSettings where txtName="'.$strSettingName.'"';
-		$res = $this->DoQuery($strQuery);
-
-		if(true == $res)
-		{
-			//There should only be one row, and the setting is in that row.
-			$row = $res->fetch_assoc();
-			$out = $row['s'];
-			$res->free();
-		}
-		else
-		{
-			$out = null;
-		}
-
-		return $out;
+	protected function GetGlobalSetting($strSettingName)
+	{
+		$Settings = new CTableSettings();	
+		return $Settings->GetSetting($strSettingName);
 	}
 
 	//When changing a global setting the newvalue must be formatted correctly
@@ -100,9 +86,8 @@ abstract class CPageBase
 	//for exampe ChangeGlobalSetting('strOwner', '"Jack"').
 	protected function ChangeGlobalSetting($strSettingName, $strNewValue)
 	{
-		global $g_rcPrefix;
-		$qry = 'update '.$g_rcPrefix.'tblGlobalSettings set txtSetting = "'.addslashes($strNewValue).'" where txtName="'.addslashes($strSettingName).'"';
-		$this->DoQuery($qry);
+		$Settings = new CTableSettings();	
+		return $Settings->SetSetting($strSettingName, $strNewValue);
 	}
 
 	protected function ShowWarning($str)

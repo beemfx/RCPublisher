@@ -6,6 +6,7 @@ assert(!get_magic_quotes_gpc());
 
 require_once( 'classes/table_base.php' );
 require_once( 'classes/table_mail.php' );
+require_once( 'classes/table_settings.php' );
 
 require_once('config/config.php');    //Must be included first.
 require_once('classes/file_manager.php'); //Must be before RCMarkup
