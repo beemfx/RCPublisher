@@ -47,7 +47,7 @@ class CPagePage extends CPageBase
 		$this->m_nMode        = (1 == $_post['stage'])?self::MODE_EDIT:self::MODE_NEW;
 
 		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
-		if(!preg_match('/^[A-Za-z0-9_]*$/', $this->m_strPageSlug))
+		if(!preg_match('/^[A-Za-z0-9_]+$/', $this->m_strPageSlug))
 		{
 			//If the slug isn't okay, we want to go back to the edit page.
 			$this->ShowWarning($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.');	

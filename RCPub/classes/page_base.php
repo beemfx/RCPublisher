@@ -168,6 +168,7 @@ abstract class CPageBase
 			<a href=<?php print CreateHREF(PAGE_EMAIL)?>>Inbox (<?php print $this->GetNumMessages()?>)</a>
 			<a href=<?php print CreateHREF(PAGE_POSTNEWS)?>>Post News</a>
 			<a href=<?php print CreateHREF(PAGE_UPLOADFILE)?>>File Manager</a>
+			<a href=<?php print CreateHREF(PAGE_PAGE,'p=')?>>New Page</a>
 			<a href=<?php print CreateHREF(PAGE_SETTINGS)?>>Settings</a>
 			<a href=<?php print CreateHREF(PAGE_LOGIN, 'logout')?>>Logout</a>
 			<?php
@@ -185,10 +186,10 @@ abstract class CPageBase
 
 	private function DisplayNavigation()
 	{
-		$Markup = new CRCMarkup($this->GetGlobalSetting('txtNav'));
+		$Markup  = new CRCMarkup($this->GetGlobalSetting('txtNav'));
 		$sNav    = $Markup->GetHTML();
-		$Markup = new CRCMarkup($this->GetGlobalSetting('txtMiniNav'));
-		$sSubNav =  $Markup->GetHTML();
+		$Markup  = new CRCMarkup($this->GetGlobalSetting('txtMiniNav'));
+		$sSubNav = $Markup->GetHTML();
 		
 		?>
 		<div id="menu_main">
@@ -202,8 +203,6 @@ abstract class CPageBase
 		</div>
 		<div id="menu_sub">
 		<?php echo $sSubNav;?>
-
-		<!-- Should only be displayed if an administrator is logged on. -->
 		</div>
 		<?php
 	}
@@ -241,25 +240,8 @@ abstract class CPageBase
 
 	private function DisplayFooter()
 	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtFooter'));
-		
+		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtFooter'));	
 		echo '<br/><p>'.$Formatter->GetHTML().'</p><br/>';
-		/*
-		?>
-		<br/>
-		<p>
-		Content  &copy; <?php print(date('Y'));?> Jack Everett. All rights
-		reserved. Rough Concept is a trademark of Jack Everett in the US and other
-		countries. All other trademarks are the property of their respective
-		owners.
-		</p>
-		<p style="text-align:center;border-top:none;border-bottom:none;">
-		<a href=<?php print CreateHREF(PAGE_PAGE, 'p=about')?>>About &amp; Copyright,
-			Privacy Policy, and Terms of Service</a>.
-		</p>
-		<br/>
-		<?php
-		 */
 	}
 
 	//Display post will be called after all content is displayed, but before
