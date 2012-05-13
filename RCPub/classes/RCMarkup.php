@@ -67,8 +67,14 @@ class CRCMarkup
 		switch($matches[1])
 		{
 			case 'home': $strRef = CreateHREF(PAGE_HOME);break;
-			case 'blog': $strRef='"http://www.roughconcept.com/blog/"';break;
-			case 'toc': $strRef = CreateHREF(PAGE_TOC);break;
+			case 'blog':
+			{
+				$Settings = new CTableSettings();
+				
+				$strRef=$Settings->GetSetting('txtBlogURL');
+				
+				break;
+			}
 			case 'contact': $strRef = CreateHREF(PAGE_CONTACT);break;
 			case 'login': $strRef = CreateHREF(PAGE_LOGIN);break;
 			case 'news': $strRef = CreateHREF(PAGE_NEWS, 'archive');break;
