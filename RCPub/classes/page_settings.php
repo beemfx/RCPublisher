@@ -27,8 +27,11 @@ class CPageSettings extends CPageBase
 			$this->ChangeGlobalSetting('nHomeNewsStories', $_POST['news_stories']);
 			$this->ChangeGlobalSetting('txtNav', $_POST['nav_bar']);
 			$this->ChangeGlobalSetting('txtMiniNav', $_POST['mini_nav_bar']);
+			$this->ChangeGlobalSetting('txtHeader', $_POST['header']);
+			$this->ChangeGlobalSetting('txtFooter', $_POST['footer']);
 			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
 			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
+			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);
 			
 			echo '<p style="background-color:#0c0">Saving settings...</p>';		
 		}
@@ -50,6 +53,13 @@ class CPageSettings extends CPageBase
 		<p><b>Mini-Navigation Bar:</b></br>
 		<textarea style="height:5em;width:90%" name="mini_nav_bar" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtMiniNav') ?></textarea>
 		</p>
+		<p><b>Page Header:</b></br>
+		<textarea style="height:5em;width:90%" name="header" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtHeader') ?></textarea>
+		</p>
+		<p><b>Page Footer:</b></br>
+		<textarea style="height:5em;width:90%" name="footer" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtFooter') ?></textarea>
+		</p>
+		<p><b>Website Title: </b><input type="text" name="web_title" value="<?php echo $this->GetGlobalSetting('txtWebsiteTitle')?>" style="width:50%"/></p>
 		<p><b>Twitter Name: </b><input type="text" name="twitter_user" value="<?php echo $this->GetGlobalSetting('txtTwitterUser')?>" style="width:50%"/></p>
 		<p><b>Twitter Password: </b><input type="text" name="twitter_pw" value="<?php echo $this->GetGlobalSetting('txtTwitterPwd')?>" style="width:50%"/></p>
 		<center><input class="button" type="submit" value="Submit"/></center>

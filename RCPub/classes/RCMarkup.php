@@ -18,8 +18,8 @@ class CRCMarkup
 	{
 		//Process content is a helper function that takes the $m_strContent parameter, and
 		//processes it to be displayed.
-		$find = array('/{{year}}/', '/{{web_site_name}}/', '/{{email_address}}/');
-		$replace = array(date('Y'), 'beemsoft.com', 'service@beemsoft.com');
+		$find = array('/{{year}}/');
+		$replace = array(date('Y'));
 		$this->m_sText = preg_replace($find, $replace, $this->m_sText);
 		$this->Texturize();
 		$this->m_sText = $this->ProcessInternalLinks($this->m_sText);
@@ -116,7 +116,7 @@ class CRCMarkup
 		
 		$bHasCaption = strlen($sDescString) > 0;
 		
-		$sCaptionBlock = $bHasCaption ? sprintf('<div style="margin:0;border:0;padding:.25em .75em">%s</div>', $sDescString) : '';
+		$sCaptionBlock = $bHasCaption ? sprintf('<div class="image_caption">%s</div>', $sDescString) : '';
 		
 		return sprintf('<div class="image_block" style="%s%s"><a href="%s"><img src="%s" style="width:100%%"/></a>%s</div>', 
 					$sSizeString, $sPoseString, $Info['url'], $Info['url'], $sCaptionBlock);

@@ -211,15 +211,15 @@ abstract class CPageBase
 	//Private Methods:
 	private function StartHTML()
 	{
-		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		//echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+		//echo '<!DOCTYPE HTML>';
 		?>
 		<html>
 		<head>
 		<link rel="stylesheet" type="text/css" href="rc_1.css"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title><?php printf('Rough Concept by Jack Everett: %s', $this->m_strTitle);?></title>
+		<title><?php printf('%s: %s', $this->GetGlobalSetting('txtWebsiteTitle'), $this->m_strTitle);?></title>
 		</head>
 		<body>
 		<?php
@@ -235,13 +235,16 @@ abstract class CPageBase
 
 	private function DisplayHeader()
 	{
-		?>
-		<img src="images/title.png" width="100%" alt="Rough Concept: The Offical Website of Jack Everett"/>
-		<?php
+		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtHeader'));
+		echo $Formatter->GetHTML();
 	}
 
 	private function DisplayFooter()
 	{
+		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtFooter'));
+		
+		echo '<br/><p>'.$Formatter->GetHTML().'</p><br/>';
+		/*
 		?>
 		<br/>
 		<p>
@@ -256,6 +259,7 @@ abstract class CPageBase
 		</p>
 		<br/>
 		<?php
+		 */
 	}
 
 	//Display post will be called after all content is displayed, but before

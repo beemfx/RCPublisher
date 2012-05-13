@@ -1,8 +1,8 @@
 <?php
 /*******************************************************************************
- * File:   clearpage.php
- * Class:  CClearPage
- * Purpose: Temporary page used for clearing the databes.
+ * File:   page_home.php
+ * Class:  CPageHome
+ * Purpose: The landing page (to be dropped).
  *
  * Copyright (C) 2009 Blaine Myers
  ******************************************************************************/
@@ -11,8 +11,10 @@ require('mysqlex.php');
 require_once('php_ex.php');
 require('table_news.php');
 
-class CPageHome extends CPageBase {
-	public function CPageHome() {
+class CPageHome extends CPageBase
+{
+	public function CPageHome()
+	{
 		parent::CPageBase('Home', 0);
 	}
 
@@ -21,25 +23,16 @@ class CPageHome extends CPageBase {
 		?>
 		<!-- Left column. -->
 		<div class="home_seg" style="width:70%;">
-                        <?php	$this->ShowNews(); ?>
+         <?php	$this->ShowNews(); ?>
 			<?php	$this->ShowBlog(); ?>
 		</div>
 		<!-- Right column -->
 		<div class="home_seg" style="width:28%">
                
-                        <?php	$this->ShowTwitter(); ?>
+         <?php	$this->ShowTwitter(); ?>
 			<?php	$this->ShowFeature(); ?>
-			<?php //$this->ShowAdsense(); ?>
-			
+			<?php //$this->ShowAdsense(); ?>		
 		</div>
-		<!--
-		<div class="home_seg" style="width:69%;">
-			
-		</div>
-		<div class="home_seg" style="width:29%">
-			
-		</div>
-		-->
 		<?php
 	}
 
@@ -73,9 +66,7 @@ class CPageHome extends CPageBase {
 					 $story['title'],
 					 $story['date']);
 
-			print('<p>');
 			print($story['formatted']);
-			print('</p>');
 		}
 		
 		if(0 == $nNumStories)
