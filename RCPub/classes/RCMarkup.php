@@ -150,9 +150,9 @@ class CRCMarkup
 	static private function PBT_Replace($matches)
 	{
 		$BlogDesc = strlen($matches[3]) > 0 ? $matches[3] : $matches[1];
+		$Settings = new CTableSettings();
 		
-		global $GLOBAL_SETTINGS_BLOGURL;
-		$sLink = sprintf($GLOBAL_SETTINGS_BLOGURL, $matches[1]);
+		$sLink = sprintf(preg_replace('/{{slug}}/', $matches[1], $Settings->GetSetting('txtBlogLink')));
 		return sprintf('<a href="%s">%s</a>', $sLink, $BlogDesc);
 	}
 		

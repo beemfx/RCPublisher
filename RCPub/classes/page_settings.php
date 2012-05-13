@@ -28,7 +28,8 @@ class CPageSettings extends CPageBase
 			$this->ChangeGlobalSetting('txtFooter', $_POST['footer']);
 			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
 			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
-			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);	
+			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);
+			$this->ChangeGlobalSetting('txtBlogLink', $_POST['blog_link']);
 		}
 	}
 
@@ -66,6 +67,7 @@ class CPageSettings extends CPageBase
 		<textarea style="height:5em;width:90%" name="footer" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtFooter') ?></textarea>
 		</p>
 		<p><b>Website Title: </b><input type="text" name="web_title" value="<?php echo $this->GetGlobalSetting('txtWebsiteTitle')?>" style="width:50%"/></p>
+		<p><b>Blog Link (use {{slug}} for the slug identifier): </b><input type="text" name="blog_link" value="<?php echo $this->GetGlobalSetting('txtBlogLink')?>" style="width:50%"/></p>
 		<p><b>Twitter Name: </b><input type="text" name="twitter_user" value="<?php echo $this->GetGlobalSetting('txtTwitterUser')?>" style="width:50%"/></p>
 		<p><b>Twitter Password: </b><input type="text" name="twitter_pw" value="<?php echo $this->GetGlobalSetting('txtTwitterPwd')?>" style="width:50%"/></p>
 		<center><input class="button" type="submit" value="Submit"/></center>
