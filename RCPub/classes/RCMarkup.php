@@ -134,7 +134,8 @@ class CRCMarkup
 		
 		if(preg_match('/image\/.*/' , $Info['type']))
 		{
-			return self::FormImageTag($Info, preg_split('/\|/' , $matches[3]));
+			$Atts = isset($matches[3]) ? $matches[3] : '';
+			return self::FormImageTag($Info, preg_split('/\|/' , $Atts));
 		}
 				
 		return sprintf('<a href="%s">%s</a>', $Info['url'], strlen($matches[3])>0?$matches[3]:$Info['filename']);

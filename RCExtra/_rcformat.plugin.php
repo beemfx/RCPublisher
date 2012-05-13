@@ -64,11 +64,11 @@ class rcformat_plugin extends Plugin
 		 global $g_rcDBName;
 		 global $g_rcFilepath;
 		 
-		 require($rcPath.'config/config.php');
-		 require($rcPath.'classes/rcsql.php');
-		 require($rcPath.'classes/RCMarkup.php');
-		 require($rcPath.'classes/table_base.php');
-		 require($rcPath.'classes/file_manager.php');
+		 require_once($rcPath.'config/config.php');
+		 require_once($rcPath.'classes/rcsql.php');
+		 require_once($rcPath.'classes/RCMarkup.php');
+		 require_once($rcPath.'classes/table_base.php');
+		 require_once($rcPath.'classes/file_manager.php');
 		 
 		 RCSql_Connect();
 		 
