@@ -93,10 +93,10 @@ class CPageHome extends CPageBase {
 		echo '<a class="big_link" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'" id="twitter-link" style="text-align:right;">follow me on Twitter</a>';
 	}
 
-	private function ShowBlog() {
+	private function ShowBlog()
+	{
 		require('B2EvoShowBlog.php');
 		ShowBlogEntry();
-		print '<a class="big_link" href="http://www.roughconcept.com/blog/">more blog posts</a>';
 	}
 
 	private function ShowFeature()

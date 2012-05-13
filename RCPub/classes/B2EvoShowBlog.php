@@ -45,7 +45,8 @@ function ShowBlogEntry()
 
 		$res->free();
 	}
-	else {
+	else 
+	{
 		print 'Could not get blog entry.<br/>';
 		print $db->error.'<br/>';
 	}

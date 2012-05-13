@@ -111,7 +111,7 @@ class CPostNewsPage extends CPageBase
 		return;
 		
 		//First form the message:
-		$msg = strip_tags(sprintf("New web update, \"%s\" @ http://www.roughconcept.com: %s", $strTitle, $strBody));
+		$msg = strip_tags(sprintf("New web update, \"%s\": %s", $strTitle, $strBody));
 		//If the sentance is way too, long, which it almost always will be, do a neat trim.
 		if(strlen($msg)>140)
 		{

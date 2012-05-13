@@ -203,7 +203,7 @@ function DoInstall()
 		 'txtUserName'  => '"'.addslashes('admin').'"',
 		 'txtPassword'  => 'MD5("admin")',
 		 'txtAlias'     => '"'.addslashes('Administrator Account').'"',
-		 'txtEmail'     => '"'.addslashes('admin@beemsoft.com').'"',
+		 'txtEmail'     => '"'.addslashes($_POST['rc_adminemail']).'"',
 		 'nAccessLevel' => '"'.addslashes('10').'"',
 	);
 	
@@ -293,6 +293,9 @@ function DoSetup()
 		</tr>
 		<tr>
 			<th>Table prefix:</th><td><input type="text" name="rc_prefix" value="rc2_"/></td>
+		</tr>
+		<tr>
+			<th>Admin Email:</th><td><input type="text" name="rc_adminemail" value=""/></td>
 		</tr>
 	</table>
 	<center><input type="submit" value="Install"/></center>
