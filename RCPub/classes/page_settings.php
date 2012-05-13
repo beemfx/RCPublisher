@@ -16,12 +16,9 @@ class CPageSettings extends CPageBase
 	{
 		parent::CPageBase('Settings', self::RQ_USERLEVEL);
 	}
-
-	protected function DisplayContent()
+	
+	protected function DisplayPre()
 	{
-		echo '<h1>RC Publisher Settings</h1>';
-		
-		//If submit was pressed, we update the settings.
 		if(isset($_POST['stage']) && $_POST['stage'] == 1)
 		{
 			$this->ChangeGlobalSetting('nHomeNewsStories', $_POST['news_stories']);
@@ -31,8 +28,17 @@ class CPageSettings extends CPageBase
 			$this->ChangeGlobalSetting('txtFooter', $_POST['footer']);
 			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
 			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
-			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);
-			
+			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);	
+		}
+	}
+
+	protected function DisplayContent()
+	{
+		echo '<h1>RC Publisher Settings</h1>';
+		
+		//If submit was pressed, we update the settings.
+		if(isset($_POST['stage']) && $_POST['stage'] == 1)
+		{			
 			echo '<p style="background-color:#0c0">Saving settings...</p>';		
 		}
 		
