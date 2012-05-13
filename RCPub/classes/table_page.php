@@ -58,6 +58,13 @@ class CTablePage extends CTable
 		
 	}
 	
+	public function GetPages()
+	{
+		$items = 'id,txtSlug,txtTitle';
+		$this->DoSelect($items, '', 'txtTitle');
+		return $this->m_rows;
+	}
+	
 	public function GetPage($unkIdOrSlug)
 	{
 		$items = 'id,txtSlug as slug,txtTitle as title,txtBody as body,txtBodyHTMLCache as formatted';

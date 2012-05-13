@@ -18,6 +18,7 @@ class CPagePage extends CPageBase
 	const MODE_PAGE = 1;
 	const MODE_EDIT = 2;
 	const MODE_NEW  = 3;
+	const MODE_LIST = 4;
 	
 	const EDIT_RQ_LEVEL = 5;
 	const CRNW_RQ_LEVEL = 5;
@@ -76,6 +77,7 @@ class CPagePage extends CPageBase
 		$this->m_strTitle = '';
 		$this->m_PageTable = new CTablePage();
 		//The page slug should be passed in the p parameter.
+		
 		$this->m_strPageSlug = $_GET['p'];
 		
 		if(isset($_POST['stage']))
@@ -84,6 +86,11 @@ class CPagePage extends CPageBase
 		}
 		else
 		{
+			if(!isset($_GET['p']))
+			{
+				$this->m_nMode = self::MODE_LIST;
+				return;
+			}
 			//By default set the mode to page:
 			$this->m_nMode = self::MODE_PAGE;
 			//We need to know the mode for the page.
@@ -191,7 +198,21 @@ class CPagePage extends CPageBase
 			case self::MODE_PAGE : $this->DisplayPage();     break;
 			case self::MODE_EDIT : $this->DisplayEditPage(); break;
 			case self::MODE_NEW  : $this->DisplayNewPage();  break;
+			case self::MODE_LIST : $this->DisplayPageList(); break;
 		}
+	}
+	
+	private function DisplayPageList()
+	{
+		$Pages = $this->m_PageTable->GetPages();
+		
+		printf('<h1>All Pages</h1>');
+		printf( '<ul>' );
+		for($i = 0; $i < count($Pages); $i++)
+		{
+			printf('<li><a href=%s>%s</a></li>', CreateHREF(PAGE_PAGE, 'p='.$Pages[$i]['txtSlug']), $Pages[$i]['txtTitle']);
+		}
+		printf( '</ul>' );
 	}
 	
 	private function DisplayEditForm()

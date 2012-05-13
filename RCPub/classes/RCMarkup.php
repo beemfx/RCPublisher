@@ -70,6 +70,7 @@ class CRCMarkup
 			case 'contact': $strRef = CreateHREF(PAGE_CONTACT);break;
 			case 'login': $strRef = CreateHREF(PAGE_LOGIN);break;
 			case 'news': $strRef = CreateHREF(PAGE_NEWS, 'archive');break;
+			case 'pages': $strRef = CreateHREF(PAGE_PAGE); break;
 			default: $strRef = CreateHREF(PAGE_PAGE, 'p='.$matches[1]);
 		}
 			
