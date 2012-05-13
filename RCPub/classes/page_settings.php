@@ -29,7 +29,6 @@ class CPageSettings extends CPageBase
 			$this->ChangeGlobalSetting('txtMiniNav', $_POST['mini_nav_bar']);
 			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
 			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
-			$this->ChangeGlobalSetting('txtBlogURL' , $_POST['blog_url']);
 			
 			echo '<p style="background-color:#0c0">Saving settings...</p>';		
 		}
@@ -53,7 +52,6 @@ class CPageSettings extends CPageBase
 		</p>
 		<p><b>Twitter Name: </b><input type="text" name="twitter_user" value="<?php echo $this->GetGlobalSetting('txtTwitterUser')?>" style="width:50%"/></p>
 		<p><b>Twitter Password: </b><input type="text" name="twitter_pw" value="<?php echo $this->GetGlobalSetting('txtTwitterPwd')?>" style="width:50%"/></p>
-		<p><b>Blog URL: </b><input type="text" name="blog_url" value="<?php echo $this->GetGlobalSetting('txtBlogURL')?>" style="width:50%"/></p>
 		<center><input class="button" type="submit" value="Submit"/></center>
 		</form>
 		</div>

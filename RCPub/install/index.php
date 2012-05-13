@@ -80,7 +80,7 @@ function DoInstall()
 		'struct' => 
 				'`id` int(11) NOT NULL auto_increment,
 			  `txtName` char(20) NOT NULL,
-			  `txtSetting` char(60)NOT NULL,
+			  `txtSetting` text NOT NULL,
 			  PRIMARY KEY  (`id`),
 			  KEY `txtName` (`txtName`)',	  
 	);
