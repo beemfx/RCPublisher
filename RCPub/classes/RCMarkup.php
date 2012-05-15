@@ -22,11 +22,12 @@ class CRCMarkup
 		$replace = array(date('Y'));
 		$this->m_sText = preg_replace($find, $replace, $this->m_sText);
 		$this->Texturize();
-		$this->m_sText = $this->ProcessInternalLinks($this->m_sText);
 		$this->m_sText = $this->ProcessFileTags($this->m_sText);
 		$this->m_sText = $this->ProcessBlogTags($this->m_sText);
-		$this->m_sText = $this->ProcessLinkTags($this->m_sText);
 		$this->m_sText = $this->ProcessContactTags($this->m_sText);
+		$this->m_sText = $this->ProcessNoteTags($this->m_sText);
+		$this->m_sText = $this->ProcessLinkTags($this->m_sText);
+		$this->m_sText = $this->ProcessInternalLinks($this->m_sText);
 	}
 	
 	private function Texturize()
@@ -193,6 +194,33 @@ class CRCMarkup
 		//ProcessFile tags turns a file tag into a link or embeds the file.
 		
 		return preg_replace_callback('/\[\[(contact):([^ \]\[]+)?( ([^\]\]]*))?\]\]/', "CRCMarkup::PCT_Replace", $strIn);
+	}
+	
+	static private function PNT_Replace($matches)
+	{
+		$Atts = preg_split('/\|/' , $matches[1]);
+		
+		$sData = '';
+		
+		for($i=0; $i<count($Atts); $i++)
+		{
+			if(preg_match('/^(center|left|right)$/', $Atts[$i]))
+			{
+				
+			}
+			else
+			{
+				$sData = $Atts[$i];
+			}
+		}
+		
+		return sprintf('<div class="note_block">%s</div>', $sData);//ASSIDE';//$matches[2];
+	}
+		
+	static protected function ProcessNoteTags($strIn)
+	{
+		//ProcessFile tags turns a file tag into a link or embeds the file.
+		return preg_replace_callback('/\[\[note ([^\]\[]+)\]\]/s', "CRCMarkup::PNT_Replace", $strIn);
 	}
 	
 	var $m_sText;

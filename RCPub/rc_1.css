@@ -452,6 +452,14 @@ div#footer p
 **********************************/
 /* The blog portion of the stie uses the image_block for pictures. */
 /* Image block. */
+div.note_block
+{
+	margin:0 2em;
+	border:1px dashed;
+	padding:.5em;
+	background-color:#eee;
+}
+
 div.image_block
 {
 	display:block;
