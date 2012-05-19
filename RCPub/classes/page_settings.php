@@ -38,7 +38,7 @@ class CPageSettings extends CPageBase
 	
 	protected function DisplayPre()
 	{
-		if(isset($_POST['stage']) && $_POST['stage'] == 1)
+		if(isset($_POST['stage']) && $_POST['stage'] == 'us')
 		{
 			global $g_Settings;
 			foreach($g_Settings as $Setting => $Atts)
@@ -47,6 +47,17 @@ class CPageSettings extends CPageBase
 				$this->ChangeGlobalSetting($Setting, $_POST[$Setting]);
 			}
 		}
+		
+		if(isset($_GET['action']) && 'recache' == $_GET['action'] )
+		{
+			require_once('table_page.php');
+			require_once('table_news.php');
+			//Reset the cash.
+			$Table = new CTablePage();
+			$Table->ResetCache();
+			$Table = new CTableNews();
+			$Table->ResetCache();
+		}
 	}
 
 	protected function DisplayContent()
@@ -54,9 +65,14 @@ class CPageSettings extends CPageBase
 		echo '<h1>RC Publisher Settings</h1>';
 		
 		//If submit was pressed, we update the settings.
-		if(isset($_POST['stage']) && $_POST['stage'] == 1)
+		if(isset($_POST['stage']) && $_POST['stage'] == 'us')
 		{			
 			echo '<p style="background-color:#0c0">Saving settings...</p>';		
+		}
+		
+		if(isset($_GET['action']) && 'recache' == $_GET['action'] )
+		{
+			echo '<p style="background-color:#0c0">Cache reset.</p>';
 		}
 		
 		//No matter what we display the form.
@@ -68,8 +84,9 @@ class CPageSettings extends CPageBase
 		global $g_Settings;
 		?>
 		<div style="width:100%;margin:0;padding:1em">
+		<p><center><a href=<?php print CreateHREF(PAGE_SETTINGS, 'action=recache')?>>Reset Cache</a></center></p>
 		<form action=<?php print CreateHREF(PAGE_SETTINGS)?> method="post">
-		<input type="hidden" name="stage" value="1"/>
+		<input type="hidden" name="stage" value="us"/>
 		<?php
 		foreach($g_Settings as $Setting => $Atts)
 		{
