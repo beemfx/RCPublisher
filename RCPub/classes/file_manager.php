@@ -50,10 +50,11 @@ class CFileManager extends CTable
 		$Settings = new CTableSettings();
 		$ConvertPath = $Settings->GetSetting('txtConvertPath');
 		$ThumbSize   = (int)$Settings->GetSetting('nThumbnailWidth');
+		$Quality     = (int)$Settings->GetSetting('nThumbnailQuality');
 		
 		if(preg_match('/image/', $Info['type']))
 		{
-			$sCmd = sprintf('%s %s -resize %s %s.thumb.jpg', $ConvertPath, $Info['path'], $ThumbSize, $Info['path']);
+			$sCmd = sprintf('%s %s -resize %s -quality %s %s.thumb.jpg', $ConvertPath, $Info['path'], $ThumbSize, $Quality, $Info['path']);
 			system( $sCmd );
 		}
 	}

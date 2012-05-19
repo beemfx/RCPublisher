@@ -28,6 +28,7 @@ $g_Settings = array
 	 //ImageMagick settings.
 	 'txtConvertPath'   => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text'       ,  ),
 	 'nThumbnailWidth'  => array( 'desc' => 'Thumbnail width' , 'type' => 'text'       ,  ),
+	 'nThumbnailQuality'=> array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'text'       ,  ),
 );
 
 class CPageSettings extends CPageBase
