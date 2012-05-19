@@ -129,7 +129,7 @@ class CRCMarkup
 		$Info = $F->ResolveFileInfo($matches[1]);
 		if(null == $Info)
 		{
-			return 'INVALID FILE';
+			return 'INVALID FILE '.$matches[1];
 		}
 		
 		if(preg_match('/image\/.*/' , $Info['type']))
