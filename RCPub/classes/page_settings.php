@@ -8,6 +8,18 @@
  ******************************************************************************/
 require_once('page_base.php');
 
+$g_Settings = array
+(
+	 'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores:' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12  ),
+	 'txtNav'           => array( 'desc' => 'Navigation Bar:'          , 'type' => 'textarea'   ,  ),
+	 'txtMiniNav'       => array( 'desc' => 'Mini-Navigation Bar:'     , 'type' => 'textarea'   ,  ),
+	 'txtHeader'        => array( 'desc' => 'Page Header:'             , 'type' => 'textarea'   ,  ),
+	 'txtFooter'        => array( 'desc' => 'Page Footer:'             , 'type' => 'textarea'   ,  ),
+	 'txtTwitterUser'   => array( 'desc' => 'Twitter user:'            , 'type' => 'text'       ,  ),
+	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title:'           , 'type' => 'text'       ,  ),
+	 'txtBlogLink'      => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier):' , 'type' => 'text'       ,  ),
+);
+
 class CPageSettings extends CPageBase
 {
 	const RQ_USERLEVEL = 5;
@@ -21,15 +33,12 @@ class CPageSettings extends CPageBase
 	{
 		if(isset($_POST['stage']) && $_POST['stage'] == 1)
 		{
-			$this->ChangeGlobalSetting('nHomeNewsStories', $_POST['news_stories']);
-			$this->ChangeGlobalSetting('txtNav', $_POST['nav_bar']);
-			$this->ChangeGlobalSetting('txtMiniNav', $_POST['mini_nav_bar']);
-			$this->ChangeGlobalSetting('txtHeader', $_POST['header']);
-			$this->ChangeGlobalSetting('txtFooter', $_POST['footer']);
-			$this->ChangeGlobalSetting('txtTwitterUser', $_POST['twitter_user']);
-			$this->ChangeGlobalSetting('txtTwitterPwd', $_POST['twitter_pw']);
-			$this->ChangeGlobalSetting('txtWebsiteTitle', $_POST['web_title']);
-			$this->ChangeGlobalSetting('txtBlogLink', $_POST['blog_link']);
+			global $g_Settings;
+			foreach($g_Settings as $Setting => $Atts)
+			{
+				assert(isset($_POST[$Setting]));
+				$this->ChangeGlobalSetting($Setting, $_POST[$Setting]);
+			}
 		}
 	}
 
@@ -49,39 +58,46 @@ class CPageSettings extends CPageBase
 	
 	private function DisplayForm()
 	{
+		global $g_Settings;
 		?>
 		<div style="width:100%;margin:0;padding:1em">
 		<form action=<?php print CreateHREF(PAGE_SETTINGS)?> method="post">
 		<input type="hidden" name="stage" value="1"/>
-		<p><b>Home Page News Stories: </b><select name="news_stories" size="1"><?php $this->ShowNumberList($this->GetGlobalSetting('nHomeNewsStories'))?></select></p>
-		<p><b>Navigation Bar:</b></br>
-		<textarea style="height:5em;width:90%" name="nav_bar" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtNav') ?></textarea>
-		</p>
-		<p><b>Mini-Navigation Bar:</b></br>
-		<textarea style="height:5em;width:90%" name="mini_nav_bar" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtMiniNav') ?></textarea>
-		</p>
-		<p><b>Page Header:</b></br>
-		<textarea style="height:5em;width:90%" name="header" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtHeader') ?></textarea>
-		</p>
-		<p><b>Page Footer:</b></br>
-		<textarea style="height:5em;width:90%" name="footer" cols="80" rows="20"><?php echo $this->GetGlobalSetting('txtFooter') ?></textarea>
-		</p>
-		<p><b>Website Title: </b><input type="text" name="web_title" value="<?php echo $this->GetGlobalSetting('txtWebsiteTitle')?>" style="width:50%"/></p>
-		<p><b>Blog Link (use {{slug}} for the slug identifier): </b><input type="text" name="blog_link" value="<?php echo $this->GetGlobalSetting('txtBlogLink')?>" style="width:50%"/></p>
-		<p><b>Twitter Name: </b><input type="text" name="twitter_user" value="<?php echo $this->GetGlobalSetting('txtTwitterUser')?>" style="width:50%"/></p>
-		<p><b>Twitter Password: </b><input type="text" name="twitter_pw" value="<?php echo $this->GetGlobalSetting('txtTwitterPwd')?>" style="width:50%"/></p>
+		<?php
+		foreach($g_Settings as $Setting => $Atts)
+		{
+			switch($Atts['type'])
+			{
+			case 'text':
+				printf('<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>', $Atts['desc'], $Setting, $this->GetGlobalSetting($Setting));
+				break;
+			case 'textarea':
+				printf('<p><b>%s</b></br><textarea style="height:5em;width:90%%" name="%s" cols="80" rows="20">%s</textarea></p>', $Atts['desc'], $Setting, $this->GetGlobalSetting($Setting));
+				break;
+			case 'selectnumber':
+				printf('<p><b>%s: </b><select name="%s" size="1">%s</select></p>', $Atts['desc'], $Setting, $this->CreateNumberList($Atts['num_min'], $Atts['num_max'], (int)$this->GetGlobalSetting($Setting)));
+				break;
+			}
+		}
+		?>
 		<center><input class="button" type="submit" value="Submit"/></center>
 		</form>
 		</div>
 		<?php
 	}
 	
-	private function ShowNumberList($nSelected)
+	private function CreateNumberList($nMin, $nMax, $nSelected)
 	{
-		for($i=0; $i<=9; $i++)
+		assert('integer' == gettype($nMin) && 'integer' == gettype($nMax) && 'integer' == gettype($nSelected));
+		assert($nMin < $nMax);
+		
+		$sSelect = '';
+		for($i=$nMin; $i<=$nMax; $i++)
 		{
-			printf("<option value=\"%d\" %s>%d</option>\n", $i, $nSelected==$i?'selected':'', $i);
+			$sSelect .= sprintf("<option value=\"%d\" %s>%d</option>\n", $i, $nSelected==$i?'selected':'', $i);
 		}
+		
+		return $sSelect;
 	}
 
 }
