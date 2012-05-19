@@ -25,6 +25,9 @@ $g_Settings = array
 	 'txtB2User'        => array( 'desc' => 'b2evolution User'        , 'type' => 'text'       ,  ),
 	 'txtB2Pwd'         => array( 'desc' => 'b2evolution Password'    , 'type' => 'text'       ,  ),
 	 'txtB2Db'          => array( 'desc' => 'b2evolution Database'    , 'type' => 'text'       ,  ),
+	 //ImageMagick settings.
+	 'txtConvertPath'   => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text'       ,  ),
+	 'nThumbnailWidth'  => array( 'desc' => 'Thumbnail width' , 'type' => 'text'       ,  ),
 );
 
 class CPageSettings extends CPageBase
@@ -58,6 +61,20 @@ class CPageSettings extends CPageBase
 			$Table = new CTableNews();
 			$Table->ResetCache();
 		}
+		
+		if(isset($_GET['action']) && 'reimagethumb' == $_GET['action'] )
+		{
+			require_once('file_manager.php');
+			$Manager = new CFileManager();
+			$Manager->ReCreateAllThumbs();
+		}
+		
+		if(isset($_GET['action']) && 'purgethumb' == $_GET['action'] )
+		{
+			require_once('file_manager.php');
+			$Manager = new CFileManager();
+			$Manager->DeleteAllThumbs();
+		}
 	}
 
 	protected function DisplayContent()
@@ -75,6 +92,16 @@ class CPageSettings extends CPageBase
 			echo '<p style="background-color:#0c0">Cache reset.</p>';
 		}
 		
+		if(isset($_GET['action']) && 'reimagethumb' == $_GET['action'] )
+		{
+			echo '<p style="background-color:#0c0">Thumbnails generated.</p>';
+		}
+		
+		if(isset($_GET['action']) && 'purgethumb' == $_GET['action'] )
+		{
+			echo '<p style="background-color:#0c0">Thumbnails purged.</p>';
+		}
+		
 		//No matter what we display the form.
 		$this->DisplayForm();
 	}
@@ -84,7 +111,7 @@ class CPageSettings extends CPageBase
 		global $g_Settings;
 		?>
 		<div style="width:100%;margin:0;padding:1em">
-		<p><center><a href=<?php print CreateHREF(PAGE_SETTINGS, 'action=recache')?>>Reset Cache</a></center></p>
+		<p><center><a href=<?php print CreateHREF(PAGE_SETTINGS, 'action=recache')?>>Reset Cache</a> | <a href=<?php print CreateHREF(PAGE_SETTINGS, 'action=reimagethumb')?>>Generate Thumbnails</a> | <a href=<?php print CreateHREF(PAGE_SETTINGS, 'action=purgethumb')?>>Delete Thumbnails</a></center></p>
 		<form action=<?php print CreateHREF(PAGE_SETTINGS)?> method="post">
 		<input type="hidden" name="stage" value="us"/>
 		<?php

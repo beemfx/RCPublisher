@@ -7,6 +7,67 @@ class CFileManager extends CTable
 		parent::CTable('tblFiles');
 	}
 	
+	public function ReCreateAllThumbs()
+	{
+		$this->DoSelect('txtSlug');
+		
+		$Slugs = $this->m_rows;
+		
+		for($i=0; $i<count($Slugs); $i++)
+		{
+			$this->ReCreateThumbFor($Slugs[$i]['txtSlug']);
+		}
+	}
+	
+	public function DeleteAllThumbs()
+	{
+		$this->DoSelect('txtSlug');
+		
+		$Slugs = $this->m_rows;
+		
+		for($i=0; $i<count($Slugs); $i++)
+		{
+			$this->DeleteThumbFor($Slugs[$i]['txtSlug']);
+		}
+	}
+	
+	public function DeleteThumbFor($strSlug)
+	{
+		$Info = $this->ResolveFileInfo($strSlug);
+		
+		//Only create a thumb if it's an image.
+		if(file_exists($Info['path'].'.thumb.jpg'))
+		{
+			unlink($Info['path'].'.thumb.jpg');
+		}
+	}
+	
+	protected function ReCreateThumbFor($strSlug)
+	{
+		$Info = $this->ResolveFileInfo($strSlug);
+		
+		//Only create a thumb if it's an image.
+		$Settings = new CTableSettings();
+		$ConvertPath = $Settings->GetSetting('txtConvertPath');
+		$ThumbSize   = (int)$Settings->GetSetting('nThumbnailWidth');
+		
+		if(preg_match('/image/', $Info['type']))
+		{
+			$sCmd = sprintf('%s %s -resize %s %s.thumb.jpg', $ConvertPath, $Info['path'], $ThumbSize, $Info['path']);
+			system( $sCmd );
+		}
+	}
+	
+	public function InsureThumbFor($strSlug)
+	{
+		$Info = $this->ResolveFileInfo($strSlug);
+		
+		if(!file_exists($Info['path'].'.thumb.jpg'))
+		{
+			$this->ReCreateThumbFor($strSlug);
+		}
+	}
+	
 	public function ResolveFileInfo($strSlug)
 	{
 		$this->DoSelect('concat(txtName,".",txtExt) as txtFilename, concat(txtLocalPath,"/",txtName,".",txtExt) as txtPath, txtExt, txtType, txtDesc', 'txtSlug="'.$strSlug.'"');

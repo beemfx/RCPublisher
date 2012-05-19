@@ -99,6 +99,7 @@ class CRCMarkup
 		$sDescString = '';
 		
 		$bNoLink = false;
+		$bUseThumb = true;
 		
 		for($i = 0; $i < $nNumParms; $i++)
 		{
@@ -110,7 +111,10 @@ class CRCMarkup
 				//	$sSizeString .= 'height:'.$Parms[$i].';';
 			}
 			else if(preg_match('/^nolink$/', $Parms[$i]))
+			{
 				$bNoLink = true;
+				$bUseThumb = false;
+			}
 			else if(preg_match('/^right$|^left$/' , $Parms[$i]))
 				$sPoseString='float:'.$Parms[$i].';';
 			else if(preg_match('/^center$/' , $Parms[$i]))
@@ -125,8 +129,9 @@ class CRCMarkup
 		
 		$sLinkStart = $bNoLink ? '' : sprintf('<a href="%s">', $Info['url']);
 		$sLinkEnd   = $bNoLink ? '' : '</a>';
-		return sprintf('<div class="image_block" style="%s%s">%s<img src="%s" style="width:100%%"/>%s%s</div>', 
-					$sSizeString, $sPoseString, $sLinkStart, $Info['url'], $sLinkEnd, $sCaptionBlock);
+		
+		return sprintf('<div class="image_block" style="%s%s">%s<img src="%s%s" style="width:100%%"/>%s%s</div>', 
+					$sSizeString, $sPoseString, $sLinkStart, $Info['url'], $bUseThumb?'.thumb.jpg':'', $sLinkEnd, $sCaptionBlock);
 	}
 	
 	static private function PFT_Replace($matches)
@@ -140,6 +145,7 @@ class CRCMarkup
 		
 		if(preg_match('/image\/.*/' , $Info['type']))
 		{
+			$F->InsureThumbFor($matches[1]);
 			$Atts = isset($matches[3]) ? $matches[3] : '';
 			return self::FormImageTag($Info, preg_split('/\|/' , $Atts));
 		}
