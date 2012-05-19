@@ -98,6 +98,8 @@ class CRCMarkup
 		$sSizeString = '';
 		$sDescString = '';
 		
+		$bNoLink = false;
+		
 		for($i = 0; $i < $nNumParms; $i++)
 		{
 			if(preg_match('/[0-9\.]?(%|em|px|cm|pt)$/', $Parms[$i]))
@@ -107,6 +109,8 @@ class CRCMarkup
 				//else
 				//	$sSizeString .= 'height:'.$Parms[$i].';';
 			}
+			else if(preg_match('/^nolink$/', $Parms[$i]))
+				$bNoLink = true;
 			else if(preg_match('/^right$|^left$/' , $Parms[$i]))
 				$sPoseString='float:'.$Parms[$i].';';
 			else if(preg_match('/^center$/' , $Parms[$i]))
@@ -119,8 +123,10 @@ class CRCMarkup
 		
 		$sCaptionBlock = $bHasCaption ? sprintf('<div class="image_caption">%s</div>', $sDescString) : '';
 		
-		return sprintf('<div class="image_block" style="%s%s"><a href="%s"><img src="%s" style="width:100%%"/></a>%s</div>', 
-					$sSizeString, $sPoseString, $Info['url'], $Info['url'], $sCaptionBlock);
+		$sLinkStart = $bNoLink ? '' : sprintf('<a href="%s">', $Info['url']);
+		$sLinkEnd   = $bNoLink ? '' : '</a>';
+		return sprintf('<div class="image_block" style="%s%s">%s<img src="%s" style="width:100%%"/>%s%s</div>', 
+					$sSizeString, $sPoseString, $sLinkStart, $Info['url'], $sLinkEnd, $sCaptionBlock);
 	}
 	
 	static private function PFT_Replace($matches)
