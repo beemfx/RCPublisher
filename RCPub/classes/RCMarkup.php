@@ -201,12 +201,18 @@ class CRCMarkup
 		$Atts = preg_split('/\|/' , $matches[1]);
 		
 		$sData = '';
+		$sPos = '';
+		$sSize  = '';
 		
 		for($i=0; $i<count($Atts); $i++)
 		{
-			if(preg_match('/^(center|left|right)$/', $Atts[$i]))
+			if(preg_match('/([0-9\.]?)(%|em|px|cm|pt)$/', $Atts[$i]))
 			{
-				
+				$sSize = 'width:'.$Atts[$i].';';
+			}
+			if(preg_match('/^(left|right)$/', $Atts[$i]))
+			{
+				$sPos  ='float:'.$Atts[$i].';';
 			}
 			else
 			{
@@ -214,7 +220,7 @@ class CRCMarkup
 			}
 		}
 		
-		return sprintf('<div class="note_block">%s</div>', $sData);//ASSIDE';//$matches[2];
+		return sprintf('<div class="note_block" style="%s%s">%s</div>', $sPos, $sSize, $sData);//ASSIDE';//$matches[2];
 	}
 		
 	static protected function ProcessNoteTags($strIn)

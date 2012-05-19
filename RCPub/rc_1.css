@@ -454,6 +454,7 @@ div#footer p
 /* Image block. */
 div.note_block
 {
+	display:block;
 	margin:0 2em;
 	border:1px dashed;
 	padding:.5em;
