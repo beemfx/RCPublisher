@@ -87,7 +87,8 @@ body, #wrapper, #header
 	border:0px solid black;
 }
 
-div#menu_main p{
+div#menu_main p
+{
 	padding: 0;
 	margin: 0;
 	border: 0;
@@ -485,17 +486,6 @@ div.image_caption
 	padding:.25em .75em;
 	color:#fff;
 	background-color:#000;
-}
-
-div.b2evo{
-	margin:5px;
-}
-
-div.b2evo h4{
-	margin:0px;
-	padding:0;
-	border:0;
-	display:inline;
 }
 
 
