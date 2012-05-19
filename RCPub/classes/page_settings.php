@@ -10,14 +10,21 @@ require_once('page_base.php');
 
 $g_Settings = array
 (
-	 'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores:' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12  ),
-	 'txtNav'           => array( 'desc' => 'Navigation Bar:'          , 'type' => 'textarea'   ,  ),
-	 'txtMiniNav'       => array( 'desc' => 'Mini-Navigation Bar:'     , 'type' => 'textarea'   ,  ),
-	 'txtHeader'        => array( 'desc' => 'Page Header:'             , 'type' => 'textarea'   ,  ),
-	 'txtFooter'        => array( 'desc' => 'Page Footer:'             , 'type' => 'textarea'   ,  ),
-	 'txtTwitterUser'   => array( 'desc' => 'Twitter user:'            , 'type' => 'text'       ,  ),
-	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title:'           , 'type' => 'text'       ,  ),
-	 'txtBlogLink'      => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier):' , 'type' => 'text'       ,  ),
+	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title'           , 'type' => 'text'       ,  ),
+	 'txtHeader'        => array( 'desc' => 'Page Header'             , 'type' => 'textarea'   ,  ),
+	 'txtFooter'        => array( 'desc' => 'Page Footer'             , 'type' => 'textarea'   ,  ),
+	 'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12  ),
+	 'txtNav'           => array( 'desc' => 'Navigation Bar'          , 'type' => 'textarea'   ,  ),
+	 'txtMiniNav'       => array( 'desc' => 'Mini-Navigation Bar'     , 'type' => 'textarea'   ,  ),
+	 //Twitter Pugin Settings (should actualy be a pugin in the future).
+	 'txtTwitterUser'   => array( 'desc' => 'Twitter user'            , 'type' => 'text'       ,  ),
+	 
+	 'txtBlogLink'      => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text'       ,  ),
+	 //b2evo Plugin Settings (should actually be a plugin in the future).
+	 'txtB2Host'        => array( 'desc' => 'b2evolution Host'        , 'type' => 'text'       ,  ),
+	 'txtB2User'        => array( 'desc' => 'b2evolution User'        , 'type' => 'text'       ,  ),
+	 'txtB2Pwd'         => array( 'desc' => 'b2evolution Password'    , 'type' => 'text'       ,  ),
+	 'txtB2Db'          => array( 'desc' => 'b2evolution Database'    , 'type' => 'text'       ,  ),
 );
 
 class CPageSettings extends CPageBase
