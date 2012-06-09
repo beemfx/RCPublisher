@@ -466,24 +466,35 @@ div.image_block
 {
 	display:block;
 	padding:0;
+	margin:0 .5em;
+	border:0;
+	text-align:left;
+	font-size:75%;
+}
+
+div.image_block img
+{
+	display:block;
+	padding:0;
+	margin:0;
+	border:0;
+}
+
+div.image_block_full, div.image_block_full img
+{
+	display:block;
+	padding:0;
 	margin:0;
 	border:0;
 	text-align:left;
 	font-size:75%;
 }
 
-div.image_block a, div.image_block img
-{
-	border:0;
-	margin:0;
-	padding:0;
-}
-
 div.image_caption
 {
 	margin:0;
 	border:0;
-	padding:.25em .75em;
+	padding:.25em;
 	color:#fff;
 	background-color:#000;
 }

@@ -96,7 +96,8 @@ class CRCMarkup
 		
 		$sPoseString = 'display:inline-block';
 		$sSizeString = '';
-		$sDescString = '';
+		$sDescString = '';	
+		$sBlockType = 'image_block';
 		
 		$bNoLink = false;
 		$bUseThumb = true;
@@ -105,6 +106,11 @@ class CRCMarkup
 		{
 			if(preg_match('/[0-9\.]?(%|em|px|cm|pt)$/', $Parms[$i]))
 			{
+				//It is a special case if the width is 100%, we want to show
+				//a full image wihtout padding (should this just be a separate
+				//paramter?)
+				if('100%' == $Parms[$i])
+					$sBlockType = 'image_block_full';
 				//if(0 == strlen($sSizeString))
 					$sSizeString = 'width:'.$Parms[$i].';';
 				//else
@@ -130,8 +136,9 @@ class CRCMarkup
 		$sLinkStart = $bNoLink ? '' : sprintf('<a href="%s">', $Info['url']);
 		$sLinkEnd   = $bNoLink ? '' : '</a>';
 		
-		return sprintf('<div class="image_block" style="%s%s">%s<img src="%s%s" style="width:100%%"/>%s%s</div>', 
-					$sSizeString, $sPoseString, $sLinkStart, $Info['url'], $bUseThumb?'.thumb.jpg':'', $sLinkEnd, $sCaptionBlock);
+		
+		return sprintf('<div class="%s" style="%s%s">%s<img src="%s%s" style="width:100%%"/>%s%s</div>', 
+					$sBlockType, $sSizeString, $sPoseString, $sLinkStart, $Info['url'], $bUseThumb?'.thumb.jpg':'', $sLinkEnd, $sCaptionBlock);
 	}
 	
 	static private function PFT_Replace($matches)
