@@ -4,6 +4,7 @@ assert_options(ASSERT_BAIL, 1);
 
 assert(!get_magic_quotes_gpc());
 
+require_once( 'classes/rcerror.php' );
 require_once( 'classes/table_base.php' );
 require_once( 'classes/table_mail.php' );
 require_once( 'classes/table_settings.php' );
@@ -60,6 +61,10 @@ case 'news':
 case 'settings':
 	require('classes/page_settings.php');
 	$Page = new CPageSettings();
+	break;
+case 'user':
+	require('classes/page_user.php');
+	$Page = new CPageUser();
 	break;
 }
 

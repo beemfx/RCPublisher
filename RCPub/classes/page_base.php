@@ -170,6 +170,7 @@ abstract class CPageBase
 			<a href=<?php print CreateHREF(PAGE_UPLOADFILE)?>>File Manager</a>
 			<a href=<?php print CreateHREF(PAGE_PAGE,'p=')?>>New Page</a>
 			<a href=<?php print CreateHREF(PAGE_SETTINGS)?>>Settings</a>
+			<a href=<?php print CreateHREF(PAGE_USER)?>>User</a>
 			<a href=<?php print CreateHREF(PAGE_LOGIN, 'logout')?>>Logout</a>
 			<?php
 			echo '</div>';

@@ -15,6 +15,7 @@ define('PAGE_UPLOADFILE','uploadfile');
 define('PAGE_NEWS',      'news');
 define('PAGE_PAGE',      'page');
 define('PAGE_SETTINGS',  'settings');
+define('PAGE_USER'     , 'user');
 
 $g_rcBaseUrl = '';
 

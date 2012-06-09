@@ -49,14 +49,6 @@ class CLoginPage extends CPageBase
 		pwd_hash.value = hex_sha1(hex_md5(pword.value) + pwd_salt.value);
 		pword.value = "HashedPassword2345";
 	}
-
-
-	function highlightLinks() {
-		var linkList = document.getElementById("about_copyright").getElementsByTagName("p");
-		for (i = 0; i < linkList.length; i++) {
-			linkList[i].className = "";
-		}
-	}
 	</script>
 	<?php
 	}

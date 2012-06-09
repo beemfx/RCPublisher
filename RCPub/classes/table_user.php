@@ -29,6 +29,25 @@ class CTableUser extends CTable
 		return $this->m_rows[0];
 	}
 	
+	public function GetUserPassword($nID)
+	{
+		$this->DoSelect('txtPassword', 'id='.$nID);
+			
+		assert(count($this->m_rows) == 1);
+		
+		return $this->m_rows[0]['txtPassword'];
+	}
+	
+	public function SetUserPassword($nID, $sPass)
+	{
+		$data = array
+		(
+			 'txtPassword' => '"'.$sPass.'"',
+		);
+		
+		$this->DoUpdate($nID, $data);
+	}
+	
 	public function UpdateIP($nID, $sIP)
 	{
 		$data = array
