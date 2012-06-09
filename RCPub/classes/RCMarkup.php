@@ -25,26 +25,29 @@ class CRCMarkup
 		$this->m_sText = $this->ProcessFileTags($this->m_sText);
 		$this->m_sText = $this->ProcessBlogTags($this->m_sText);
 		$this->m_sText = $this->ProcessContactTags($this->m_sText);
-		$this->m_sText = $this->ProcessNoteTags($this->m_sText);
 		$this->m_sText = $this->ProcessLinkTags($this->m_sText);
+		//T'would be nice to process note tags before internal links but the 
+		//[[ and ]] interfere, so we have to do it before, which means we can't 
+		//put internal links inside of notes.
+		$this->m_sText = $this->ProcessNoteTags($this->m_sText);
 		$this->m_sText = $this->ProcessInternalLinks($this->m_sText);
 	}
 	
 	private function Texturize()
 	{
 		//HTML tags:
-		$this->m_sText = strip_tags( $this->m_sText, '<div><center><small>');
+		$this->m_sText = strip_tags( $this->m_sText, '<div><center><small><q><s>');
 		//Quotes:
 		//One problem may be that we want to support <div>.
 		$this->m_sText = preg_replace('/\"([^\"]+)\"/s', '<q>$1</q>', $this->m_sText);
 		//Bullets (:*)
-		$this->m_sText = preg_replace('/\:\*([^\n\r]*)\r?\n/s', '<ul style="margin:0 2em;padding:0;border:0"><li>$1</li></ul>', $this->m_sText);
+		$this->m_sText = preg_replace('/\:\*([^\n\r]*)(\r?\n|$)/s', '<ul style="margin:0 2em;padding:0;border:0"><li>$1</li></ul>', $this->m_sText);
 		//Bold italics:
-		$this->m_sText = preg_replace('/\'\'\'\'([^\']+)\'\'\'\'/s', '<b><em>$1</em></b>', $this->m_sText);
+		$this->m_sText = preg_replace('/\'\'\'\'((([^\']+)(\'[^\'])?)+)\'\'\'\'/s', '<b><em>$1</em></b>', $this->m_sText);
 		//Bold:
-		$this->m_sText = preg_replace('/\'\'\'([^\']+)\'\'\'/s', '<b>$1</b>', $this->m_sText);
+		$this->m_sText = preg_replace('/\'\'\'((([^\']+)(\'[^\'])?)+)\'\'\'/s', '<b>$1</b>', $this->m_sText);
 		//Italics:
-		$this->m_sText = preg_replace('/\'\'([^\']+)\'\'/s', '<em>$1</em>', $this->m_sText);
+		$this->m_sText = preg_replace('/\'\'((([^\']+)(\'[^\'])?)+)\'\'/s', '<em>$1</em>', $this->m_sText);
 		//At this point any single quotes should be apostrophes:
 		$this->m_sText = preg_replace('/\'/s', '&rsquo;', $this->m_sText);
 		//Headers (and get rid of newlines following them):
@@ -217,9 +220,9 @@ class CRCMarkup
 	
 	static private function PNT_Replace($matches)
 	{
-		$Atts = preg_split('/\|/' , $matches[1]);
+		$Atts = preg_split('/\|/' , $matches[2]);
 		
-		$sData = '';
+		$sData = $matches[3];
 		$sPos = '';
 		$sSize  = '';
 		
@@ -235,7 +238,7 @@ class CRCMarkup
 			}
 			else
 			{
-				$sData = $Atts[$i];
+				//$sData = $Atts[$i];
 			}
 		}
 		
@@ -245,7 +248,7 @@ class CRCMarkup
 	static protected function ProcessNoteTags($strIn)
 	{
 		//ProcessFile tags turns a file tag into a link or embeds the file.
-		return preg_replace_callback('/\[\[note ([^\]\[]+)\]\]/s', "CRCMarkup::PNT_Replace", $strIn);
+		return preg_replace_callback('/\[\[note( ([^\]\[]+))?\]\]([^\]\[]*)\[\[\/note\]\]/', "CRCMarkup::PNT_Replace", $strIn);
 	}
 	
 	var $m_sText;
