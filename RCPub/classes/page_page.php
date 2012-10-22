@@ -66,9 +66,9 @@ class CPagePage extends CPageBase
 
 			//Now that we've updated the table, we want the page to appear, so we set the mode to
 			//page, and process the content.
-			$this->m_nMode = self::MODE_PAGE;
-			$Page = $this->m_PageTable->GetPage($this->m_strPageSlug);
-			$this->m_strContent = $Page['formatted'];
+			$strRedirect = 'Location: '.CreateHREF(PAGE_PAGE, 'p='.$this->m_strPageSlug, true);
+			header( $strRedirect);
+			exit;
 		}
 	}
 
@@ -219,7 +219,7 @@ class CPagePage extends CPageBase
 	{
 		?>
 		<div style="width:100%;margin:0;padding:1em">
-		<form action=<?php print CreateHREF(PAGE_PAGE)?> method="post">
+		<form action=<?php print CreateHREF(PAGE_PAGE, 'p='.$this->m_strPageSlug)?> method="post">
 		<input type="hidden" name="stage" value="<?php echo self::MODE_NEW==$this->m_nMode?'2':'1'?>"/>
 		<input type="hidden" name="id" value="<?php echo $this->m_nID?>"/>
 		<p><b>Page Title: </b><input type="text" name="title" value="<?php echo $this->m_strTitle?>" style="width:50%"/></p>

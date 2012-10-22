@@ -30,15 +30,18 @@ $g_rcBaseUrl = '';
 //This should be called whereever the href tag is to be located,
 //as it creates the href tag.
 
-function CreateHREF($strContent, $strVars=null)
+function CreateHREF($strContent, $strVars=null, $bNoQuotes=false)
 {
 	global $g_rcBaseUrl;
 	$strIndex = $g_rcBaseUrl.'index.php?c='.$strContent;
-	$strLink = '"'.$strIndex;
+	
+	$strLink = $strIndex;
+	
 	if(strlen($strVars)>0)
 		$strLink.='&'.$strVars;
-
-	$strLink.='"';
+	
+	if(!$bNoQuotes)
+		$strLink = '"'.$strLink.'"';
 
 	return $strLink;
 }
