@@ -7,7 +7,6 @@
  * Copyright (C) 2009 Blaine Myers
  ******************************************************************************/
 require_once('page_base.php');
-require('mysqlex.php');
 require_once('php_ex.php');
 require('table_news.php');
 
