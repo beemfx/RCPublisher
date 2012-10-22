@@ -10,18 +10,32 @@ class CContactPage extends CPageBase
 	{
 		parent::CPageBase('Contact', 0);
 	}
+	
+	protected function DisplayPre()
+	{
+		if(1 == $_POST['stage'])
+		{
+			$bRes = $this->ProcessInput();
+			//If we succeeded, redirect. Otherwise, display the contact form again.
+			if($bRes)
+			{
+				header("Location: ".CreateHREF(PAGE_CONTACT, 'sent', true));
+				exit;
+			}
+		}
+	}
 
 	protected function DisplayContent()
 	{
 		print("<h1>Contact</h1>\n");
 		print('<div style="margin:1em">');
-		if($_POST['stage']==0)
+		if(isset($_GET['sent']))
 		{
-			$this->DisplayStage0();
+			$this->DisplayMessageSent();
 		}
 		else
 		{
-			$this->DisplayStage1();
+			$this->DisplayForm();
 		}
 		print('</div>');
 	}
@@ -49,7 +63,7 @@ class CContactPage extends CPageBase
 		}
 	}
 
-	private function DisplayStage0()
+	private function DisplayForm()
 	{
 		?>
 		<form method="post" action=<?php print CreateHREF(PAGE_CONTACT)?>>
@@ -96,21 +110,24 @@ class CContactPage extends CPageBase
 		<?php
 	}
 
-	private function DisplayStage1()
+	private function ProcessInput()
 	{
-
 		if(!$this->ValidateInput())
 		{
 			$this->ShowWarning('One or more required fields was missing.');
 			$_GET['to'] = (int)$_POST['send_to'];
-			$this->DisplayStage0();
-			return;
+			return false;
 		}
 		
 		$MailTable = new CTableMail();
 		
 		$MailTable->PostMail(null, (int)$_POST['send_to'], $_POST['name'], $_POST['reply_email'], $_POST['subject'], $_POST['message']);
 
+		return true;
+	}
+	
+	private function DisplayMessageSent()
+	{
 		print('<p>Message sent. Return <a href='.CreateHREF(PAGE_HOME).'>home</a>.</p>');
 	}
 
