@@ -184,7 +184,7 @@ function DoInstall()
 	$InitialSettings = array
 	(
 		 'nHomeNewsStories' => addslashes('5'),
-		 'txtNav'           => addslashes('[[home Home]][[newpage Create a Page]]'),
+		 'txtNav'           => addslashes('[[home Home]][[login Log In]][[newpage New Page]]'),
 		 'txtMiniNav'       => addslashes('[[contact Contact]]'),
 		 'txtTwitterUser'   => addslashes(''),
 		 'txtTwitterPwd'    => addslashes(''),
@@ -194,7 +194,7 @@ function DoInstall()
 	foreach($InitialSettings as $Setting => $Value)
 	{
 		$qry = sprintf('insert into '.$_POST['rc_prefix'].'tblGlobalSettings (txtName, txtSetting) values ("%s", "%s")', $Setting, $Value);
-		$db->query($qry);
+		DoQuery($db , $qry);
 	}			
 	
 	//Create the default user.
@@ -205,10 +205,11 @@ function DoInstall()
 		 'txtAlias'     => '"'.addslashes('Administrator Account').'"',
 		 'txtEmail'     => '"'.addslashes($_POST['rc_adminemail']).'"',
 		 'nAccessLevel' => '"'.addslashes('10').'"',
+		 'txtLastIP'    => '"'.addslashes('').'"',
 	);
 	
 	$qry = 'insert into '.$_POST['rc_prefix'].'tblUser ('.implode(',',array_keys($DefaultUser)).') values ('.implode(',',array_values($DefaultUser)).')';
-	$db->query($qry);
+	DoQuery($db , $qry);
 	
 	//Saving configuration:
 	echo '<p>Saving configuration file...</p>';
@@ -233,8 +234,8 @@ function DoInstall()
 	
 	echo '<p>Closing connection to database.</p>';
 	$db->close();
-	echo '<p>Successfully installed. It is now recommended that you delete the
-			install direcotry.</p>';
+	echo '<p>Successfully installed. Please copy the config.php file to the config directory, and it is now recommended that you delete the
+			install direcotry. You may log in with username: admin password: admin</p>';
 }
 
 function DoQuery($db, $qry)
