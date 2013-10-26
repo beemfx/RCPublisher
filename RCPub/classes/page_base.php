@@ -220,9 +220,9 @@ abstract class CPageBase
 		<link rel="stylesheet" type="text/css" href="rc_1.css"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<title><?php printf('%s: %s', $this->GetGlobalSetting('txtWebsiteTitle'), $this->m_strTitle);?></title>
+                <?php printf( '%s' , $this->GetGlobalSetting( 'txtScriptHeader'));?>
 		</head>
 		<body>
-                <?php printf( '%s' , $this->GetGlobalSetting( 'txtScriptHeader'));?>
 		<?php
 	}
 
