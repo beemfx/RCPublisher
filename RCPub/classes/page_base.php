@@ -222,6 +222,7 @@ abstract class CPageBase
 		<title><?php printf('%s: %s', $this->GetGlobalSetting('txtWebsiteTitle'), $this->m_strTitle);?></title>
 		</head>
 		<body>
+                <?php printf( '%s' , $this->GetGlobalSetting( 'txtScriptHeader'));?>
 		<?php
 	}
 

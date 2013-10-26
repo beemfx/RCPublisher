@@ -11,6 +11,7 @@ require_once('page_base.php');
 $g_Settings = array
 (
 	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title'           , 'type' => 'text'       ,  ),
+         'txtScriptHeader'  => array( 'desc' => 'Pre-Page-In-Body Scripting' , 'type' => 'textarea'   ,  ),
 	 'txtHeader'        => array( 'desc' => 'Page Header'             , 'type' => 'textarea'   ,  ),
 	 'txtFooter'        => array( 'desc' => 'Page Footer'             , 'type' => 'textarea'   ,  ),
 	 'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12  ),
