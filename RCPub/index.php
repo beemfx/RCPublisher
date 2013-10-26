@@ -21,7 +21,7 @@ require_once('classes/rcsession.php');
 RCSql_Connect();
 RCSession_Begin();
 
-$strContent = isset($_GET['c'])?$_GET['c']:$_GET['content'];
+$strContent = isset($_GET['c'])?$_GET['c']:(isset($_GET['content'])?$_GET['content']:'');
 
 switch($strContent)
 {

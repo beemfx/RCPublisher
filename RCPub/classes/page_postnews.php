@@ -17,11 +17,11 @@ class CPostNewsPage extends CPageBase
 	{
 		$this->m_NewsTable = new CTableNews();
 		
-		if($_GET['mode']=='edit')
+		if(isset($_GET['mode']) && $_GET['mode']=='edit')
 		{
 			print("<h1>Updating News Item</h1>\n");
 			print('<div style="margin:1em">');
-			if($_POST['stage']==1)
+			if(isset($_POST['stage']) && $_POST['stage']==1)
 			{
 				$this->Display_Stage1_Edit();
 			}
@@ -35,7 +35,7 @@ class CPostNewsPage extends CPageBase
 		{
 			print("<h1>Posting News</h1>\n");
 			print('<div style="margin:1em">');
-			if($_POST['stage']==1)
+			if(isset($_POST['stage']) && $_POST['stage']==1)
 			{
 				$this->Display_Stage1();
 			}

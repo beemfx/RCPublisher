@@ -15,7 +15,7 @@ class CLoginPage extends CPageBase
 			RCSession_Disconnect();
 		}
 
-		if($_POST['stage']==1 && RCSession_GetUserProp('user_level')==0)
+		if(isset($_POST['stage']) && $_POST['stage']==1 && RCSession_GetUserProp('user_level')==0)
 		{
 			$user_name = $_POST['uname'];
 			$pwd =       $_POST['pwd_hash'];
@@ -56,7 +56,7 @@ class CLoginPage extends CPageBase
 	protected function DisplayContent()
 	{
 		print("<h1>Login</h1>\n");
-		$nStage = $_POST['stage'];
+		$nStage = isset($_POST['stage'] ) ? $_POST['stage'] : 0;
 
 		if(isset($_GET['logout']))
 		{

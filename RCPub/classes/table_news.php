@@ -36,9 +36,12 @@ class CTableNews extends CTable
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
 		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
+		
+		$UserId = RCSession_GetUserProp('user_id');
 				
 		$data = array
 		(
+			 'idUser' => $UserId,
 			 'txtTitle' => $title,
 			 'txtBody'  => $body,
 			 'txtBodyHTMLCache' => $strCached,
@@ -54,9 +57,11 @@ class CTableNews extends CTable
 		$title = '"'.addslashes($title).'"';
 		$body  = '"'.addslashes($body).'"';
 		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
+		$UserId = RCSession_GetUserProp('user_id');
 		
 		$insert = array
 		(
+			'idUser' => $UserId,
 			 'txtTitle' => $title,
 			 'txtBody'  => $body,
 			 'dtPosted' => 'now()',
@@ -75,6 +80,8 @@ class CTableNews extends CTable
 		
 	public function GetYears()
 	{
+		$years = null;
+		
 		$nRows = $this->DoSelect('distinct(date_format(dtPosted, \'%Y\')) as dtYear', '', 'dtYear desc');
 		
 		for($i = 0; $i < $nRows; $i++)

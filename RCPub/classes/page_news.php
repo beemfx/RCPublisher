@@ -36,6 +36,7 @@ class CNewsPage extends CPageBase
 
 	private function DisplayYearList()
 	{
+		$strYear = '';
 		print '<h1>News Archives</h1>'."\n";
 		if(isset($_GET['archive']))
 		{
@@ -69,6 +70,7 @@ class CNewsPage extends CPageBase
 	private function DisplayArchive()
 	{
 		$strYear = isset($_GET['year'])?$_GET['year']:date('Y');
+		$strMonth = '';
 		
 		$archive = $this->m_NewsTable->GetArchiveByYear($strYear);
 		print '<h2>'.$strYear." News</h2>\n";
