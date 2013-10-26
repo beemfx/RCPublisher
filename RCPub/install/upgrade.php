@@ -59,6 +59,7 @@ function DoUpgrade_CreateNewTables()
         `idVersion` int(11) NOT NULL,
 		  `txtTitle` char(64) NOT NULL,
 		  `txtBody` text NOT NULL,
+		  `dt` datetime NOT NULL,
 		  PRIMARY KEY  (`id`),
         KEY  (`idVersion`)'
 			  
@@ -88,6 +89,13 @@ function DoUpgrade_CreateNewTables()
 		echo '<p>Error creating tables (see above).</p>';
 		return false;
 	}
+	
+	//Add idVersion_Current to this page.
+	DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage ADD idVersion_Current int(11)' );
+	DoQuery( $db , 'UPDATE '.$g_rcPrefix.'tblPage SET idVersion_Current=1');
+	
+	//Todo, take the current pages and create histories for them,
+	//Then drop the pages and make appropriate pages.
 
 	echo '<p>Successfully upgraded.</p>';
 }
