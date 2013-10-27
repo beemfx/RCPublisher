@@ -26,7 +26,6 @@ class CTablePage extends CTable
 		
 		$strSlug   = '"'.addslashes($strSlug).'"';
 		$strTitle  = '"'.addslashes($strTitle).'"';
-		$strBody   = '"'.addslashes($strBody).'"';
 		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
 			
 		$data = array
@@ -39,8 +38,11 @@ class CTablePage extends CTable
 			
 		$PageId = $this->DoInsert($data);
 		
-		$History = new CTablePageHistory();
-		$History->InsertHistory($PageId, $Title, $Body);
+		if( $PageId > 0 )
+		{
+			$History = new CTablePageHistory();
+			$History->InsertHistory($PageId, $Title, $Body);
+		}
 	}
 	
 	public function UpdatePage($nID, $strSlug, $strTitle, $strBody)

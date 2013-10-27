@@ -9,7 +9,9 @@
 
 StartHTML();
 
-if(1==$_POST['stage']) {
+$Stage = isset($_POST['stage']) ? $_POST['stage'] : 0;
+
+if(1==$Stage) {
 	DoInstall();
 }
 else {
@@ -49,10 +51,26 @@ function DoInstall()
 			'`id` int(11) NOT NULL auto_increment,
 		  `txtSlug` char(32) NOT NULL,
 		  `txtTitle` char(64) NOT NULL,
-		  `txtBody` text NOT NULL,
 		  `txtBodyHTMLCache` text NOT NULL,
+		  `idVersion_Current` int(11) NOT NULL,
 		  PRIMARY KEY  (`id`),
 		  UNIQUE KEY `txtSlug` (`txtSlug`)',	  
+	);
+	
+	$TABLES['page_history'] = array
+	( 
+		'name' => 'tblPageHistory',
+		 
+		'struct' => 
+        '`id` int(11) NOT NULL auto_increment,
+        `idPage` int(11) NOT NULL,
+        `idVersion` int(11) NOT NULL,
+		  `txtTitle` char(64) NOT NULL,
+		  `txtBody` text NOT NULL,
+		  `dt` datetime NOT NULL,
+		  PRIMARY KEY  (`id`),
+        KEY  (`idVersion`)'
+			  
 	);
 	
 	$TABLES['comment'] = array

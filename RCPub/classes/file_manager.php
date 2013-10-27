@@ -248,12 +248,12 @@ class CFileManager extends CTable
 		
 		if(file_exists($strFullPath))
 		{
-			$this->ShowWarning( 'This file already exists, overwriting, but the database may be corrupted.' );
+			CPageBase::ShowWarning( 'This file already exists, overwriting, but the database may be corrupted.' );
 			unlink($strFullPath);
 		}
 		if(!copy($strFileTemp, $strFullPath))
 		{
-			$this->ShowWarning('Failed to copy file.');
+			CPageBase::ShowWarning('Failed to copy file.');
 			return false;
 		}
 		//The os will eventually get rid of this anyway, but delete

@@ -90,7 +90,7 @@ abstract class CPageBase
 		return $Settings->SetSetting($strSettingName, $strNewValue);
 	}
 
-	protected function ShowWarning($str)
+	public static function ShowWarning($str)
 	{
 		printf("<p style=\"color:red\">%s</p>\n", $str);
 	}
