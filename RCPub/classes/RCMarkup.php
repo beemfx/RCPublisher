@@ -145,9 +145,10 @@ class CRCMarkup
 	}
 	
 	static private function PFT_Replace($matches)
-	{
+	{	
 		$F = new CFileManager(self::$m_db);
 		$Info = $F->ResolveFileInfo($matches[1]);
+		
 		if(null == $Info)
 		{
 			return 'INVALID FILE '.$matches[1];
@@ -166,7 +167,6 @@ class CRCMarkup
 	static protected function ProcessFileTags($strIn)
 	{
 		//ProcessFile tags turns a file tag into a link or embeds the file.
-		
 		return preg_replace_callback('/\[\[file:([^ \]\[]+)?( ([^\]\]]*))?\]\]/', "CRCMarkup::PFT_Replace", $strIn);
 	}
 	

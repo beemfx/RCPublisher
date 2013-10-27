@@ -43,6 +43,10 @@ class CTablePage extends CTable
 			$History = new CTablePageHistory();
 			$History->InsertHistory($PageId, $Title, $Body);
 		}
+		else
+		{
+			assert(false);
+		}
 	}
 	
 	public function UpdatePage($nID, $strSlug, $strTitle, $strBody)

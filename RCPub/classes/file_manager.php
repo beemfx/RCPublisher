@@ -54,8 +54,16 @@ class CFileManager extends CTable
 		
 		if(preg_match('/image/', $Info['type']))
 		{
-			$sCmd = sprintf('%s %s -resize %s -quality %s %s.thumb.jpg', $ConvertPath, $Info['path'], $ThumbSize, $Quality, $Info['path']);
-			system( $sCmd );
+			if( strlen($ConvertPath) > 0 )
+			{
+				$sCmd = sprintf('%s %s -resize %s -quality %s %s.thumb.jpg', $ConvertPath, $Info['path'], $ThumbSize, $Quality, $Info['path']);
+				system( $sCmd );
+			}
+			else
+			{
+				//If we don't have ImageMagick convert, just copy.
+				copy( $Info['path'] , $Info['path'].'.thumb.jpg');
+			}
 		}
 	}
 	
@@ -271,7 +279,7 @@ class CFileManager extends CTable
 	protected static function GetURLFileRoot()
 	{
 		global $g_rcFilepath;
-		$p = !empty($_SERVER['HTTPS']) ? "https" : "http";
+		$p = !empty($_SERVER['HTTPS']) ? ('on' == $_SERVER['HTTPS'] ? "https" : "http" ): "http";
 		return $p.'://'.$_SERVER['HTTP_HOST'].'/'.$g_rcFilepath.'/';
 	}
 	
