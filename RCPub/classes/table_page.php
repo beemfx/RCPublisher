@@ -33,7 +33,6 @@ class CTablePage extends CTable
 		(
 			 'txtSlug'      => $strSlug,
 			 self::TITLE_COLUMN     => $strTitle,
-			 'txtBody'   => '"REMOVE THIS"',
 			 'txtBodyHTMLCache' => $strCached,
 			 'idVersion_Current' => 1,
 		);
@@ -88,7 +87,7 @@ class CTablePage extends CTable
 		
 		if( null == $Version )
 		{
-			$items = 'id,txtSlug as slug,'.self::TITLE_COLUMN.' as title,txtBody as body,txtBodyHTMLCache as formatted';
+			$items = 'id,txtSlug as slug,'.self::TITLE_COLUMN.' as title,txtBodyHTMLCache as formatted';
 
 			if('integer' == gettype($unkIdOrSlug))
 			{
@@ -150,6 +149,31 @@ class CTablePage extends CTable
 			return $Page;
 		}
 		return null;
+	}
+	
+	public function ResetCache()
+	{
+		//Basically there better be a id, and txtBodyHTMLCache.
+		//Get all the ids
+		$this->DoSelect('id,idVersion_Current');
+		
+		$ids = $this->m_rows;
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$nID = (int)$ids[$i]['id'];
+			$Version = (int)$ids[$i]['idVersion_Current'];
+			
+			$History = new CTablePageHistory();
+			$Item = $History->GetPage($nID, $Version);
+			$RCMarkup = new CRCMarkup($Item['txtBody']);
+			$sRC = $RCMarkup->GetHTML();
+			$data = array
+			(
+				 'txtBodyHTMLCache' => '"'.addslashes($sRC).'"',
+			);
+			$this->DoUpdate($nID, $data);
+		}
 	}
 }
 

@@ -113,8 +113,7 @@ function DoUpgrade_CreateNewTables()
 	$ids->free();
 	
 	//Drop some columns...
-	//DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage DROP COLUMN txtBody' );
-	//DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage CHANGE txtTitle txtTitleHTMLCache char(64)' );
+	DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage DROP COLUMN txtBody' );
 
 	echo '<p>Successfully upgraded.</p>';
 }

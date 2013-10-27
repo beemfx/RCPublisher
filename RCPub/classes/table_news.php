@@ -93,6 +93,30 @@ class CTableNews extends CTable
 		
 		return $years;
 	}
+	
+	public function ResetCache()
+	{
+		//Basically there better be a id, and txtBodyHTMLCache.
+		//Get all the ids
+		$this->DoSelect('id');
+		
+		$ids = $this->m_rows;
+		
+		for($i=0; $i<count($ids); $i++)
+		{
+			$nID = (int)$ids[$i]['id'];
+			
+			$this->DoSelect('txtBody', 'id='.$nID);
+			$sRC = $this->m_rows[0]['txtBody'];
+			$RCMarkup = new CRCMarkup($sRC);
+			$sRC = $RCMarkup->GetHTML();
+			$data = array
+			(
+				 'txtBodyHTMLCache' => '"'.addslashes($sRC).'"',
+			);
+			$this->DoUpdate($nID, $data);
+		}
+	}
 }
 
 ?>
