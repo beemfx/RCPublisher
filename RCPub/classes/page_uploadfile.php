@@ -36,8 +36,10 @@ class CPageUploadFile extends CPageBase
 		{
 			print("<h1>Upload New File</h1>\n");
 			print('<div style="margin:1em">');
+			
+			$Stage = isset($_POST['stage']) ? $_POST['stage']:0;
 
-			switch($_POST['stage'])
+			switch($Stage)
 			{
 			default:
 			case 0:
@@ -73,14 +75,14 @@ class CPageUploadFile extends CPageBase
 		</tr>
 		<tr>
 		<th>New Filename (Optional)</th>
-		<td><input type="text" name="unewfilename" value="<?php echo $_POST['unewfilename']?>"/></td>
+		<td><input type="text" name="unewfilename" value="<?php echo isset($_POST['unewfilename']) ? $_POST['unewfilename'] : ''?>"/></td>
 		</tr>
 		<tr>
 		<th>Description</th>
 		<td colspan="3">
 		<textarea
 			style="height:200px;width:100%"
-			name="udesc" cols="80" rows="20"><?php printf('%s', $_POST['udesc'])?></textarea>
+			name="udesc" cols="80" rows="20"><?php printf('%s', isset($_POST['udesc'])?$_POST['udesc']:'')?></textarea>
 		</td>
 		</tr>
 		<tr>

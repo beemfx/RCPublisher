@@ -94,8 +94,27 @@ function DoUpgrade_CreateNewTables()
 	DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage ADD idVersion_Current int(11)' );
 	DoQuery( $db , 'UPDATE '.$g_rcPrefix.'tblPage SET idVersion_Current=1');
 	
-	//Todo, take the current pages and create histories for them,
-	//Then drop the pages and make appropriate pages.
+	$ids = DoQuery( $db , 'SELECT * from '.$g_rcPrefix.'tblPage');
+	
+	while($row = $ids->fetch_assoc() )
+	{
+		echo $row['txtSlug'].'<br />';
+		
+		$Columns = 'idPage , idVersion , txtTitle , txtBody , dt';
+		$Values = sprintf('%s , %s , "%s" , "%s" , now()'
+				  , $row['id']
+				  , $row['idVersion_Current'] 
+				  , addslashes($row['txtTitle']) 
+				  , addslashes($row['txtBody']) );
+		
+		DoQuery( $db , sprintf('INSERT INTO '.$g_rcPrefix.'tblPageHistory (%s) values (%s)', $Columns, $Values) );
+	}
+	
+	$ids->free();
+	
+	//Drop some columns...
+	//DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage DROP COLUMN txtBody' );
+	//DoQuery( $db , 'ALTER TABLE '.$g_rcPrefix.'tblPage CHANGE txtTitle txtTitleHTMLCache char(64)' );
 
 	echo '<p>Successfully upgraded.</p>';
 }

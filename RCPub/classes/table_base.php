@@ -76,6 +76,7 @@ abstract class CTable
 		$qry = 'insert into '.$this->m_sTableName.' ('.implode(',',array_keys($data)).') values ('.implode(',',array_values($data)).')';
 		
 		$this->DoQuery($qry);
+		return $this->m_db->insert_id;
 	}
 	
 	//Do select attempts to get the specifed items. If it fails it returns 0.

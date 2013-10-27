@@ -44,7 +44,7 @@ class CPagePage extends CPageBase
 		$this->m_strPageSlug  = $_POST['pageslug'];
 		$this->m_strTitle     = $_POST['title'];
 		$this->m_nID          = (int)$_POST['id'];
-		$this->m_nMode        = (1 == $_post['stage'])?self::MODE_EDIT:self::MODE_NEW;
+		$this->m_nMode        = (1 == $_POST['stage'])?self::MODE_EDIT:self::MODE_NEW;
 
 		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
 		if(!preg_match('/^[A-Za-z0-9_]+$/', $this->m_strPageSlug))
@@ -145,8 +145,10 @@ class CPagePage extends CPageBase
 			}
 			else if(self::MODE_EDIT == $this->m_nMode)
 			{
-				$this->m_strContent = $Page['body'];
-				$this->m_strTitle   = $Page['title'];
+				$EditData = $this->m_PageTable->GetContentForEdit((int)$Page['id']);
+				
+				$this->m_strContent = $EditData['txtBody'];
+				$this->m_strTitle   = $EditData['txtTitle'];
 				$this->m_nID        = (int)$Page['id'];
 			}
 			else if(self::MODE_NEW == $this->m_nMode)

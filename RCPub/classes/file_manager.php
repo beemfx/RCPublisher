@@ -162,10 +162,8 @@ class CFileManager extends CTable
 			 'txtDesc' => $strDesc,
 		);
 		
-		$this->DoInsert($data);
+		$nID = $this->DoInsert($data);
 		
-		$nID = $this->m_db->insert_id;
-
 		return $nID;
 	}
 	
