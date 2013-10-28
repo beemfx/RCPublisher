@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>rcpub_VS2012</Name>
+    <ProjectGuid>2d6d1159-a27d-4532-b012-eea106ae5bcc</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>rcpub_VS2012</RootNamespace>
+    <!-- important to be opened by PHP Tools, when also Phalanger Tools are installed -->
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <AssemblyName>rcpub-VS2012</AssemblyName>
+    <IISProjectUrl>http://localhost:38732/</IISProjectUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="classes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="captcha" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="captcha\captchas" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="install" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="captcha\captcha_config.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="captcha\captcha_image.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\B2EvoShowBlog.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\file_manager.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\pages.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_base.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_contact.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_email.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_home.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_login.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_news.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_page.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_postnews.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_sample.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_settings.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_uploadfile.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\page_user.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\php_ex.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\rcerror.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\RCMarkup.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\rcsession.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\rcsql.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\smtp_validate.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_base.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_mail.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_news.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_page.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_page_history.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_settings.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\table_user.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="index.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="install\index.php">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="captcha\captchas\1942.ttf">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="captcha\captchas\explbold.ttf">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="captcha\captchas\random-back-image4.jpg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="captcha\captchas\yummy.ttf">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="classes\.htaccess">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="config\.htaccess">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\email_delete.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\email_read.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\h1_bottom.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\h1_top.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\h1_top_black.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\menu_button_d.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\menu_button_u.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\random-back-image4.jpg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\title.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="js\functions.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="js\md5.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="js\sha1.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="rc_1.css">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+</Project>

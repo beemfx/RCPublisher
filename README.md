@@ -1,6 +1,10 @@
 RCPublisher
 ===========
 
+The Visual Studio Project for 2012 requies PHP Tools for Visual Studio
+
+http://www.devsense.com/products/php-tools
+
 RC Publisher is website powering software. It is written in PHP and MySQL and is
 meant to be a very basic wiki-type web page editing template. This software is
 provided in it's most basic form here for anyone desiring a similar easy to use
