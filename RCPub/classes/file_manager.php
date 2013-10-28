@@ -132,22 +132,38 @@ class CFileManager extends CTable
 	
 	public function ListFiles()
 	{
-		$this->DoSelect('concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath', '', 'txtSlug');
-				
-		print '<ul>';
+		$this->DoSelect('txtSlug, txtName, txtExt, txtDesc, txtType, concat(txtLocalPath,"/",txtSlug,".",txtExt) as txtPath', '', 'txtSlug');
+		print '<table>';
+		print '<tr><th>Thumbnail</th><th>Slug</th><th>Type</th><th>Description</th><th>File Path</th></tr>';
 		for($i=0; $i < count($this->m_rows); $i++)
 		{
+			print '<tr>';
 			$row = $this->m_rows[$i];
+			
+			$ImagePreview = '';
+			
+			if( preg_match('/image\/.*/' , $row['txtType']) )
+			{
+				$ImagePreview = sprintf('<img src="%s%s.thumb.jpg" width="150" />', $this->GetURLFileRoot() , $row['txtPath']);
+			}
+			
+			printf('<td>%s</td>', $ImagePreview );
+			
+			printf('<td><b>%s</b></td>', $row['txtSlug']);
+			printf('<td>%s<br />(%s)</td>', $row['txtExt'], $row['txtType']);
+			printf('<td>%s</td>', $row['txtDesc']);
 			
 			//Lets verify the file exists.
 			$bExists = file_exists($this->GetServerFileRoot().$row['txtPath']);
 			
 			if($bExists)
-				printf('<li><a href="%s">%s</a>', $this->GetURLFileRoot().$row['txtPath'], $this->GetServerFileRoot().$row['txtPath']);
+				printf('<td><a href="%s">%s</a></td>', $this->GetURLFileRoot().$row['txtPath'], $row['txtPath']);
 			else
-				printf('<li>WARNING: %s does not exist.', $this->GetURLFileRoot().$row['txtPath']);
+				printf('<td>WARNING: %s does not exist.</td>', $this->GetURLFileRoot().$row['txtPath']);
+			
+			print '</ul>';
 		}
-		print '</ul>';
+		print '</table>';
 	}
 	
 	public function InsertFileIntoSQL($strSlug, $strExt, $strType,$strPath,$strDesc)

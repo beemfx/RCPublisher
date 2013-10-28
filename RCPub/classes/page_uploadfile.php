@@ -220,8 +220,5 @@ class CPageUploadFile extends CPageBase
 		
 		printf("Inserted at %d.<br/>\n", $nID);
 	}
-
-
-
 }
 ?>
