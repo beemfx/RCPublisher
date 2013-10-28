@@ -220,7 +220,7 @@ class CPagePage extends CPageBase
 		for($i = 0; $i < count($History); $i++)
 		{
 			$Event = $History[$i];
-			printf("<li>%d (%s): %s</li>\n", (int)$Event['idVersion'], $Event['dt'], $Event['txtTitle']);
+			printf("<li>%d (%s): %s</li>\n", (int)$Event['idVersion'], $Event['dtPretty'], $Event['txtTitle']);
 		}
 		print("</ul>\n");
 	}
