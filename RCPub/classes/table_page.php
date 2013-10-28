@@ -126,7 +126,7 @@ class CTablePage extends CTable
 		return $out;
 	}
 	
-	public function GetContentForEdit($unkIdOrSlug)
+	public function GetContentForEdit($unkIdOrSlug , $Version = 0 )
 	{	
 		$items = 'id , idVersion_Current';
 		
@@ -151,7 +151,7 @@ class CTablePage extends CTable
 		if(null != $out)
 		{
 			$History = new CTablePageHistory();
-			$Page = $History->GetPage($out['id'], $out['idVersion_Current']);
+			$Page = $History->GetPage($out['id'], 0 == $Version ? $out['idVersion_Current'] : $Version );
 			return $Page;
 		}
 		return null;

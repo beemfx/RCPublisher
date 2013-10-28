@@ -162,7 +162,7 @@ class CPagePage extends CPageBase
 			}
 			else if(self::MODE_EDIT == $this->m_nMode)
 			{
-				$EditData = $this->m_PageTable->GetContentForEdit((int)$Page['id']);
+				$EditData = $this->m_PageTable->GetContentForEdit((int)$Page['id'] , $this->m_Version );
 				
 				$this->m_strContent = $EditData['txtBody'];
 				$this->m_strTitle   = $EditData['txtTitle'];
