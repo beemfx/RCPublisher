@@ -24,10 +24,13 @@ class CPagePage extends CPageBase
 	const CRNW_RQ_LEVEL = 5;
 	const PAGE_HISTORY_LEVEL = 5;
 	
+	const VERSION_DEFAULT=0;
+	
 	private $m_strContent;
 	private $m_strPageSlug;
 	private $m_nID;
 	private $m_nMode = self::MODE_UNK;
+	private $m_Version = self::VERSION_DEFAULT;
 	
 	private $m_PageTable;
 	
@@ -80,6 +83,10 @@ class CPagePage extends CPageBase
 		//The page slug should be passed in the p parameter.
 		
 		$this->m_strPageSlug = $_GET['p'];
+		if( isset($_GET['v']) )
+		{
+			$this->m_Version = (int)$_GET['v'];
+		}
 		
 		if(isset($_POST['stage']))
 		{	
@@ -106,6 +113,15 @@ class CPagePage extends CPageBase
 
 			//We now attempt to get the page.
 			$Page = $this->m_PageTable->GetPage($this->m_strPageSlug);
+
+			if( self::VERSION_DEFAULT != $this->m_Version )
+			{
+				$HistoryTable = new CTablePageHistory();
+				$Event = $HistoryTable->GetPage((int)$Page['id'], $this->m_Version);
+				$RCMarkup = new CRCMarkup($Event['txtBody']);
+				$Page['formatted'] = $RCMarkup->GetHTML();
+				$Page['title'] = $Event['txtTitle'];
+			}
 
 			//Now if the mode was page, and the page didn't exist, and the user level
 			//is high enough, we can do a new page instead.
@@ -150,7 +166,7 @@ class CPagePage extends CPageBase
 				
 				$this->m_strContent = $EditData['txtBody'];
 				$this->m_strTitle   = $EditData['txtTitle'];
-				$this->m_nID        = (int)$Page['id'];
+				$this->m_nID        = (int)$Page['id'] ;
 			}
 			else if(self::MODE_NEW == $this->m_nMode)
 			{
@@ -220,7 +236,8 @@ class CPagePage extends CPageBase
 		for($i = 0; $i < count($History); $i++)
 		{
 			$Event = $History[$i];
-			printf("<li>%d (%s): %s</li>\n", (int)$Event['idVersion'], $Event['dtPretty'], $Event['txtTitle']);
+			$Link = CreateHREF(PAGE_PAGE, 'p='.$this->m_strPageSlug.'&v='.$Event['idVersion']);
+			printf("<li><a href=%s>%d (%s): %s</a></li>\n", $Link, (int)$Event['idVersion'], $Event['dtPretty'], $Event['txtTitle']);
 		}
 		print("</ul>\n");
 	}
