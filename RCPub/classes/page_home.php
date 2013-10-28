@@ -8,6 +8,7 @@
  ******************************************************************************/
 require_once('page_base.php');
 require_once('php_ex.php');
+require_once('table_page.php');
 require('table_news.php');
 
 class CPageHome extends CPageBase
@@ -91,10 +92,14 @@ class CPageHome extends CPageBase
 
 	private function ShowFeature()
 	{
-		?>
-		<h2>Feature!</h2>
-		A feature goes here.
-		<?php
+		$FeatureSlug = $this->GetGlobalSetting('txtFeatureSlug');
+		$PageTable = new CTablePage();
+		if($PageTable->IsSlugTaken($FeatureSlug))
+		{
+			$Page = $PageTable->GetPage($FeatureSlug);
+			printf("<h2>%s</h2>\n", $Page['title']);
+			print($Page['formatted']);
+		}
 	}
 
 	protected function DisplayPost() 
