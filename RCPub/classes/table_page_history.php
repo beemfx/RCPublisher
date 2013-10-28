@@ -19,9 +19,12 @@ class CTablePageHistory extends CTable
 		
 		$Version = 0;
 		
-		foreach( $History as $Item )
+		if( null != $History )
 		{
-			$Version = max($Version , $Item['idVersion']);
+			foreach( $History as $Item )
+			{
+				$Version = max($Version , $Item['idVersion']);
+			}
 		}
 		
 		$Version++;

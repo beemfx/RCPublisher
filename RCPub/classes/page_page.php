@@ -221,7 +221,7 @@ class CPagePage extends CPageBase
 			case self::MODE_LIST : $this->DisplayPageList(); break;
 		}
 		
-		if($this->GetUserLevel()>=self::PAGE_HISTORY_LEVEL)
+		if(self::MODE_LIST != $this->m_nMode && $this->GetUserLevel()>=self::PAGE_HISTORY_LEVEL)
 		{
 			$this->DisplayPageHistory();
 		}
