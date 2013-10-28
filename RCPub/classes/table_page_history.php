@@ -43,7 +43,7 @@ class CTablePageHistory extends CTable
 	public function GetHistory($PageId)
 	{
 		$items = 'idVersion , txtTitle , dt';
-		$this->DoSelect( $items , 'idPage='.$PageId);
+		$this->DoSelect( $items , 'idPage='.$PageId, 'dt DESC');
 		return $this->m_rows;
 	}
 	

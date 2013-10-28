@@ -22,6 +22,7 @@ class CPagePage extends CPageBase
 	
 	const EDIT_RQ_LEVEL = 5;
 	const CRNW_RQ_LEVEL = 5;
+	const PAGE_HISTORY_LEVEL = 5;
 	
 	private $m_strContent;
 	private $m_strPageSlug;
@@ -202,6 +203,26 @@ class CPagePage extends CPageBase
 			case self::MODE_NEW  : $this->DisplayNewPage();  break;
 			case self::MODE_LIST : $this->DisplayPageList(); break;
 		}
+		
+		if($this->GetUserLevel()>=self::PAGE_HISTORY_LEVEL)
+		{
+			$this->DisplayPageHistory();
+		}
+	}
+	
+	private function DisplayPageHistory()
+	{
+		printf( '<h3>Page History</h3>');
+		$HistoryTable = new CTablePageHistory();
+		$History = $HistoryTable->GetHistory( $this->m_nID );
+		
+		print("<ul>\n");
+		for($i = 0; $i < count($History); $i++)
+		{
+			$Event = $History[$i];
+			printf("<li>%d (%s): %s</li>\n", (int)$Event['idVersion'], $Event['dt'], $Event['txtTitle']);
+		}
+		print("</ul>\n");
 	}
 	
 	private function DisplayPageList()
