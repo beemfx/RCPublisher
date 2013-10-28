@@ -19,6 +19,7 @@ $g_Settings = array
 	 'txtMiniNav'       => array( 'desc' => 'Mini-Navigation Bar'     , 'type' => 'textarea'   ,  ),
 	 //Twitter Pugin Settings (should actualy be a pugin in the future).
 	 'txtTwitterUser'   => array( 'desc' => 'Twitter user'            , 'type' => 'text'       ,  ),
+	 'txtTwitterHTML'   => array( 'desc' => 'Twitter HTML'            , 'type' => 'textarea'       ,  ),
 	 
 	 'txtBlogLink'      => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text'       ,  ),
 	 //b2evo Plugin Settings (should actually be a plugin in the future).
@@ -122,7 +123,7 @@ class CPageSettings extends CPageBase
 			switch($Atts['type'])
 			{
 			case 'text':
-				printf('<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>', $Atts['desc'], $Setting, $this->GetGlobalSetting($Setting));
+				printf('<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>', $Atts['desc'], $Setting, htmlspecialchars($this->GetGlobalSetting($Setting), ENT_QUOTES));
 				break;
 			case 'textarea':
 				printf('<p><b>%s</b></br><textarea style="height:5em;width:90%%" name="%s" cols="80" rows="20">%s</textarea></p>', $Atts['desc'], $Setting, $this->GetGlobalSetting($Setting));

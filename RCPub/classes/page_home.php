@@ -79,7 +79,7 @@ class CPageHome extends CPageBase
 	private function ShowTwitter() 
 	{			
 		echo '<h2><a class="tlink" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'">On Twitter</a></h2>';
-		echo '<ul id="twitter_update_list"></ul>';
+		echo $this->GetGlobalSetting('txtTwitterHTML');
 		echo '<a class="big_link" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'" id="twitter-link" style="text-align:right;">follow me on Twitter</a>';
 	}
 
@@ -99,8 +99,7 @@ class CPageHome extends CPageBase
 
 	protected function DisplayPost() 
 	{
-	echo '<script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>';
-	echo '<script type="text/javascript" src="http://twitter.com/statuses/user_timeline/'.$this->GetGlobalSetting('txtTwitterUser').'.json?callback=twitterCallback2&amp;count=5"></script>';
+		
 	}
 }
 ?>
