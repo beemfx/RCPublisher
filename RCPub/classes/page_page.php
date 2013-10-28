@@ -194,9 +194,10 @@ class CPagePage extends CPageBase
 	{
 		if($this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
 		{
+			$strVersion = self::VERSION_DEFAULT == $this->m_Version ? '' : '&v='.$this->m_Version;
 			$strEditLink = sprintf(
 				' [<a href=%s>Edit</a>]',
-				CreateHREF(PAGE_PAGE, 'mode=edit&p='.$this->m_strPageSlug));
+				CreateHREF(PAGE_PAGE, 'mode=edit&p='.$this->m_strPageSlug.$strVersion));
 		}
 		else
 		{
