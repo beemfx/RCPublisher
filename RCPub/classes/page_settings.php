@@ -17,9 +17,7 @@ $g_Settings = array
 	 'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12  ),
 	 'txtNav'           => array( 'desc' => 'Navigation Bar'          , 'type' => 'textarea'   ,  ),
 	 'txtMiniNav'       => array( 'desc' => 'Mini-Navigation Bar'     , 'type' => 'textarea'   ,  ),
-	 //Twitter Pugin Settings (should actualy be a pugin in the future).
-	 'txtTwitterUser'   => array( 'desc' => 'Twitter User'            , 'type' => 'text'       ,  ),
-	 'txtTwitterHTML'   => array( 'desc' => 'Twitter HTML'            , 'type' => 'textarea'       ,  ),
+	 'txtSidebarHTML'   => array( 'desc' => 'Home Page Sidebar'            , 'type' => 'textarea'       ,  ),
 	 'txtFeatureSlug'   => array( 'desc' => 'Featured Page (slug)'    , 'type' => 'text'       ,  ),
 	 'txtBlogLink'      => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text'       ,  ),
 	 //b2evo Plugin Settings (should actually be a plugin in the future).

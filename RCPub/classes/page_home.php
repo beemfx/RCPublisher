@@ -29,7 +29,7 @@ class CPageHome extends CPageBase
 		<!-- Right column -->
 		<div class="home_seg" style="width:28%">
                
-         <?php	$this->ShowTwitter(); ?>
+         <?php	$this->ShowSidebar(); ?>
 			<?php	$this->ShowFeature(); ?>
 			<?php //$this->ShowAdsense(); ?>		
 		</div>
@@ -77,11 +77,9 @@ class CPageHome extends CPageBase
 		print '<a class="big_link" href='.CreateHREF(PAGE_NEWS, 'archive').'>more news</a>';
 	}
 
-	private function ShowTwitter() 
+	private function ShowSidebar() 
 	{			
-		echo '<h2><a class="tlink" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'">On Twitter</a></h2>';
-		echo $this->GetGlobalSetting('txtTwitterHTML');
-		echo '<a class="big_link" href="http://twitter.com/'.$this->GetGlobalSetting('txtTwitterUser').'" id="twitter-link" style="text-align:right;">follow me on Twitter</a>';
+		echo $this->GetGlobalSetting('txtSidebarHTML');
 	}
 
 	private function ShowBlog()
