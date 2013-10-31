@@ -87,7 +87,7 @@ abstract class CPageBase
 		$this->m_nUserLevel = $nUserLevel;
 	}
 
-	protected function GetGlobalSetting($strSettingName)
+	public function GetGlobalSetting($strSettingName)
 	{
 		$Settings = new CTableSettings();	
 		return $Settings->GetSetting($strSettingName);

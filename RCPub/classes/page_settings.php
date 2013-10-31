@@ -11,6 +11,7 @@ require_once('page_base.php');
 $g_Settings = array
 (
 	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title'           , 'type' => 'text'       ,  ),
+	 'txtSkin'          => array( 'desc' => 'Skin'                    , 'type' => 'text'       ,  ),
     'txtScriptHeader'  => array( 'desc' => 'Pre &lt;/head&gt; Scripting' , 'type' => 'textarea'   ,  ),
 	 'txtHeader'        => array( 'desc' => 'Page Header'             , 'type' => 'textarea'   ,  ),
 	 'txtFooter'        => array( 'desc' => 'Page Footer'             , 'type' => 'textarea'   ,  ),
@@ -28,7 +29,7 @@ $g_Settings = array
 	 //ImageMagick settings.
 	 'txtConvertPath'   => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text'       ,  ),
 	 'nThumbnailWidth'  => array( 'desc' => 'Thumbnail width' , 'type' => 'text'       ,  ),
-	 'nThumbnailQuality'=> array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'text'       ,  ),
+	 'nThumbnailQuality'=> array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'selectnumber' , 'num_min' => 0, 'num_max' => 100  ),
 );
 
 class CPageSettings extends CPageBase

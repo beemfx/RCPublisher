@@ -82,9 +82,14 @@ case 'user':
 	break;
 }
 
-$SkinType = 'roughconcept';
+$SkinType = $Page->GetGlobalSetting('txtSkin');
 require( 'classes/skin_base.php' );
-require( 'skins/'.$SkinType.'/default.skin.php' );
+$SkinFile = 'skins/'.$SkinType.'/default.skin.php';
+if( !file_exists( $SkinFile ) )
+{
+	$SkinFile = 'skins/default/default.skin.php';
+}
+require( $SkinFile );
 
 $Skin = new RCSkin();
 assert( $Skin instanceof ISkin );

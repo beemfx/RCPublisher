@@ -204,6 +204,7 @@ function DoInstall()
 		 'nHomeNewsStories' => addslashes('5'),
 		 'txtNav'           => addslashes('[[home Home]][[login Log In]][[newpage New Page]]'),
 		 'txtMiniNav'       => addslashes('[[contact Contact]]'),
+		 'txtSkin'          => addslashes('default'),
 			 
 	);
 	

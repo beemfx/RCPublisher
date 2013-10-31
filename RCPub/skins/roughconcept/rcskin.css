@@ -1,34 +1,4 @@
 /* User Option DIV */
-div#UO
-{
-	display:block;
-	position:fixed;
-	top:0;
-	left: 0;
-	width:100%;
-	height:28px;
-	border-bottom:2px solid #707070;
-	background:#eee;
-}
-
-div#UO *
-{
-	vertical-align:middle;
-}
-
-div#UO a
-{
-	padding:0 .2em;
-	border:2px solid #eee;
-	color:#000;
-	text-decoration: none;
-}
-
-div#UO a:hover
-{
-	border:2px outset #707070;
-}
-
 /* Get rid of all margins as they seem to make a mess: */
 #header, #content, #memu_main, #menu_sub, #wrapper, .news, #toc_list, #page_buttons
 {

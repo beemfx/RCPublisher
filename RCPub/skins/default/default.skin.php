@@ -5,7 +5,7 @@ class RCSkin implements ISkin
 {
 	function GetId()
 	{
-		return 'Beem Software Skin';
+		return 'Default Skin';
 	}
 	
 	function BeginHTML( $Page )

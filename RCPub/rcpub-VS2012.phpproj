@@ -21,6 +21,7 @@
     <Folder Include="classes" />
     <Folder Include="skins" />
     <Folder Include="skins\beemsoftware" />
+    <Folder Include="skins\default" />
     <Folder Include="skins\roughconcept" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="skins\beemsoftware\default.skin.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="skins\default\default.skin.php">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="skins\roughconcept\default.skin.php">
