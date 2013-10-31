@@ -82,7 +82,14 @@ case 'user':
 	break;
 }
 
-$Page->Display();
+$SkinType = 'roughconcept';
+require( 'classes/skin_base.php' );
+require( 'skins/'.$SkinType.'/default.skin.php' );
+
+$Skin = new RCSkin();
+assert( $Skin instanceof ISkin );
+
+$Page->Display( $Skin );
 
 RCSql_Disconnect();
 

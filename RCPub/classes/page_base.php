@@ -14,26 +14,37 @@ abstract class CPageBase
 	//Abstract interface:
 	protected abstract function DisplayContent();
 
-	protected function PageStartup()
-	{		
-		$this->DisplayPre();
+	public function GetTitle(){ return $this->GetGlobalSetting( 'txtWebsiteTitle' ).': '.$this->m_strTitle; }
+	
+	public function GetPreClosingHeadScript(){ return $this->GetGlobalSetting( 'txtScriptHeader' ); }
+	
+	public function GetHeader()
+	{ 
+		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtHeader'));
+		return $Formatter->GetHTML(); 
 	}
 	
-	//Public interface:
-	public function Display()
+	public function GetNav1()
+	{ 
+		$Formatter  = new CRCMarkup($this->GetGlobalSetting('txtNav'));
+		return $Formatter->GetHTML();
+	}
+	
+	public function GetNav2()
 	{
-		$this->PageStartup();
-
-		$this->StartHTML();
-		print("<div id=\"wrapper\">\n");
-
-		print("<div id=\"header\">\n");
-		$this->DisplayHeader();
-		print("</div>\n");
-		
-		//The navigation gets displayed last because when logging in and out
-		//it affects the options on the navigation.
-		$this->DisplayNavigation();
+		$Formatter  = new CRCMarkup($this->GetGlobalSetting('txtMiniNav'));
+		return $Formatter->GetHTML();
+	}
+	
+	public function GetBody(){ return '<h2>Page Body!</h2>This is the content.'; }
+	public function GetFooter()
+	{
+		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtFooter'));	
+		return $Formatter->GetHTML();
+	}
+	
+	public function Display_PageCallback()
+	{
 		print("<div id=\"content\">\n");
 		if($this->GetUserLevel() >= $this->m_nUserLevel)
 		{
@@ -50,6 +61,34 @@ abstract class CPageBase
 		print('<br />');
 		
 		print("</div>\n");
+	}
+	
+	//Public interface:
+	public function Display( $Skin )
+	{
+		if( false )
+		{
+			$this->DisplayPre();
+			$Skin->BeginHTML( $this );
+			$Skin->DrawPage( $this );
+			$this->DisplayPost();
+			$this->DisplayUserOptions();
+			$Skin->EndHTML( $this );
+			return;
+		}
+		
+
+		$this->StartHTML();
+		print("<div id=\"wrapper\">\n");
+
+		print("<div id=\"header\">\n");
+		$this->DisplayHeader();
+		print("</div>\n");
+		
+		//The navigation gets displayed last because when logging in and out
+		//it affects the options on the navigation.
+		$this->DisplayNavigation();
+		$this->Display_PageCallback();
 		print("<div id=\"footer\">\n");
 		$this->DisplayFooter();
 		print("</div>\n");
@@ -161,10 +200,40 @@ abstract class CPageBase
 		//We only do this if the user level is high enough.
 		if($this->GetUserLevel() > 0)
 		{
-			echo '<div id="UO">';
-			echo '<b>RC Publisher:</b> ';
 			?>
-<b>[<?php print RCSession_GetUserProp('user')?>]</b>
+			<style>div#UO
+			{
+				display:block;
+				position:fixed;
+				top:0;
+				left: 0;
+				width:100%;
+				height:28px;
+				border-bottom:2px solid #707070;
+				background:#eee;
+			}
+
+			div#UO *
+			{
+				vertical-align:middle;
+			}
+
+			div#UO a
+			{
+				padding:0 .2em;
+				border:2px solid #eee;
+				color:#000;
+				text-decoration: none;
+			}
+
+			div#UO a:hover
+			{
+				border:2px outset #707070;
+			}
+			</style>
+			<div id="UO">
+			<b>RC Publisher:</b>
+			<b>[<?php print RCSession_GetUserProp('user')?>]</b>
 			<a href=<?php print CreateHREF(PAGE_EMAIL)?>>Inbox (<?php print $this->GetNumMessages()?>)</a>
 			<a href=<?php print CreateHREF(PAGE_POSTNEWS)?>>Post News</a>
 			<a href=<?php print CreateHREF(PAGE_UPLOADFILE)?>>File Manager</a>
@@ -172,12 +241,7 @@ abstract class CPageBase
 			<a href=<?php print CreateHREF(PAGE_SETTINGS)?>>Settings</a>
 			<a href=<?php print CreateHREF(PAGE_USER)?>>User</a>
 			<a href=<?php print CreateHREF(PAGE_LOGIN, 'logout')?>>Logout</a>
-			<?php
-			echo '</div>';
-			
-			//We also want to do some javascript to change the wrapper margin,
-			//so that we can see the top of the page.
-			?>
+			</div>
 			<script language="javascript" type="text/javascript">
 					document.getElementById('wrapper').style.marginTop = '40px';
 			</script>

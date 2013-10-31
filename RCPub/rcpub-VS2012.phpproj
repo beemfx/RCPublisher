@@ -19,6 +19,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="classes" />
+    <Folder Include="skins" />
+    <Folder Include="skins\beemsoftware" />
+    <Folder Include="skins\roughconcept" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="captcha" />
@@ -105,6 +108,9 @@
     <Compile Include="classes\rcsql.php">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="classes\skin_base.php">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="classes\table_base.php">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +136,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="install\index.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="skins\beemsoftware\default.skin.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="skins\roughconcept\default.skin.php">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -189,6 +201,24 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="rc_1.css">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\h1_bottom.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\h1_top.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\h1_top_black.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\menu_button_d.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\menu_button_u.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="skins\roughconcept\rcskin.css">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
