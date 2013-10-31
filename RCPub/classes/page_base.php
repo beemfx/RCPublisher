@@ -66,38 +66,12 @@ abstract class CPageBase
 	//Public interface:
 	public function Display( $Skin )
 	{
-		if( false )
-		{
-			$this->DisplayPre();
-			$Skin->BeginHTML( $this );
-			$Skin->DrawPage( $this );
-			$this->DisplayPost();
-			$this->DisplayUserOptions();
-			$Skin->EndHTML( $this );
-			return;
-		}
-		
-
-		$this->StartHTML();
-		print("<div id=\"wrapper\">\n");
-
-		print("<div id=\"header\">\n");
-		$this->DisplayHeader();
-		print("</div>\n");
-		
-		//The navigation gets displayed last because when logging in and out
-		//it affects the options on the navigation.
-		$this->DisplayNavigation();
-		$this->Display_PageCallback();
-		print("<div id=\"footer\">\n");
-		$this->DisplayFooter();
-		print("</div>\n");
-
+		$this->DisplayPre();
+		$Skin->BeginHTML( $this );
+		$Skin->DrawPage( $this );
 		$this->DisplayPost();
-
-		print("</div>\n");
 		$this->DisplayUserOptions();
-		$this->EndHTML();
+		$Skin->EndHTML( $this );
 	}
 
 	//Protected attributes.
@@ -247,67 +221,6 @@ abstract class CPageBase
 			</script>
 			<?php
 		}
-	}
-
-	private function DisplayNavigation()
-	{
-		$Markup  = new CRCMarkup($this->GetGlobalSetting('txtNav'));
-		$sNav    = $Markup->GetHTML();
-		$Markup  = new CRCMarkup($this->GetGlobalSetting('txtMiniNav'));
-		$sSubNav = $Markup->GetHTML();
-		
-		?>
-		<div id="menu_main">
-			<!-- Load the background image, so that there isn't that delay when
-			it loads -->
-			<img src="images/menu_button_d.png"
-				  alt="bg_down" title="bg_down"
-				  style="display:none" />
-		<p>
-		<?php echo $sNav;?>
-		</div>
-		<div id="menu_sub">
-		<?php echo $sSubNav;?>
-		</div>
-		<?php
-	}
-
-	//Private Methods:
-	private function StartHTML()
-	{
-		echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-		//echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
-		//echo '<!DOCTYPE HTML>';
-		?>
-		<html>
-		<head>
-		<link rel="stylesheet" type="text/css" href="rc_1.css"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title><?php printf('%s: %s', $this->GetGlobalSetting('txtWebsiteTitle'), $this->m_strTitle);?></title>
-                <?php printf( '%s' , $this->GetGlobalSetting( 'txtScriptHeader'));?>
-		</head>
-		<body>
-		<?php
-	}
-
-	private function EndHTML()
-	{
-		?>
-		</body>
-		</html>
-		<?php
-	}
-
-	private function DisplayHeader()
-	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtHeader'));
-		echo $Formatter->GetHTML();
-	}
-
-	private function DisplayFooter()
-	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting('txtFooter'));	
-		echo '<br/><p>'.$Formatter->GetHTML().'</p><br/>';
 	}
 
 	//Display post will be called after all content is displayed, but before

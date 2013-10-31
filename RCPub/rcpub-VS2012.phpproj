@@ -170,25 +170,7 @@
     <Content Include="images\email_read.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="images\h1_bottom.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="images\h1_top.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="images\h1_top_black.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="images\menu_button_d.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="images\menu_button_u.png">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="images\random-back-image4.jpg">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="images\title.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="js\functions.js">
@@ -198,9 +180,6 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="js\sha1.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="rc_1.css">
       <SubType>Content</SubType>
     </Content>
     <Content Include="skins\roughconcept\h1_bottom.png">
