@@ -11,7 +11,7 @@ require_once('page_base.php');
 $g_Settings = array
 (
 	 'txtWebsiteTitle'  => array( 'desc' => 'Website Title'           , 'type' => 'text'       ,  ),
-	 'txtSkin'          => array( 'desc' => 'Skin'                    , 'type' => 'text'       ,  ),
+	 'txtSkin'          => array( 'desc' => 'Skin'                    , 'type' => 'skinchooser',  ),
     'txtScriptHeader'  => array( 'desc' => 'Pre &lt;/head&gt; Scripting' , 'type' => 'textarea'   ,  ),
 	 'txtHeader'        => array( 'desc' => 'Page Header'             , 'type' => 'textarea'   ,  ),
 	 'txtFooter'        => array( 'desc' => 'Page Footer'             , 'type' => 'textarea'   ,  ),
@@ -130,6 +130,9 @@ class CPageSettings extends CPageBase
 			case 'selectnumber':
 				printf('<p><b>%s: </b><select name="%s" size="1">%s</select></p>', $Atts['desc'], $Setting, $this->CreateNumberList($Atts['num_min'], $Atts['num_max'], (int)$this->GetGlobalSetting($Setting)));
 				break;
+			case 'skinchooser':
+				printf('<p><b>%s: </b><select name="%s" size="1">%s</select></p>', $Atts['desc'], $Setting, $this->CreateSkinChooser($this->GetGlobalSetting($Setting)));
+				break;
 			}
 		}
 		?>
@@ -152,6 +155,23 @@ class CPageSettings extends CPageBase
 		
 		return $sSelect;
 	}
-
+	
+	private function CreateSkinChooser($Selected)
+	{
+		$Skins = scandir( 'skins/' );
+		
+		$Select = '';
+		
+		foreach($Skins as $SkinFile )
+		{
+			if( '.' == $SkinFile || '..' == $SkinFile )continue;
+			if( is_dir( 'skins/'.$SkinFile ) )
+			{
+				$Select .= sprintf("<option value=\"%s\" %s>%s</option>\n", $SkinFile , $Selected == $SkinFile ? 'selected':'' , $SkinFile );
+			}
+		}
+		
+		return $Select;
+	}
 }
 ?>
