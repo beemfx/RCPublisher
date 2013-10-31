@@ -93,6 +93,9 @@
     <Compile Include="classes\rcerror.php">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="classes\rclibrary.php">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="classes\RCMarkup.php">
       <SubType>Code</SubType>
     </Compile>

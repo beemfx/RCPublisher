@@ -13,7 +13,7 @@ class CContactPage extends CPageBase
 	
 	protected function DisplayPre()
 	{
-		if(1 == $_POST['stage'])
+		if(1 == RCWeb_GetPost('stage', 0))
 		{
 			$bRes = $this->ProcessInput();
 			//If we succeeded, redirect. Otherwise, display the contact form again.
@@ -74,28 +74,28 @@ class CContactPage extends CPageBase
 		<td>
 		<select name="send_to" size="1">
 		<?php
-		$this->CreateSendToChoices(isset($_GET['to'])?$_GET['to']:null);
+		$this->CreateSendToChoices(RCWeb_GetGet('to', null));
 		?>
 		</select>
 		</td>
 		</tr>
 		<tr>
 		<th>Name</th>
-		<td><input type="text" name="name" value=<?php print '"'.$_POST['name'].'"'?>/></td>
+		<td><input type="text" name="name" value=<?php print '"'.RCWeb_GetPost('name', '').'"'?>/></td>
 		</tr>
 		<tr>
 		<th>Reply Email <span style="color:red">(Required)</span></th>
-		<td><input type="text" name="reply_email" value=<?php print '"'.$_POST['reply_email'].'"'?>/></td>
+		<td><input type="text" name="reply_email" value=<?php print '"'.RCWeb_GetPost('reply_email','').'"'?>/></td>
 		</tr>
 		<tr>
-		<th>Subject</th><td><input type="text" name="subject" value=<?php print '"'.$_POST['subject'].'"'?>/></td>
+		<th>Subject</th><td><input type="text" name="subject" value=<?php print '"'.RCWeb_GetPost('subject', '').'"'?>/></td>
 		</tr>
 		<tr>
 		<th colspan="2">Message</th>
 		</tr>
 		<tr>
 		<td colspan="2">
-		<textarea name="message" style="height:200px;width:100%"><?php print $_POST['message']?></textarea>
+		<textarea name="message" style="height:200px;width:100%"><?php print RCWeb_GetPost('message','')?></textarea>
 		</td>
 		</tr>
 		<tr>
@@ -115,13 +115,21 @@ class CContactPage extends CPageBase
 		if(!$this->ValidateInput())
 		{
 			$this->ShowWarning('One or more required fields was missing.');
-			$_GET['to'] = (int)$_POST['send_to'];
+			$_GET['to'] = (int)RCWeb_GetPost('send_to', 0, true);
 			return false;
 		}
 		
 		$MailTable = new CTableMail();
 		
-		$MailTable->PostMail(null, (int)$_POST['send_to'], $_POST['name'], $_POST['reply_email'], $_POST['subject'], $_POST['message']);
+		$MailTable->PostMail
+		(
+			null, 
+			(int)RCWeb_GetPost('send_to','',true), 
+			RCWeb_GetPost('name','',true), 
+			RCWeb_GetPost('reply_email', '', true), 
+			RCWeb_GetPost('subject', '', true),
+			RCWeb_GetPost('message', '', true)
+		);
 
 		return true;
 	}
@@ -133,24 +141,24 @@ class CContactPage extends CPageBase
 
 	private function ValidateInput()
 	{
-		if(!$this->ValidateEmail($_POST['reply_email']))
+		if(!$this->ValidateEmail(RCWeb_GetPost('reply_email', '', true)))
 		{
 			$this->ShowWarning($_POST['reply_email'].' is not a valid email address.');
 			return false;
 		}
 
-		if(strlen($_POST['message'])<1)
+		if(strlen(RCWeb_GetPost('message', '', true))<1)
 		{
 			$this->ShowWarning('A message is required.');
 			return false;
 		}
 
-		if(strlen($_POST['subject'])<1)
+		if(strlen(RCWeb_GetPost('subject', '', true))<1)
 		{
 			$_POST['subject'] = 'no subject';
 		}
 
-		if(strtoupper(trim(strip_tags($_POST['secure']))) != $_SESSION['captcha'])
+		if(strtoupper(trim(strip_tags(RCWeb_GetPost('secure', '', true)))) != RCWeb_GetSession('captcha','',true))
 		{
 			$this->ShowWarning('The security code was invalid.');
 			return false;

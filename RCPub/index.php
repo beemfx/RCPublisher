@@ -17,6 +17,7 @@ if( !file_exists( 'config/config.php' ) )
 	return;
 }
 
+require( 'classes/rclibrary.php' );
 require_once( 'classes/rcerror.php' );
 require_once( 'classes/table_base.php' );
 require_once( 'classes/table_mail.php' );
