@@ -102,9 +102,6 @@
     <Compile Include="classes\rcsql.php">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="classes\smtp_validate.php">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="classes\table_base.php">
       <SubType>Code</SubType>
     </Compile>
