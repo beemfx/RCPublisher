@@ -64,6 +64,7 @@ class CTableUser extends CTable
 			 'txtPassword' => 'md5("'.addslashes($sPass).'")',
 			 'txtAlias'    => '"'.addslashes($sAlias).'"',
 			 'txtEmail'    => '"'.addslashes($sEmail).'"',
+			 'txtLastIP'   => '"0.0.0.0"',
 			 'nAccessLevel'=> $nAccess,
 		);
 		

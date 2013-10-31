@@ -24,11 +24,11 @@ class CPageUser extends CPageBase
 	{
 		$this->m_UserTable = new CTableUser();
 		
-		if($_POST['stage'] == 'upass')
+		if(RCWeb_GetPost('stage') == 'upass')
 		{
 			$this->UpdatePassword();
 		}
-		else if($_POST['stage'] == 'nuser')
+		else if(RCWeb_GetPost('stage') == 'nuser')
 		{
 			$this->InsertNewUser();
 		}
@@ -72,10 +72,10 @@ class CPageUser extends CPageBase
 			
 		<input type="hidden" name="stage" value="nuser"/>
 		<table style ="width:50%">
-		<tr><th>Username:</th><td><input type="text" name="uname" value="<?php echo $_POST['uname']?>" style="width:50%"/></td></tr>
-		<tr><th>Alias:</th><td><input type="text" name="ualias" value="<?php echo $_POST['ualias']?>" style="width:50%"/></td></tr>
-		<tr><th>Email:</th><td><input type="text" name="uemail" value="<?php echo $_POST['uemail'] ?>" style="width:50%"/></td></tr>
-		<tr><th>Access Level:</th><td><input type="text" name="uaccess" value="<?php echo $_POST['uaccess']?>" style="width:50%"/></td></tr>
+		<tr><th>Username:</th><td><input type="text" name="uname" value="<?php echo RCWeb_GetPost('uname')?>" style="width:50%"/></td></tr>
+		<tr><th>Alias:</th><td><input type="text" name="ualias" value="<?php echo RCWeb_GetPost('ualias')?>" style="width:50%"/></td></tr>
+		<tr><th>Email:</th><td><input type="text" name="uemail" value="<?php echo RCWeb_GetPost('uemail') ?>" style="width:50%"/></td></tr>
+		<tr><th>Access Level:</th><td><input type="text" name="uaccess" value="<?php echo RCWeb_GetPost('uaccess')?>" style="width:50%"/></td></tr>
 		<tr><th>Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:50%"/></td></tr>
 		<tr><th>Confirm Password:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:50%"/></td></tr>
 		</table>
