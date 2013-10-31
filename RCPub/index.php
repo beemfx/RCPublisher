@@ -4,6 +4,19 @@ assert_options(ASSERT_BAIL, 1);
 
 assert(!get_magic_quotes_gpc());
 
+if( !file_exists( 'config/config.php' ) )
+{
+	if( file_exists( 'install/config.php' ) )
+	{
+		print( 'The installation utiltites has been run, please copy config.php from the install directory to the config directory.' );
+	}
+	else
+	{
+		print( 'RC Publisher is not installed. Please visit <a href="install/index.php">the install page</a>.' );
+	}
+	return;
+}
+
 require_once( 'classes/rcerror.php' );
 require_once( 'classes/table_base.php' );
 require_once( 'classes/table_mail.php' );

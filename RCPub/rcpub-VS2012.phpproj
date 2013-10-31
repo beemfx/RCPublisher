@@ -90,9 +90,6 @@
     <Compile Include="classes\page_user.php">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="classes\php_ex.php">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="classes\rcerror.php">
       <SubType>Code</SubType>
     </Compile>

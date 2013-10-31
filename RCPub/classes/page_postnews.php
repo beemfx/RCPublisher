@@ -1,6 +1,5 @@
 <?php
 require_once('page_base.php');
-require_once('php_ex.php');
 require('table_news.php');
 
 class CPostNewsPage extends CPageBase
