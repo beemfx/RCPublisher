@@ -1,28 +1,30 @@
 RCPublisher
 ===========
 
+RC Publisher is website powering software. It is written in PHP and MySQL and is
+meant to be very basic wiki-type web page editing software.
+
+The following features are still in development:
+
+* Comments for pages
+
+Building
+========
+
 The Visual Studio Project for 2012 requies PHP Tools for Visual Studio
 
 http://www.devsense.com/products/php-tools
 
-RC Publisher is website powering software. It is written in PHP and MySQL and is
-meant to be a very basic wiki-type web page editing template. This software is
-provided in it's most basic form here for anyone desiring a similar easy to use
-website.
+Installing
+==========
 
-This software is not really ready to power a website at this time. The following
-features are still in development.
+Everything in the RCPub directory should be put on the server. The server must
+be running MySQL. Visit the install/index.php page to install the software.
+Note that the file path is not relative to the directory containing the
+software, it is relative to the root directory of the website. Once the
+installation is run, copy the config.php directory from the install directory
+to the config directory. You may then visit the site, where some default stuff
+will already be set up. The initial login is
 
-Version History
-===============
-5/12/2012 - The software is mostly functional. Most of the non-generic code has
-bee cleaned out.
-
-5/5/2012 - Quite a bit of progress made. Contact page and email pages need to
-bee implemented to get the software as functional as it was previously. From
-there everything will be new.
-
-4/29/2012 - Initial upload. This version doesn't actually function as there is
-no way to create the tables needed for the databases without manually creating
-them. Basically this code has just been resurrected from a scrapped project and
-I at least want to start the version history here until I can get it working.
+Username: admin
+Password: admin
