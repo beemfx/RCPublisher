@@ -78,7 +78,7 @@ class rcwidget_plugin extends Plugin
 				  'label' => T_('Nav Menu'),
 				  'note' => T_('Which nav menu to be displayed.'),
 				  'type' => 'select',
-				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu',),
+				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu', 's' => 'Pre &lt;/head&gt; Scripting', ),
 				  'defaultvalue' => 'n',
 			 ),
 			 
@@ -129,6 +129,10 @@ class rcwidget_plugin extends Plugin
 		 {
 			 $Formatter = new CRCMarkup( $params['freetext'] );
 			 $c = $Formatter->GetHTML();
+		 }
+		 else if ('s' == $params['navtype'] )
+		 {
+			$c = $Settings->GetSetting( 'txtScriptHeader' );
 		 }
 		 RCSql_Disconnect();
 		 
