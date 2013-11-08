@@ -78,7 +78,7 @@ class rcwidget_plugin extends Plugin
 				  'label' => T_('Nav Menu'),
 				  'note' => T_('Which nav menu to be displayed.'),
 				  'type' => 'select',
-				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu', 's' => 'Pre &lt;/head&gt; Scripting', ),
+				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu', ),
 				  'defaultvalue' => 'n',
 			 ),
 			 
@@ -130,14 +130,37 @@ class rcwidget_plugin extends Plugin
 			 $Formatter = new CRCMarkup( $params['freetext'] );
 			 $c = $Formatter->GetHTML();
 		 }
-		 else if ('s' == $params['navtype'] )
-		 {
-			$c = $Settings->GetSetting( 'txtScriptHeader' );
-		 }
+
 		 RCSql_Disconnect();
 		 
 		echo $c;
 		return true;
+	}
+	
+	function SkinBeginHtmlHead()
+	{
+		$rcPath = $this->Settings->get( 'rcroot' );
+			 
+		//Make sure all this stuff is in the global scope.
+		global $g_rcPrefix;
+		global $g_rcDBHost;
+		global $g_rcDBUser;
+		global $g_rcDBPwd;
+		global $g_rcDBName;
+		global $g_rcFilepath;
+		require_once($rcPath.'classes/pages.php');
+		require_once($rcPath.'config/config.php');
+		require_once($rcPath.'classes/rcsql.php');
+		require_once($rcPath.'classes/RCMarkup.php');
+		require_once($rcPath.'classes/table_base.php');
+		require_once($rcPath.'classes/file_manager.php');
+		require_once($rcPath.'classes/table_settings.php');
+		 
+		RCSql_Connect(); 
+		$Settings = new CTableSettings();
+		$c = $Settings->GetSetting( 'txtScriptHeader' );
+		echo $c;
+		RCSql_Disconnect();
 	}
 }
 
