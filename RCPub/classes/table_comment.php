@@ -41,7 +41,8 @@ class CTableComment extends CTable
 	public function GetFormattedCommentsForPage( $PageId )
 	{
 		assert( 'integer' == gettype($PageId) );
-		$this->DoSelect( 'id, idUser , txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , 'not bApproved and idContent='.$PageId , 'dtPosted desc' );
+		//TODO: Should re-add bApproved to the filter.
+		$this->DoSelect( 'id, idUser , txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , 'idContent='.$PageId , 'dtPosted desc' );
 		return $this->m_rows;
 	}
 	
