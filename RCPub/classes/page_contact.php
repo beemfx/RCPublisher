@@ -99,8 +99,7 @@ class CContactPage extends CPageBase
 		</td>
 		</tr>
 		<tr>
-		<td><input type="text" name="secure"/><br />Type in the security code.</td>
-		<td><img src="captcha/captcha_image.php" alt="Security Image" border="0"/></td>
+		<td colspan="2"><?php RCSpam_DisplayQuestion(); echo '<br/>'; RCSpam_DisplayResponseArea();?></td>
 		</tr>
 		<tr>
 		<td colspan="2"><input class="button" type="submit" value="Send Email"/></td>
@@ -158,7 +157,7 @@ class CContactPage extends CPageBase
 			$_POST['subject'] = 'no subject';
 		}
 
-		if(strtoupper(trim(strip_tags(RCWeb_GetPost('secure', '', true)))) != RCWeb_GetSession('captcha','',true))
+		if(!RCSpam_IsAnswerCorrect())
 		{
 			$this->ShowWarning('The security code was invalid.');
 			return false;

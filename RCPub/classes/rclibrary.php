@@ -36,4 +36,29 @@ function RCWeb_ValidateEmail($strE)
 	return preg_match($strEmailRegEx, $strE)!=0;
 }
 
+function RCSpam_DisplayQuestion()
+{
+	echo '<img src="captcha/captcha_image.php" alt="Security Image" border="0"/>';
+}
+
+function RCSpam_DisplayResponseArea()
+{
+	echo 'Type in the letters and numbers <input type="text" name="rcspam_secure"/>';
+}
+
+function RCSpam_IsAnswerCorrect()
+{
+	$Response = strtoupper(trim(strip_tags(RCWeb_GetPost('rcspam_secure', '', true))));
+	$Correct = RCWeb_GetSession('captcha','',true);
+	
+	if( strlen( $Correct ) < 1 ) return false;
+	if( strlen( $Response ) < 1 ) return false;
+	
+	if( $Response != $Correct )
+	{
+		return false;
+	}
+	return true;
+}
+
 ?>

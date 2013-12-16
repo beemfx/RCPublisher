@@ -291,6 +291,12 @@ class CPagePage extends CPageBase
 		(Your email address will not appear on this site.)<br/>
 		<span class="leave_comment_header">Comment:</span>
 		<textarea name="comment_comment" style="height:200px;width:100%"><?php print RCWeb_GetPost('comment_comment','')?></textarea>
+		<?php
+		RCSpam_DisplayQuestion();
+		echo( '<br/>' );
+		RCSpam_DisplayResponseArea();
+		echo( '<br/>' );
+		?>
 		<input type="submit" value="Post Comment"/>
 		</form>
 		<?php
@@ -327,6 +333,12 @@ class CPagePage extends CPageBase
 		if( strlen( $Comment ) < 3 )
 		{
 			RCError_PostError( 'You must actually leave a comment.' );
+			return;
+		}
+		
+		if( !RCSpam_IsAnswerCorrect() )
+		{
+			RCError_PostError( 'You entered an incorrect response for the humanity check.' );
 			return;
 		}
 		
