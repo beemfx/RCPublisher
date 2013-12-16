@@ -40,6 +40,7 @@ function RCSession_Begin()
 			$_SESSION['user_alias'] = $Info['txtAlias'];
 			$_SESSION['user_id']    = $Info['id'];
 			$_SESSION['user_level'] = $Info['nAccessLevel'];
+			$_SESSION['user_email'] = $Info['txtEmail'];
 		}
 	}
 }
@@ -63,6 +64,7 @@ function RCSession_Connect($strUser, $strFullHashPwd, $strSalt, $bRemember)
 	$_SESSION['user']       = $Info['txtUserName'];
 	$_SESSION['user_alias'] = $Info['txtAlias'];
 	$_SESSION['user_level'] = $Info['nAccessLevel'];
+	$_SESSION['user_email'] = $Info['txtEmail'];
 	
 	setcookie($g_rcCookieName, (int)$_SESSION['user_id'], time()+3600*24*365);
 	
@@ -88,6 +90,7 @@ function RCSession_Disconnect()
 	$_SESSION['user']       = '';
 	$_SESSION['user_alias'] = '';
 	$_SESSION['user_level'] = 0;
+	$_SESSION['user_email'] = '';
 }
 
 ?>

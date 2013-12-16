@@ -173,6 +173,12 @@ class CPagePage extends CPageBase
 			{
 
 			}
+			
+			//We now have all the info, so we can process comments.
+			if( 0 != RCWeb_GetPost( 'comment_stage' ) )
+			{
+				$this->ProcessComment();
+			}
 		}
 	}
 	
@@ -238,12 +244,114 @@ class CPagePage extends CPageBase
 			echo '<p class="date">'.$c['dt'].'</p>';
 			echo '</div>';
 		}
+		$this->DisplayCommentBlock_LeaveFeedback();
 		
 		echo '</div>';
+	}
+	
+	protected function DisplayCommentBlock_LeaveFeedback()
+	{
+		echo "\n";
+		echo '<div id="comment_block_leave_feedback">';
+		echo '<h3>Leave Feedback</h3>';
+		$this->DisplayCommentBlock_LeaveFeedback_CommentForm();
+		echo '</div>';
+	}
+	
+	protected function DisplayCommentBlock_LeaveFeedback_CommentForm()
+	{
+		?>
+		<form method="post" action=<?php print CreateHREF(PAGE_PAGE,'p='.$this->m_strPageSlug)?>>
+		<input type="hidden" name="comment_stage" value="1"/>
+		<input type="hidden" name="comment_page_id" value="<?php echo $this->m_nID?>"/>
+		<span class="leave_comment_header">Name:</span>
+		<?php
+			if( RCSession_GetUserProp('user_id') >= 0 )
+			{
+				echo RCSession_GetUserProp( 'user_alias' );
+			}
+			else
+			{
+				echo '<input type="text" name="comment_name" value="'.RCWeb_GetPost('comment_name','').'"/>';
+			}
+		?>
+		<br/>
+		<span class="leave_comment_header">Email:</span>
+		<?php
+			if( RCSession_GetUserProp('user_id') >= 0 )
+			{
+				echo RCSession_GetUserProp( 'user_email' );
+			}
+			else
+			{
+				echo '<input type="text" name="comment_email" value="'.RCWeb_GetPost('comment_email','').'"/>';
+			}
+		?>
+		<br/>
+		(Your email address will not appear on this site.)<br/>
+		<span class="leave_comment_header">Comment:</span>
+		<textarea name="comment_comment" style="height:200px;width:100%"><?php print RCWeb_GetPost('comment_comment','')?></textarea>
+		<input type="submit" value="Post Comment"/>
+		</form>
+		<?php
+	}
+	
+	protected function ProcessComment()
+	{
+		assert( 0 !=$this->m_nID );
+		if( $this->m_nID != (int)RCWeb_GetPost( 'comment_page_id' ) )return;
+		
+		$Name    = RCWeb_GetPost( 'comment_name' );
+		$Email   = RCWeb_GetPost( 'comment_email' );
+		$Comment = RCWeb_GetPost( 'comment_comment' );
+		
+		if( RCSession_GetUserProp('user_id') >= 0 )
+		{
+			$Name  = RCSession_GetUserProp( 'user_alias' );
+			$Email = RCSession_GetUserProp( 'user_email' );
+		}
+		
+		//Make sure the input is good. Then post.
+		if( strlen( $Name ) < 1 )
+		{
+			RCError_PostError( 'A name is required to leave a comment.' );
+			return;
+		}
+		
+		if( !RCWeb_ValidateEmail( $Email ) )
+		{
+			RCError_PostError( 'The email address provided was not valid.' );
+			return;
+		}
+		
+		if( strlen( $Comment ) < 3 )
+		{
+			RCError_PostError( 'You must actually leave a comment.' );
+			return;
+		}
+		
+		if( strlen( $Name ) >= 50 )
+		{
+			$Name = substr( $Name , 0 , 50 );
+		}
+		
+		if( strlen( $Email ) >= 50 )
+		{
+			$Email = substr( $Email , 0 , 50 );
+		}
+		
+		$CmtTable = new CTableComment();
+		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
+		//Clear all post properties...
+		$_POST['comment_page_id'] = 0;
+		$_POST['comment_name'] = '';
+		$_POST['comment_email'] = '';
+		$_POST['comment_comment'] = '';
 	}
 
 	protected function DisplayContent()
 	{
+		RCError_ShowErrors();	
 		switch($this->m_nMode)
 		{
 			case self::MODE_PAGE : $this->DisplayPage();     break;

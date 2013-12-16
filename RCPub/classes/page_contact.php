@@ -169,8 +169,7 @@ class CContactPage extends CPageBase
 
 	private function ValidateEmail($strE)
 	{
-		$strEmailRegEx = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
-		return preg_match($strEmailRegEx, $strE)!=0;
+		return RCWeb_ValidateEmail( $strE );	
 	}
 
 }
