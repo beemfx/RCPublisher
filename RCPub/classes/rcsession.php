@@ -10,6 +10,8 @@ function RCSession_Begin()
 	session_start();
 	//Always reset the user level.
 	$_SESSION['user_level'] = 0;
+	//Always reset the user id;
+	$_SESSION['user_id'] = -1;
 	
 	//Generate a login key if one wasn't set already.
 	if(!isset($_SESSION['login_key']))

@@ -11,6 +11,7 @@
  ******************************************************************************/
 require_once('page_base.php');
 require_once('table_page.php');
+require_once('table_comment.php');
 
 class CPagePage extends CPageBase
 {
@@ -192,8 +193,16 @@ class CPagePage extends CPageBase
 	
 	protected function DisplayPage()
 	{
+		$this->DisplayContentBlock();
+		$this->DisplayCommentBlock();
+	}
+	
+	protected function DisplayContentBlock()
+	{
+		//$Comment = new CTableComment();
+		//$Comment->InsertComment( $this->m_nID , 'My totally new comment!' , 'Ryan' , 'beemfx@gmail.com' );	
 		if($this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
-		{
+		{	
 			$strVersion = self::VERSION_DEFAULT == $this->m_Version ? '' : '&v='.$this->m_Version;
 			$strEditLink = sprintf(
 				' [<a href=%s>Edit</a>]',
@@ -208,6 +217,28 @@ class CPagePage extends CPageBase
 		
 		echo '<div style="margin:0;padding:1em">'."\n";
 		echo $this->m_strContent;
+		echo '</div>';
+	}
+	
+	protected function DisplayCommentBlock()
+	{
+		$Comment = new CTableComment();
+		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID );
+			
+		echo '<div id="comment_block">';
+		echo '<h3>Comments ('.count($Comments).'-'.$this->m_nID.')</h3>';
+		
+		for( $i=0; $i < count($Comments); $i++)
+		{
+			$c = $Comments[$i];
+			
+			echo '<div class="comment">';
+			printf( '<h4>Comment from: %s [%s]</h4>' , $c['txtName'] , 0<=$c['idUser'] ? 'Member' : 'Visitor' );
+			echo '<p>'.$c['txtCommentFormat'].'</p>';
+			echo '<p class="date">'.$c['dt'].'</p>';
+			echo '</div>';
+		}
+		
 		echo '</div>';
 	}
 

@@ -115,6 +115,9 @@
     <Compile Include="classes\table_base.php">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="classes\table_comment.php">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="classes\table_mail.php">
       <SubType>Code</SubType>
     </Compile>
