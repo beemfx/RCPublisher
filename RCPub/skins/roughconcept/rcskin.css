@@ -470,6 +470,10 @@ div.image_caption
 	background-color:#000;
 }
 
+/*********
+ Comments
+*********/
+
 div#comment_block
 {
 	margin:0 20%;
@@ -511,4 +515,34 @@ span.leave_comment_header
 	display:inline-block;
 	width:5em;
 	font-weight:bold;
+}
+
+div#comment_block_leave_feedback
+{
+	border:1px dashed red;
+	margin:0 30%;
+	padding:1em;
+	font-size:small;
+}
+
+div#comment_block_leave_feedback input
+{
+	border:1px solid red;
+	color:darkred;
+	background-color:lightcyan;
+}
+
+div#comment_block_leave_feedback input.button
+{
+	display:block;
+	border:1px solid red;
+	color:darkred;
+	background-color:gray;
+	margin:auto;
+	font-weight:bold;
+}
+
+div#comment_block_leave_feedback br
+{
+	margin:2px 0;
 }

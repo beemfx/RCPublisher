@@ -244,9 +244,9 @@ class CPagePage extends CPageBase
 			echo '<p class="date">'.$c['dt'].'</p>';
 			echo '</div>';
 		}
-		$this->DisplayCommentBlock_LeaveFeedback();
-		
 		echo '</div>';
+		
+		$this->DisplayCommentBlock_LeaveFeedback();
 	}
 	
 	protected function DisplayCommentBlock_LeaveFeedback()
@@ -297,7 +297,7 @@ class CPagePage extends CPageBase
 		RCSpam_DisplayResponseArea();
 		echo( '<br/>' );
 		?>
-		<input type="submit" value="Post Comment"/>
+		<input class="button" type="submit" value="Post Comment"/>
 		</form>
 		<?php
 	}
