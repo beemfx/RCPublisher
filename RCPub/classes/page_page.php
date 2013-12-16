@@ -226,7 +226,7 @@ class CPagePage extends CPageBase
 		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID );
 			
 		echo '<div id="comment_block">';
-		echo '<h3>Comments ('.count($Comments).'-'.$this->m_nID.')</h3>';
+		echo '<h3>Comments</h3>';
 		
 		for( $i=0; $i < count($Comments); $i++)
 		{
@@ -234,7 +234,7 @@ class CPagePage extends CPageBase
 			
 			echo '<div class="comment">';
 			printf( '<h4>Comment from: %s [%s]</h4>' , $c['txtName'] , 0<=$c['idUser'] ? 'Member' : 'Visitor' );
-			echo '<p>'.$c['txtCommentFormat'].'</p>';
+			echo '<p class="text">'.$c['txtCommentFormat'].'</p>';
 			echo '<p class="date">'.$c['dt'].'</p>';
 			echo '</div>';
 		}

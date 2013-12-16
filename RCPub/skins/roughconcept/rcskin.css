@@ -470,4 +470,38 @@ div.image_caption
 	background-color:#000;
 }
 
+div#comment_block
+{
+	margin:0 20%;
+	border:0px solid black;
+	padding:1em;
+}
 
+div#comment_block h3
+{
+	text-align:center;
+}
+
+div.comment
+{
+	margin:1em;
+	border:1px dashed gray;
+	padding:.25em;
+}
+
+div#comment_block p.text
+{
+	margin:0 1em;
+	border:0;
+	padding:0;
+}
+
+div#comment_block p.date
+{
+	margin:0;
+	padding:0;
+	border:0;
+	font-size:smaller;
+	color:gray;
+	text-align:right;
+}
