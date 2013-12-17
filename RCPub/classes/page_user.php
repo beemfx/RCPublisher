@@ -86,7 +86,22 @@ class CPageUser extends CPageBase
 	
 	private function UpdatePassword()
 	{
-		if($_POST['npass'] != $_POST['npassc'])
+		$NewPw = RCWeb_GetPost( 'npass' );
+		
+		if( strlen( $NewPw ) <= 0 )
+		{
+			RCError_PushError( 'Passwords must be at least 6 characters long and contain only letters numbers and the following symbols _,*,#.' , 'warning' );
+			return;
+		}
+		/*
+		if( !preg_match( '/^[a-zA-Z0-9_*#]{6,}$/' , $NewPw ) )
+		{
+			RCError_PushError( 'Passwords must be at least 6 characters long and contain only letters numbers and the following symbols _,*,#.' , 'warning' );
+			return;
+		}
+		*/
+	
+		if($NewPw != $_POST['npassc'])
 		{
 			RCError_PushError('New passwords do not match.' , 'warning' );
 			return;
@@ -125,7 +140,7 @@ class CPageUser extends CPageBase
 	<script type="text/javascript">
 	function onSubmitPChange()
 	{
-		if(document.PChangeForm.npass.value.length >= 6)
+		if(document.PChangeForm.npass.value.length >= 0)
 		{
 			encryptPassword();
 			document.PChangeForm.submit();
@@ -137,9 +152,17 @@ class CPageUser extends CPageBase
 		var opass = document.PChangeForm.opass;
 		var npass = document.PChangeForm.npass;
 		var npassc = document.PChangeForm.npassc;
-
+		
+		var re = /^[a-zA-Z0-9_*#]{6,}$/; 
+		if(re.test(npass.value))
+		{
+			npass.value  = hex_md5(npass.value);
+		}
+		else
+		{
+			npass.value = '';
+		}
 		opass.value  = hex_md5(opass.value);
-		npass.value  = hex_md5(npass.value);
 		npassc.value = hex_md5(npassc.value);
 	}
 	</script>
