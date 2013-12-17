@@ -36,6 +36,11 @@ abstract class CPageBase
 		return $Formatter->GetHTML();
 	}
 	
+	public function GetErrorText()
+	{
+		return '<div id="rc_errors"></div>';
+	}
+	
 	public function GetBody(){ return '<h2>Page Body!</h2>This is the content.'; }
 	public function GetFooter()
 	{
@@ -71,6 +76,7 @@ abstract class CPageBase
 		$Skin->DrawPage( $this );
 		$this->DisplayPost();
 		$this->DisplayUserOptions();
+		$this->DisplayErrors();
 		$Skin->EndHTML( $this );
 	}
 
@@ -101,11 +107,6 @@ abstract class CPageBase
 	{
 		$Settings = new CTableSettings();	
 		return $Settings->SetSetting($strSettingName, $strNewValue);
-	}
-
-	public static function ShowWarning($str)
-	{
-		printf("<p style=\"color:red\">%s</p>\n", $str);
 	}
 
 	protected function GetNumMessages()
@@ -167,6 +168,16 @@ abstract class CPageBase
 	{
 		//We should probably do some kind of IP verification or something here.	
 		return (int)  RCSession_GetUserProp('user_level');
+	}
+	
+	protected function DisplayErrors()
+	{
+		?>
+		<script language="javascript" type="text/javascript">
+			var Element = document.getElementById('rc_errors');
+			Element.innerHTML = '<?php print RCError_GetErrorText(); ?>';
+		</script>
+		<?php
 	}
 	
 	protected function DisplayUserOptions()

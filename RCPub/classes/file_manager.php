@@ -202,7 +202,7 @@ class CFileManager extends CTable
 	{
 		if($FILE['error']!=0)
 		{
-			if($bShowError)$this->ShowWarning('Error '.$FILE['error'].': Could not upload file.');
+			RCError_PushError('Error '.$FILE['error'].': Could not upload file.' , 'error' );
 			return false;
 		}
 
@@ -225,7 +225,7 @@ class CFileManager extends CTable
 
 		if(!move_uploaded_file($FILE['tmp_name'], $strTempName))
 		{
-			$this->ShowWarning('Error: Could not move the file.');
+			RCError_PushError( 'Error: Could not move the file.' , 'error' );
 			return false;
 		}
 
@@ -245,7 +245,7 @@ class CFileManager extends CTable
 
 		if(!copy($strURL, $strTempName))
 		{
-			$this->ShowWarning('Error: Could not move the file.');
+			RCError_PushError( 'Error: Could not move the file.' , 'error' );
 			return false;
 		}
 
@@ -272,12 +272,12 @@ class CFileManager extends CTable
 		
 		if(file_exists($strFullPath))
 		{
-			CPageBase::ShowWarning( 'This file already exists, overwriting, but the database may be corrupted.' );
+			RCError_PushError( 'This file already exists, overwriting, but the database may be corrupted.' , 'error' );
 			unlink($strFullPath);
 		}
 		if(!copy($strFileTemp, $strFullPath))
 		{
-			CPageBase::ShowWarning('Failed to copy file.');
+			RCError_PushError( 'Failed to copy file.' , 'error' );
 			return false;
 		}
 		//The os will eventually get rid of this anyway, but delete

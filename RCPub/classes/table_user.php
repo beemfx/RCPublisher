@@ -27,13 +27,13 @@ class CTableUser extends CTable
 		//We'll do some verification to make sure this is valid:
 		if(!preg_match('/^[A-Za-z0-9]{6,}$/', $sUname))
 		{
-			RCError_PostError('User names may only contain letters and numbers and must be at least 6 charactrs long.');
+			RCError_PushError('User names may only contain letters and numbers and must be at least 6 charactrs long.' , 'warning' );
 			return false;
 		}
 		
 		if(!preg_match('/^[A-Za-z0-9_ ]*$/', $sAlias))
 		{
-			RCError_PostError('Aliases may only contain leters numbers and -,_');
+			RCError_PushError( 'Aliases may only contain leters numbers and -,_' , 'warning' );
 			return false;
 		}
 		
@@ -41,19 +41,19 @@ class CTableUser extends CTable
 
 		if(!preg_match($strEmailRegEx, $sEmail))
 		{
-			RCError_PostError('That email address isn\'t valid.');
+			RCError_PushError( 'That email address isn\'t valid.' , 'warning' );
 			return false;
 		}
 		
 		if( !(1<=$nAccess && $nAccess <=10))
 		{
-			RCError_PostError('The access level must be between 1 and 10');
+			RCError_PushError( 'The access level must be between 1 and 10' , 'warning' );
 			return false;
 		}
 		
 		if(!preg_match('/^[^ ]{6,}$/', $sPass))
 		{
-			RCError_PostError('Passwords must be 6 characters long and cannot contain spaces.');
+			RCError_PushError( 'Passwords must be 6 characters long and cannot contain spaces.' , 'warning' );
 			return false;
 		}
 		
@@ -94,7 +94,7 @@ class CTableUser extends CTable
 	{
 		if(!preg_match('/^[^ ]{6,}$/', $sPass))
 		{
-			RCError_PostError('Passwords must be 6 characters long and cannot contain spaces.');
+			RCError_PushError( 'Passwords must be 6 characters long and cannot contain spaces.' , 'warning' );
 			return false;
 		}
 		

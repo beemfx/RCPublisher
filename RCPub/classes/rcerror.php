@@ -9,22 +9,44 @@
  * errors should be handled by asserts.
  */
 
-$g_sError = '';
+$RCError_NumErrors = 0;
+$RCError_ErrorStack = array();
 
-function RCError_PostError($sMsg, $nSeverity = 0)
+function RCError_PushError($Message , $Type = 'warning' )
 {
-	global $g_sError;
+	assert( 'string' == gettype($Type) );
+	assert( 'string' == gettype($Message) );
 	
-	$g_sError .= sprintf('<p style="color:%s">%s</p>', 0 == $nSeverity ? 'red' : 'yellow', $sMsg);
+	global $RCError_NumErrors;
+	global $RCError_ErrorStack;
+	
+	$RCError_ErrorStack[$RCError_NumErrors] = array( 'message' => $Message , 'type' => $Type );
+	$RCError_NumErrors++;
+	
 }
 
-function RCError_ShowErrors()
+function RCError_GetErrorText()
 {
-	global $g_sError;
-	echo $g_sError;
-	//Clear the error messages.
-	$g_sError = '';
+	global $RCError_NumErrors;
+	global $RCError_ErrorStack;
+	
+	$Out = '';
+	
+	for( $i = 0; $i < $RCError_NumErrors; $i++ )
+	{
+		$Color = 'red';
+		switch( $RCError_ErrorStack[$i]['type'] )
+		{
+			case 'warning': $Color = 'yellow'; break;
+			case 'error': $Color = 'red'; break;
+			case 'message': $Color = 'green'; break;
+			default: $Color = 'green'; break;
+		}
+		
+		$Out .= '<p style="color:'.$Color.'">'.$RCError_ErrorStack[$i]['message'].'</p>';
+	}
+	
+	return $Out;
 }
-
 
 ?>

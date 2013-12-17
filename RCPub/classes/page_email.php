@@ -91,7 +91,7 @@ class CEmailPage extends CPageBase
 		
 		if(!$Message)
 		{
-			$this->ShowWarning('The specified message did not exist.');
+			RCError_PushError( 'The specified message did not exist.' , 'warning' );
 			return;
 		}
 

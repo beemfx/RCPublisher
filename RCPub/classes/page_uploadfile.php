@@ -107,7 +107,7 @@ class CPageUploadFile extends CPageBase
 		
 		if(0 != ($nURLLen*$nFileNLen))
 		{
-			$this->ShowWarning('WARNING: You may upload a file or grab a file from a website, but not both.');
+			RCError_PushError('WARNING: You may upload a file or grab a file from a website, but not both.' , 'warning' );
 			$this->DisplayForm();
 			return;
 		}
@@ -128,7 +128,7 @@ class CPageUploadFile extends CPageBase
 
 		if(!preg_match('/[a-zA-Z0-9]{2,20}\.[a-zA-Z0-9]{1,10}/', $sFilename))
 		{
-			$this->ShowWarning( 'WARNING: Invalid filename. Filenames must be at least 2 characters long, contain exactly one \'.\' followed by an extension that is at least 1 character long, and may be no more than 20 characters long witha  10 character extension. It may contain only letters and numbers, no spaces or other symbols are allowed.');
+			RCError_PushError( 'WARNING: Invalid filename. Filenames must be at least 2 characters long, contain exactly one \'.\' followed by an extension that is at least 1 character long, and may be no more than 20 characters long witha  10 character extension. It may contain only letters and numbers, no spaces or other symbols are allowed.' , 'warning' );
 			$this->DisplayForm();
 			return;
 		}
@@ -140,7 +140,7 @@ class CPageUploadFile extends CPageBase
 
 		if($F->DoesFileExist($_POST['uslug']))
 		{
-			$this->ShowWarning('WARNING: A file with the slug '.$_POST['uslug'].' already exists please rename the file to something else.');
+			RCError_PushError('WARNING: A file with the slug '.$_POST['uslug'].' already exists please rename the file to something else.' , 'warning' );
 			$this->DisplayForm();
 			return;
 		}
@@ -184,7 +184,7 @@ class CPageUploadFile extends CPageBase
 		
 		if(!$_POST['utempfile'])
 		{
-			$this->ShowWarning( 'Failed to create temporary file.');
+			RCError_PushError( 'Failed to create temporary file.' , 'warning' );
 			$this->DisplayForm();
 			return;	
 		}

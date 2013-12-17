@@ -87,7 +87,7 @@ class CLoginPage extends CPageBase
 			}
 			else
 			{
-				$this->ShowWarning('Username or password could not be authenticated.');
+				RCError_PushError( 'Username or password could not be authenticated.' , 'warning' );
 				$this->DisplayLoginForm();
 			}
 		}

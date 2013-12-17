@@ -37,7 +37,6 @@ class CPageUser extends CPageBase
 	protected function DisplayContent()
 	{
 		printf( '<h1>User Settings [%s]</h1>', RCSession_GetUserProp('user'));
-		RCError_ShowErrors();
 		//No matter what we display the form.
 		$this->DisplayChangePassword();
 		
@@ -89,7 +88,7 @@ class CPageUser extends CPageBase
 	{
 		if($_POST['npass'] != $_POST['npassc'])
 		{
-			RCError_PostError('New passwords do not match.');
+			RCError_PushError('New passwords do not match.' , 'warning' );
 			return;
 		}
 		
@@ -97,20 +96,20 @@ class CPageUser extends CPageBase
 		
 		if($_POST['opass'] != $sPass)
 		{
-			RCError_PostError('Old password is not correct.');
+			RCError_PushError( 'Old password is not correct.' , 'warning' );
 			return;
 		}
 		
 		//We're good to go, stuff it in.
 		$this->m_UserTable->SetUserPassword((int)RCSession_GetUserProp('user_id'), $_POST['npass']);
-		RCError_PostError('Password updated.', 2);
+		RCError_PushError( 'Password updated.', 'message' );
 	}
 	
 	protected function InsertNewUser()
 	{
 		if($_POST['npass'] != $_POST['npassc'])
 		{
-			RCError_PostError('Passwords must match');
+			RCError_PushError( 'Passwords must match' , 'warning' );
 			return;
 		}
 		$this->m_UserTable->InsertNew($_POST['uname'], $_POST['ualias'], $_POST['uemail'], (int)$_POST['uaccess'], $_POST['npass']);

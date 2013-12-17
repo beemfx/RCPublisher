@@ -86,22 +86,22 @@ class CPageSettings extends CPageBase
 		//If submit was pressed, we update the settings.
 		if(isset($_POST['stage']) && $_POST['stage'] == 'us')
 		{			
-			echo '<p style="background-color:#0c0">Saving settings...</p>';		
+			RCError_PushError( 'Settings saved.' , 'message' );		
 		}
 		
 		if(isset($_GET['action']) && 'recache' == $_GET['action'] )
 		{
-			echo '<p style="background-color:#0c0">Cache reset.</p>';
+			RCError_PushError( 'Cache reset.' , 'message' );
 		}
 		
 		if(isset($_GET['action']) && 'reimagethumb' == $_GET['action'] )
 		{
-			echo '<p style="background-color:#0c0">Thumbnails generated.</p>';
+			RCError_PushError( 'Thumbnails generated.' , 'mesage' );
 		}
 		
 		if(isset($_GET['action']) && 'purgethumb' == $_GET['action'] )
 		{
-			echo '<p style="background-color:#0c0">Thumbnails purged.</p>';
+			RCError_PushError( 'Thumbnails purged.' , 'message' );
 		}
 		
 		//No matter what we display the form.

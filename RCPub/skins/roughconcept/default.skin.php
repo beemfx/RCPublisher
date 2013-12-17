@@ -45,6 +45,7 @@ class RCSkin implements ISkin
 		<?php print( $Page->GetNav2() ); ?>
 		</div>
 		<?php
+		print( $Page->GetErrorText() );
 		$Page->Display_PageCallback();
 		print("<div id=\"footer\">\n");
 		print('<br/><p>'.$Page->GetFooter().'</p><br/>' );

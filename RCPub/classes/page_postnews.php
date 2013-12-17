@@ -79,7 +79,7 @@ class CPostNewsPage extends CPageBase
 		
 		if(null == $story)
 		{
-			$this->ShowWarning('Trying to edit an invalid news article.');
+			RCError_PushError( 'Trying to edit an invalid news article.' , 'error' );
 			return;
 		}
 

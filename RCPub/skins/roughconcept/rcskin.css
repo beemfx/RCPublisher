@@ -546,3 +546,18 @@ div#comment_block_leave_feedback br
 {
 	margin:2px 0;
 }
+
+div#rc_errors, div#rc_errors p
+{
+	background-color: #000;
+	font-weight:bold;
+	margin:0;
+	border:0px solid red;
+	padding:0;
+	color:#fff;
+}
+
+div#rc_errors p
+{
+	padding:.5em;
+}

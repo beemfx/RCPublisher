@@ -113,7 +113,7 @@ class CContactPage extends CPageBase
 	{
 		if(!$this->ValidateInput())
 		{
-			$this->ShowWarning('One or more required fields was missing.');
+			RCError_PushError( 'One or more required fields was missing.' , 'warning' );
 			$_GET['to'] = (int)RCWeb_GetPost('send_to', 0, true);
 			return false;
 		}
@@ -142,13 +142,13 @@ class CContactPage extends CPageBase
 	{
 		if(!$this->ValidateEmail(RCWeb_GetPost('reply_email', '', true)))
 		{
-			$this->ShowWarning($_POST['reply_email'].' is not a valid email address.');
+			RCError_PushError($_POST['reply_email'].' is not a valid email address.' , 'warning' );
 			return false;
 		}
 
 		if(strlen(RCWeb_GetPost('message', '', true))<1)
 		{
-			$this->ShowWarning('A message is required.');
+			RCError_PushError( 'A message is required.' , 'warning' );
 			return false;
 		}
 
@@ -159,7 +159,7 @@ class CContactPage extends CPageBase
 
 		if(!RCSpam_IsAnswerCorrect())
 		{
-			$this->ShowWarning('The security code was invalid.');
+			RCError_PushError('The security code was invalid.' , 'warning' );
 			return false;
 		}
 

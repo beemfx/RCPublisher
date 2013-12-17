@@ -55,7 +55,7 @@ class CPagePage extends CPageBase
 		if(!preg_match('/^[A-Za-z0-9_]+$/', $this->m_strPageSlug))
 		{
 			//If the slug isn't okay, we want to go back to the edit page.
-			$this->ShowWarning($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.');	
+			RCError_PushError($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.' , 'warning' );	
 		}
 		else
 		{
@@ -320,25 +320,25 @@ class CPagePage extends CPageBase
 		//Make sure the input is good. Then post.
 		if( strlen( $Name ) < 1 )
 		{
-			RCError_PostError( 'A name is required to leave a comment.' );
+			RCError_PushError( 'A name is required to leave a comment.' , 'warning' );
 			return;
 		}
 		
 		if( !RCWeb_ValidateEmail( $Email ) )
 		{
-			RCError_PostError( 'The email address provided was not valid.' );
+			RCError_PushError( 'The email address provided was not valid.' , 'warning' );
 			return;
 		}
 		
 		if( strlen( $Comment ) < 3 )
 		{
-			RCError_PostError( 'You must actually leave a comment.' );
+			RCError_PushError( 'You must actually leave a comment.' , 'warning' );
 			return;
 		}
 		
 		if( !RCSpam_IsAnswerCorrect() )
 		{
-			RCError_PostError( 'You entered an incorrect response for the humanity check.' );
+			RCError_PushError( 'You entered an incorrect response for the humanity check.' , 'warning' );
 			return;
 		}
 		
@@ -362,8 +362,7 @@ class CPagePage extends CPageBase
 	}
 
 	protected function DisplayContent()
-	{
-		RCError_ShowErrors();	
+	{	
 		switch($this->m_nMode)
 		{
 			case self::MODE_PAGE : $this->DisplayPage();     break;
