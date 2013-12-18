@@ -41,22 +41,30 @@ class CPageUploadFile extends CPageBase
 		{
 			print("<h1>Upload New File</h1>\n");
 			print('<div style="margin:1em">');
+                        
+                        if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFILE ) )
+                        {
 			
-			$Stage = RCWeb_GetPost( 'stage' , 0 );
+                            $Stage = RCWeb_GetPost( 'stage' , 0 );
 
-			switch($Stage)
-			{
-			default:
-			case 0:
-				$this->DisplayForm();
-				break;
-			case 1:
-				$this->DisplayConfirm();
-				break;
-			case 2:
-				$this->DisplayComplete();
-				break;
-			}
+                            switch($Stage)
+                            {
+                            default:
+                            case 0:
+                                    $this->DisplayForm();
+                                    break;
+                            case 1:
+                                    $this->DisplayConfirm();
+                                    break;
+                            case 2:
+                                    $this->DisplayComplete();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            echo 'You do not have permissions to upload files.';
+                        }
 			print('</div>');
 		}
 	}
