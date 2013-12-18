@@ -128,7 +128,10 @@ class CPageUser extends CPageBase
 			return;
 		}
 		$this->m_UserTable->InsertNew(RCWeb_GetPost('uname'), RCWeb_GetPost('ualias'), RCWeb_GetPost('uemail'), (int)RCWeb_GetPost('uaccess'), RCWeb_GetPost('npass'));
-	}
+                RCError_PushError( 'New user created. Log out to log in with the new user.' , 'message' );
+                RCWeb_ClearPostData();
+                
+        }
 	
 	protected function DisplayPost()
 	{
@@ -153,7 +156,7 @@ class CPageUser extends CPageBase
 		var npass = document.PChangeForm.npass;
 		var npassc = document.PChangeForm.npassc;
 		
-		var re = <?php echo RCRX_PASSWORD; ?>
+		var re = <?php echo RCRX_PASSWORD; ?>;
 		
 		if(re.test(npass.value))
 		{
