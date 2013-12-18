@@ -11,14 +11,18 @@ require_once('page_base.php');
 
 class CPageUser extends CPageBase
 {
-	const RQ_USERLEVEL = 1;
 	
 	private $m_UserTable;
 	
 	public function CPageUser()
 	{
-		parent::CPageBase('User Settings', self::RQ_USERLEVEL);
+		parent::CPageBase('User Settings');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsPermissionAllowed( RCSESSION_CREATEUSER ) || RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) || RCSession_IsPermissionAllowed( RCSESSION_DELETEUSER );
+        }
 	
 	protected function DisplayPre()
 	{
@@ -38,9 +42,15 @@ class CPageUser extends CPageBase
 	{
 		printf( '<h1>User Settings [%s]</h1>', RCSession_GetUserProp('user'));
 		//No matter what we display the form.
-		$this->DisplayChangePassword();
+                if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) )
+                {
+                    $this->DisplayChangePassword();
+                }
 		
-		$this->DisplayCreateNewUser();
+                if( RCSession_IsPermissionAllowed( RCSESSION_CREATEUSER ) )
+                {
+                    $this->DisplayCreateNewUser();
+                }
 	}
 	
 	private function DisplayChangePassword()

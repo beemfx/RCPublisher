@@ -14,8 +14,13 @@ class CPageHome extends CPageBase
 {
 	public function CPageHome()
 	{
-		parent::CPageBase('Home', 0);
+		parent::CPageBase('Home');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return true;
+        }
 
 	protected function DisplayContent()
 	{

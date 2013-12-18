@@ -5,8 +5,13 @@ class CLoginPage extends CPageBase
 {
 	public function CLoginPage()
 	{
-		parent::CPageBase('Login', 0);
+		parent::CPageBase('Login');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return true;
+        }
 
 	protected function DisplayPre()
 	{
@@ -15,7 +20,7 @@ class CLoginPage extends CPageBase
 			RCSession_Disconnect();
 		}
 
-		if(null != RCWeb_GetPost('stage') && RCWeb_GetPost('stage')==1 && RCSession_GetUserProp('user_level')==0)
+		if( RCWeb_GetPost('stage')==1 && !RCSession_IsUserLoggedIn() )
 		{
 			$user_name = RCWeb_GetPost('uname');
 			$pwd =       RCWeb_GetPost('pwd_hash');
@@ -64,7 +69,7 @@ class CLoginPage extends CPageBase
 			$nStage=0;
 		}
 
-		if(RCSession_GetUserProp('user_level')>0 && $nStage!=1)
+		if(RCSession_IsUserLoggedIn() && $nStage!=1)
 		{
 			print("<p>Already logged in. ");
 			print('<a href='.CreateHREF(PAGE_LOGIN, 'logout').'>Log out</a>');

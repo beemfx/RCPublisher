@@ -8,9 +8,14 @@ class CPostNewsPage extends CPageBase
 		
 	public function CPostNewsPage()
 	{
-		parent::CPageBase('Post News', 5);
+		parent::CPageBase('Post News');
 		$this->m_NewsTable = null;
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsPermissionAllowed( RCSESSION_CREATENEWS );
+        }
 
 	protected function DisplayContent()
 	{

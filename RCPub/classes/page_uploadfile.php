@@ -12,8 +12,13 @@ class CPageUploadFile extends CPageBase
 {
 	public function CPageUploadFile()
 	{
-		parent::CPageBase('File Manager', 5);
+		parent::CPageBase('File Manager');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsPermissionAllowed( RCSESSION_CREATEFILE ) || RCSession_IsPermissionAllowed( RCSESSION_MODIFYFILE ) || RCSession_IsPermissionAllowed( RCSESSION_DELETEFILE );
+        }
 
 	protected function DisplayContent()
 	{		

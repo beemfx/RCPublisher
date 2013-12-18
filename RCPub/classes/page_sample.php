@@ -12,13 +12,17 @@ class CPageSample extends CPageBase
 {
 	public function CPageSample()
 	{
-		parent::CPageBase('Sample', 0);
+		parent::CPageBase('Sample');
 	}
 
 	protected function DisplayContent()
 	{
 		print('<p>The content goes here</p>');
 	}
-
+        
+        protected function IsPageAllowed()
+        {
+            return true;
+        }
 }
 ?>

@@ -93,4 +93,38 @@ function RCSession_Disconnect()
 	$_SESSION['user_email'] = '';
 }
 
+define( 'RCSESSION_CREATEPAGE'     , (1<<0 ) );
+define( 'RCSESSION_MODIFYPAGE'     , (1<<1 ) );
+define( 'RCSESSION_DELETEPAGE'     , (1<<2 ) );
+define( 'RCSESSION_CREATENEWS'     , (1<<3 ) );
+define( 'RCSESSION_MODIFYNEWS'     , (1<<4 ) );
+define( 'RCSESSION_DELETENEWS'     , (1<<5 ) );
+define( 'RCSESSION_CREATEFILE'     , (1<<6 ) );
+define( 'RCSESSION_MODIFYFILE'     , (1<<7 ) );
+define( 'RCSESSION_DELETEFILE'     , (1<<8 ) );
+define( 'RCSESSION_CREATEUSER'     , (1<<9 ) );
+define( 'RCSESSION_MODIFYUSER'     , (1<<10) );
+define( 'RCSESSION_DELETEUSER'     , (1<<11) );
+define( 'RCSESSION_EDITSETTINGS'   , (1<<12) );
+define( 'RCSESSION_CONTACTUSER'    , (1<<13) );
+define( 'RCSESSION_CREATEFEEDBACK' , (1<<14) );
+define( 'RCSESSION_MODIFYFEEDBACK' , (1<<15) );
+define( 'RCSESSION_DELETEFEEDBACK' , (1<<16) );
+
+
+function RCSession_IsPermissionAllowed( $Perm )
+{
+    assert( 'integer' == gettype($Perm) );
+    
+    if( RCSESSION_CONTACTUSER == $Perm ) return true;
+    if( RCSESSION_CREATEFEEDBACK == $Perm ) return true;
+    
+    return RCSession_GetUserProp( 'user_level' ) > 0;
+}
+
+function RCSession_IsUserLoggedIn()
+{
+    return RCSession_GetUserProp( 'user_level' ) > 0;
+}
+
 ?>

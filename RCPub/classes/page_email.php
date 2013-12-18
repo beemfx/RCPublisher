@@ -7,13 +7,18 @@ class CEmailPage extends CPageBase
 	
 	public function CEmailPage()
 	{
-		parent::CPageBase('Email', 1);
+            parent::CPageBase('Email');
 	}
 	
 	protected function DisplayPre()
 	{
-		$this->m_MailTable = new CTableMail();
+            $this->m_MailTable = new CTableMail();
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsUserLoggedIn();
+        }
 
 	protected function DisplayContent()
 	{

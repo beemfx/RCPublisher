@@ -8,10 +8,15 @@ class CNewsPage extends CPageBase
 	
 	public function CNewsPage()
 	{
-		parent::CPageBase('News', 0);
+		parent::CPageBase('News');
 		
 		$this->m_NewsTable = null;
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return true;
+        }
 
 	protected function DisplayContent()
 	{
@@ -92,7 +97,7 @@ class CNewsPage extends CPageBase
 
 	private function DisplayArticle($nID)
 	{
-		if($_SESSION['user_level']>0)
+		if( RCSession_IsPermissionAllowed(RCSESSION_MODIFYNEWS) )
 		{
 			$strEditLink = sprintf(
 				' [<a href=%s>Edit</a>]',

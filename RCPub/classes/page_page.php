@@ -21,10 +21,6 @@ class CPagePage extends CPageBase
 	const MODE_NEW  = 3;
 	const MODE_LIST = 4;
 	
-	const EDIT_RQ_LEVEL = 5;
-	const CRNW_RQ_LEVEL = 5;
-	const PAGE_HISTORY_LEVEL = 5;
-	
 	const VERSION_DEFAULT=0;
 	
 	private $m_strContent;
@@ -38,8 +34,13 @@ class CPagePage extends CPageBase
 
 	public function CPagePage()
 	{
-		parent::CPageBase('Misc Page', 0);
+            parent::CPageBase('Misc Page');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return true;
+        }
 	
 	protected function ProcessInput()
 	{
@@ -59,12 +60,12 @@ class CPagePage extends CPageBase
 		}
 		else
 		{
-			if(1 == RCWeb_GetPost('stage') && $this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
+			if(1 == RCWeb_GetPost('stage') && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) )
 			{
 				//We are updating an entry.
 				$this->m_PageTable->UpdatePage( $this->m_nID, $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
-			else if(2 == RCWeb_GetPost('stage') && $this->GetUserLevel()>=self::CRNW_RQ_LEVEL)
+			else if(2 == RCWeb_GetPost('stage') && RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ))
 			{
 				if( $this->m_PageTable->IsSlugTaken( $this->m_strPageSlug ) )
 				{
@@ -136,7 +137,7 @@ class CPagePage extends CPageBase
 
 			//Now if the mode was page, and the page didn't exist, and the user level
 			//is high enough, we can do a new page instead.
-			if(self::MODE_PAGE == $this->m_nMode && null == $Page && self::CRNW_RQ_LEVEL <= $this->GetUserLevel())
+			if(self::MODE_PAGE == $this->m_nMode && null == $Page && RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) )
 			{
 				$this->m_nMode = self::MODE_NEW;
 				$this->m_nID = 0;
@@ -152,9 +153,9 @@ class CPagePage extends CPageBase
 			//Bail out if the operation is not allowed.
 			if
 			(
-				($this->GetUserLevel() < self::EDIT_RQ_LEVEL && self::MODE_EDIT == $this->m_nMode)
+				(!RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) && self::MODE_EDIT == $this->m_nMode)
 				||
-				($this->GetUserLevel() < self::CRNW_RQ_LEVEL && self::MODE_NEW  == $this->m_nMode)	  
+				(!RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) && self::MODE_NEW  == $this->m_nMode)	  
 			)
 			{
 				$this->m_nMode = self::MODE_PAGE;
@@ -210,14 +211,17 @@ class CPagePage extends CPageBase
 	protected function DisplayPage()
 	{
 		$this->DisplayContentBlock();
-		$this->DisplayCommentBlock();
+                if( 0 != $this->m_nID )
+                {
+                    $this->DisplayCommentBlock();
+                }
 	}
 	
 	protected function DisplayContentBlock()
 	{
 		//$Comment = new CTableComment();
 		//$Comment->InsertComment( $this->m_nID , 'My totally new comment!' , 'Ryan' , 'beemfx@gmail.com' );	
-		if($this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
+		if(RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ))
 		{	
 			$strVersion = self::VERSION_DEFAULT == $this->m_Version ? '' : '&v='.$this->m_Version;
 			$strEditLink = sprintf(
@@ -256,7 +260,10 @@ class CPagePage extends CPageBase
 		}
 		echo '</div>';
 		
-		$this->DisplayCommentBlock_LeaveFeedback();
+                if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFEEDBACK ) )
+                {
+                    $this->DisplayCommentBlock_LeaveFeedback();
+                }
 	}
 	
 	protected function DisplayCommentBlock_LeaveFeedback()
@@ -378,7 +385,7 @@ class CPagePage extends CPageBase
 			case self::MODE_LIST : $this->DisplayPageList(); break;
 		}
 		
-		if(self::MODE_LIST != $this->m_nMode && $this->GetUserLevel()>=self::PAGE_HISTORY_LEVEL)
+		if(self::MODE_LIST != $this->m_nMode && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ))
 		{
 			$this->DisplayPageHistory();
 		}

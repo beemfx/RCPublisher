@@ -13,6 +13,7 @@ abstract class CPageBase
 {
 	//Abstract interface:
 	protected abstract function DisplayContent();
+        protected abstract function IsPageAllowed();
 
 	public function GetTitle(){ return $this->GetGlobalSetting( 'txtWebsiteTitle' ).': '.$this->m_strTitle; }
 	
@@ -51,7 +52,7 @@ abstract class CPageBase
 	public function Display_PageCallback()
 	{
 		print("<div id=\"content\">\n");
-		if($this->GetUserLevel() >= $this->m_nUserLevel)
+		if( $this->IsPageAllowed() )
 		{
 			$this->DisplayContent();
 		}
@@ -82,15 +83,10 @@ abstract class CPageBase
 
 	//Protected attributes.
 	protected $m_strTitle; //Title of the page.
-	protected $m_nUserLevel; //This is the user level required to view the page.
 
-
-	protected function CPageBase($strTitle, $nUserLevel=0)
+	protected function CPageBase($strTitle)
 	{
-		assert('integer' == gettype($nUserLevel));
-		
-		$this->m_strTitle = $strTitle;
-		$this->m_nUserLevel = $nUserLevel;
+            $this->m_strTitle = $strTitle;
 	}
 
 	public function GetGlobalSetting($strSettingName)
@@ -163,13 +159,7 @@ abstract class CPageBase
 		}
 		return $row;
 	}
-		
-	protected function GetUserLevel()
-	{
-		//We should probably do some kind of IP verification or something here.	
-		return (int)  RCSession_GetUserProp('user_level');
-	}
-	
+			
 	protected function DisplayErrors()
 	{
 		?>
@@ -183,7 +173,7 @@ abstract class CPageBase
 	protected function DisplayUserOptions()
 	{
 		//We only do this if the user level is high enough.
-		if($this->GetUserLevel() > 0)
+		if( RCSession_IsUserLoggedIn() )
 		{
 			?>
 			<style>div#UO

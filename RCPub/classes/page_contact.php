@@ -8,8 +8,13 @@ class CContactPage extends CPageBase
 {
 	public function CContactPage()
 	{
-		parent::CPageBase('Contact', 0);
+            parent::CPageBase('Contact');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsPermissionAllowed( RCSESSION_CONTACTUSER );
+        }
 	
 	protected function DisplayPre()
 	{

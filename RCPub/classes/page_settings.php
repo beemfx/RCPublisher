@@ -38,8 +38,13 @@ class CPageSettings extends CPageBase
 	
 	public function CPageSettings()
 	{
-		parent::CPageBase('Settings', self::RQ_USERLEVEL);
+		parent::CPageBase('Settings');
 	}
+        
+        protected function IsPageAllowed()
+        {
+            return RCSession_IsPermissionAllowed( RCSESSION_EDITSETTINGS );
+        }
 	
 	protected function DisplayPre()
 	{
