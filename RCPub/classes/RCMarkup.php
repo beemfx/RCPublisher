@@ -36,7 +36,7 @@ class CRCMarkup
 	private function Texturize()
 	{
 		//HTML tags:
-		$this->m_sText = strip_tags( $this->m_sText, '<div><center><small><q><s>');
+		$this->m_sText = strip_tags( $this->m_sText, '<center><small><q><s>');
 		//Quotes:
 		//One problem may be that we want to support <div>.
 		$this->m_sText = preg_replace('/\"([^\"]+)\"/s', '<q>$1</q>', $this->m_sText);
