@@ -45,28 +45,36 @@ class CPagePage extends CPageBase
 	{
 		//If the stage was set then we are most likely dealing with a situation
 		//where either an update or a new post occured.
-		$this->m_strContent   = $_POST['content'];
-		$this->m_strPageSlug  = $_POST['pageslug'];
-		$this->m_strTitle     = $_POST['title'];
-		$this->m_nID          = (int)$_POST['id'];
-		$this->m_nMode        = (1 == $_POST['stage'])?self::MODE_EDIT:self::MODE_NEW;
+		$this->m_strContent   = RCWeb_GetPost('content');
+		$this->m_strPageSlug  = RCWeb_GetPost('pageslug');
+		$this->m_strTitle     = RCWeb_GetPost('title');
+		$this->m_nID          = (int)  RCWeb_GetPost('id');
+		$this->m_nMode        = (1 == RCWeb_GetPost('stage'))?self::MODE_EDIT:self::MODE_NEW;
 
 		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
-		if(!preg_match('/^[A-Za-z0-9_]+$/', $this->m_strPageSlug))
+		if(!preg_match(RCRX_PAGESLUG, $this->m_strPageSlug))
 		{
 			//If the slug isn't okay, we want to go back to the edit page.
 			RCError_PushError($this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.' , 'warning' );	
 		}
 		else
 		{
-			if(1 == $_POST['stage'] && $this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
+			if(1 == RCWeb_GetPost('stage') && $this->GetUserLevel()>=self::EDIT_RQ_LEVEL)
 			{
 				//We are updating an entry.
 				$this->m_PageTable->UpdatePage( $this->m_nID, $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
 			}
-			else if(2 == $_POST['stage'] && $this->GetUserLevel()>=self::CRNW_RQ_LEVEL)
+			else if(2 == RCWeb_GetPost('stage') && $this->GetUserLevel()>=self::CRNW_RQ_LEVEL)
 			{
-				$this->m_PageTable->CreatePage( $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
+				if( $this->m_PageTable->IsSlugTaken( $this->m_strPageSlug ) )
+				{
+					RCError_PushError($this->m_strPageSlug.' is already taken, please use a different slug.');
+					return;
+				}
+				else 
+				{
+					$this->m_PageTable->CreatePage( $this->m_strPageSlug, $this->m_strTitle, $this->m_strContent);
+				}
 			}
 
 			//Now that we've updated the table, we want the page to appear, so we set the mode to
@@ -83,19 +91,16 @@ class CPagePage extends CPageBase
 		$this->m_PageTable = new CTablePage();
 		//The page slug should be passed in the p parameter.
 		
-		$this->m_strPageSlug = $_GET['p'];
-		if( isset($_GET['v']) )
-		{
-			$this->m_Version = (int)$_GET['v'];
-		}
+		$this->m_strPageSlug = RCWeb_GetGet('p');
+		$this->m_Version = RCWeb_GetGet( 'v' , self::VERSION_DEFAULT );
 		
-		if(isset($_POST['stage']))
+		if(0 != RCWeb_GetPost('stage' , 0 ))
 		{	
 			$this->ProcessInput();
 		}
 		else
 		{
-			if(!isset($_GET['p']))
+			if(!isset( $_GET ['p'] ) )
 			{
 				$this->m_nMode = self::MODE_LIST;
 				return;
@@ -103,12 +108,17 @@ class CPagePage extends CPageBase
 			//By default set the mode to page:
 			$this->m_nMode = self::MODE_PAGE;
 			//We need to know the mode for the page.
-			if(isset($_GET['mode']))
+			$Mode = RCWeb_GetGet('mode');
+			if( null != $Mode )
 			{
-				if(!strcmp('edit',$_GET['mode']))
+				if(!strcmp('edit',$Mode))
+				{
 					$this->m_nMode = self::MODE_EDIT;
-				else if(!strcmp('new', $_GET['mode']))
+				}
+				else if(!strcmp('new', $Mode))
+				{
 					$this->m_nMode = self::MODE_NEW;
+				}
 			}
 
 
@@ -355,10 +365,7 @@ class CPagePage extends CPageBase
 		$CmtTable = new CTableComment();
 		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
 		//Clear all post properties...
-		$_POST['comment_page_id'] = 0;
-		$_POST['comment_name'] = '';
-		$_POST['comment_email'] = '';
-		$_POST['comment_comment'] = '';
+		RCWeb_ClearPostData();
 	}
 
 	protected function DisplayContent()

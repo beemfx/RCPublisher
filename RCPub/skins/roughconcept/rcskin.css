@@ -41,7 +41,7 @@ body, #wrapper, #header
 
 div#header
 {
-        margin-bottom:-5px;
+	margin-bottom:-5px;
 }
 
 
@@ -72,12 +72,12 @@ div#menu_main p
 div#menu_main a
 {
 	color: #000;
-	width: 8em;
+	width: 7em;
 	border: 0;
 	border-right:0px solid #000;
 	display:inline-block;
 	margin:0;
-	padding: .5em 0;
+	padding: .2em 0;
 	text-align:center;
 	font:normal normal normal 8pt/100% Arial;
 	text-decoration:none;

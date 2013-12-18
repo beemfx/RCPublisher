@@ -90,18 +90,18 @@ class CPageUser extends CPageBase
 		
 		if( strlen( $NewPw ) <= 0 )
 		{
-			RCError_PushError( 'Passwords must be at least 6 characters long and contain only letters numbers and the following symbols _,*,#.' , 'warning' );
+			RCError_PushError( RCRX_PASSWORD_REQ , 'warning' );
 			return;
 		}
 		/*
-		if( !preg_match( '/^[a-zA-Z0-9_*#]{6,}$/' , $NewPw ) )
+		if( !preg_match( RCRX_PASSWORD , $NewPw ) )
 		{
 			RCError_PushError( 'Passwords must be at least 6 characters long and contain only letters numbers and the following symbols _,*,#.' , 'warning' );
 			return;
 		}
 		*/
 	
-		if($NewPw != $_POST['npassc'])
+		if($NewPw != RCWeb_GetPost('npassc'))
 		{
 			RCError_PushError('New passwords do not match.' , 'warning' );
 			return;
@@ -109,25 +109,25 @@ class CPageUser extends CPageBase
 		
 		$sPass = $this->m_UserTable->GetUserPassword((int)RCSession_GetUserProp('user_id'));
 		
-		if($_POST['opass'] != $sPass)
+		if(RCWeb_GetPost('opass') != $sPass)
 		{
 			RCError_PushError( 'Old password is not correct.' , 'warning' );
 			return;
 		}
 		
 		//We're good to go, stuff it in.
-		$this->m_UserTable->SetUserPassword((int)RCSession_GetUserProp('user_id'), $_POST['npass']);
+		$this->m_UserTable->SetUserPassword((int)RCSession_GetUserProp('user_id'), RCWeb_GetPost('npass'));
 		RCError_PushError( 'Password updated.', 'message' );
 	}
 	
 	protected function InsertNewUser()
 	{
-		if($_POST['npass'] != $_POST['npassc'])
+		if(RCWeb_GetPost('npass') != RCWeb_GetPost('npassc'))
 		{
 			RCError_PushError( 'Passwords must match' , 'warning' );
 			return;
 		}
-		$this->m_UserTable->InsertNew($_POST['uname'], $_POST['ualias'], $_POST['uemail'], (int)$_POST['uaccess'], $_POST['npass']);
+		$this->m_UserTable->InsertNew(RCWeb_GetPost('uname'), RCWeb_GetPost('ualias'), RCWeb_GetPost('uemail'), (int)RCWeb_GetPost('uaccess'), RCWeb_GetPost('npass'));
 	}
 	
 	protected function DisplayPost()
@@ -153,7 +153,8 @@ class CPageUser extends CPageBase
 		var npass = document.PChangeForm.npass;
 		var npassc = document.PChangeForm.npassc;
 		
-		var re = /^[a-zA-Z0-9_*#]{6,}$/; 
+		var re = <?php echo RCRX_PASSWORD; ?>
+		
 		if(re.test(npass.value))
 		{
 			npass.value  = hex_md5(npass.value);

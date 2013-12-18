@@ -51,9 +51,9 @@ class CTableUser extends CTable
 			return false;
 		}
 		
-		if(!preg_match('/^[^ ]{6,}$/', $sPass))
+		if(!preg_match(RCRX_PASSWORD, $sPass))
 		{
-			RCError_PushError( 'Passwords must be 6 characters long and cannot contain spaces.' , 'warning' );
+			RCError_PushError( RCRX_PASSWORD_REQ , 'warning' );
 			return false;
 		}
 		

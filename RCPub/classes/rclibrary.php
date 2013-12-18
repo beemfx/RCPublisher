@@ -1,5 +1,11 @@
 <?php
 
+//Some globals
+define( "RCRX_PAGESLUG", '/^[A-Za-z0-9_]+$/' );
+define( "RCRX_PASSWORD", '/^[a-zA-Z0-9_*#]{5,}$/' );
+define( "RCRX_PASSWORD_REQ", 'Passwords must be 5 characters long, and may only consist of letters, numbers, _, *, and #.');
+
+
 function RCWeb_GetGet( $VarName , $NotSetValue = null, $AssertIfNotExists = false )
 {
 	assert( 'string' == gettype($VarName) );
@@ -15,9 +21,15 @@ function RCWeb_GetPost( $VarName , $NotSetValue = null, $AssertIfNotExists = fal
 	assert( 'string' == gettype($VarName) );
 	assert( 'boolean' == gettype($AssertIfNotExists) );
 	
-	if( isset( $_POST[$VarName] ) )return $_POST[$VarName];
+	if( isset( $_POST[$VarName] ) ){return $_POST[$VarName];}
 	assert(!$AssertIfNotExists || false);
 	return $NotSetValue;
+}
+
+function RCWeb_SetPost( $VarName , $Value )
+{
+	assert( 'string' == gettype($VarName) );
+	$_POST[$VarName] = $Value;
 }
 
 function RCWeb_GetSession( $VarName , $NotSetValue = null, $AssertIfNotExists = false )
@@ -34,6 +46,11 @@ function RCWeb_ValidateEmail($strE)
 {
 	$strEmailRegEx = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
 	return preg_match($strEmailRegEx, $strE)!=0;
+}
+
+function RCWeb_ClearPostData()
+{
+	$_POST = array();
 }
 
 function RCSpam_DisplayQuestion()

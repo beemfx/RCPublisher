@@ -43,13 +43,12 @@ class CPageSettings extends CPageBase
 	
 	protected function DisplayPre()
 	{
-		if(isset($_POST['stage']) && $_POST['stage'] == 'us')
+		if( RCWeb_GetPost('stage') == 'us' )
 		{
 			global $g_Settings;
 			foreach($g_Settings as $Setting => $Atts)
 			{
-				assert(isset($_POST[$Setting]));
-				$this->ChangeGlobalSetting($Setting, $_POST[$Setting]);
+				$this->ChangeGlobalSetting($Setting, RCWeb_GetPost($Setting , ''));
 			}
 		}
 		
@@ -84,7 +83,7 @@ class CPageSettings extends CPageBase
 		echo '<h1>RC Publisher Settings</h1>';
 		
 		//If submit was pressed, we update the settings.
-		if(isset($_POST['stage']) && $_POST['stage'] == 'us')
+		if( RCWeb_GetPost('stage') == 'us' )
 		{			
 			RCError_PushError( 'Settings saved.' , 'message' );		
 		}

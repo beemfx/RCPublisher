@@ -9,7 +9,7 @@
 
 StartHTML();
 
-$Stage = isset($_POST['stage']) ? $_POST['stage'] : 0;
+$Stage = RCWeb_GetPost( 'stage' , 0 );
 
 if(1==$Stage) {
 	DoInstall();
@@ -175,7 +175,7 @@ function DoInstall()
 	//Install, first attempt to login to the database, and create the tables:
 	// Connect to the database:
 	echo '<p>Attempting to connect to database...</p>';
-	@ $db = new mysqli($_POST['db_host'],$_POST['db_user'],$_POST['db_pass'],$_POST['db_dbname']);
+	@ $db = new mysqli(RCWeb_GetPost('db_host'),RCWeb_GetPost('db_user'),RCWeb_GetPost('db_pass'),RCWeb_GetPost('db_dbname'));
 
 	if(mysqli_connect_errno())
 	{
@@ -188,7 +188,7 @@ function DoInstall()
 	$res = true;
 	foreach($TABLES as $TABLE)
 	{
-		$res = $res && CreateTable($db, $_POST['rc_prefix'], $_POST['db_engine'], $TABLE);
+		$res = $res && CreateTable($db, RCWeb_GetPost('rc_prefix'), RCWeb_GetPost('db_engine'), $TABLE);
 	}
 
 	if(!$res)
@@ -210,7 +210,7 @@ function DoInstall()
 	
 	foreach($InitialSettings as $Setting => $Value)
 	{
-		$qry = sprintf('insert into '.$_POST['rc_prefix'].'tblGlobalSettings (txtName, txtSetting) values ("%s", "%s")', $Setting, $Value);
+		$qry = sprintf('insert into '.RCWeb_GetPost('rc_prefix').'tblGlobalSettings (txtName, txtSetting) values ("%s", "%s")', $Setting, $Value);
 		DoQuery($db , $qry);
 	}			
 	
@@ -220,12 +220,12 @@ function DoInstall()
 		 'txtUserName'  => '"'.addslashes('admin').'"',
 		 'txtPassword'  => 'MD5("admin")',
 		 'txtAlias'     => '"'.addslashes('Administrator Account').'"',
-		 'txtEmail'     => '"'.addslashes($_POST['rc_adminemail']).'"',
+		 'txtEmail'     => '"'.addslashes(RCWeb_GetPost('rc_adminemail')).'"',
 		 'nAccessLevel' => '"'.addslashes('10').'"',
 		 'txtLastIP'    => '"'.addslashes('').'"',
 	);
 	
-	$qry = 'insert into '.$_POST['rc_prefix'].'tblUser ('.implode(',',array_keys($DefaultUser)).') values ('.implode(',',array_values($DefaultUser)).')';
+	$qry = 'insert into '.RCWeb_GetPost('rc_prefix').'tblUser ('.implode(',',array_keys($DefaultUser)).') values ('.implode(',',array_values($DefaultUser)).')';
 	DoQuery($db , $qry);
 	
 	//Saving configuration:
@@ -239,12 +239,12 @@ function DoInstall()
 	}
 
 	fprintf($fout, "<?php\n");
-	fprintf($fout, "\t\$g_rcPrefix = \"%s\";\n\n", $_POST['rc_prefix']);
-	fprintf($fout, "\t\$g_rcFilepath = \"%s\";\n\n", $_POST['rc_filepath']);
-	fprintf($fout, "\t\$g_rcDBHost = \"%s\";\n", $_POST['db_host']);
-	fprintf($fout, "\t\$g_rcDBUser = \"%s\";\n", $_POST['db_user']);
-	fprintf($fout, "\t\$g_rcDBPwd = \"%s\";\n", $_POST['db_pass']);
-	fprintf($fout, "\t\$g_rcDBName = \"%s\";\n", $_POST['db_dbname']);
+	fprintf($fout, "\t\$g_rcPrefix = \"%s\";\n\n", RCWeb_GetPost('rc_prefix'));
+	fprintf($fout, "\t\$g_rcFilepath = \"%s\";\n\n", RCWeb_GetPost('rc_filepath'));
+	fprintf($fout, "\t\$g_rcDBHost = \"%s\";\n", RCWeb_GetPost('db_host'));
+	fprintf($fout, "\t\$g_rcDBUser = \"%s\";\n", RCWeb_GetPost('db_user'));
+	fprintf($fout, "\t\$g_rcDBPwd = \"%s\";\n", RCWeb_GetPost('db_pass'));
+	fprintf($fout, "\t\$g_rcDBName = \"%s\";\n", RCWeb_GetPost('db_dbname'));
 	
 	fprintf($fout, "?>\n");
 	fclose($fout);

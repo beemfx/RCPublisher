@@ -15,11 +15,11 @@ class CLoginPage extends CPageBase
 			RCSession_Disconnect();
 		}
 
-		if(isset($_POST['stage']) && $_POST['stage']==1 && RCSession_GetUserProp('user_level')==0)
+		if(null != RCWeb_GetPost('stage') && RCWeb_GetPost('stage')==1 && RCSession_GetUserProp('user_level')==0)
 		{
-			$user_name = $_POST['uname'];
-			$pwd =       $_POST['pwd_hash'];
-			$pwd_salt =  $_POST['pwd_salt'];
+			$user_name = RCWeb_GetPost('uname');
+			$pwd =       RCWeb_GetPost('pwd_hash');
+			$pwd_salt =  RCWeb_GetPost('pwd_salt');
 		
 			$this->m_bLoggedIn = RCSession_Connect($user_name, $pwd, $pwd_salt, true);
 		}
@@ -56,7 +56,7 @@ class CLoginPage extends CPageBase
 	protected function DisplayContent()
 	{
 		print("<h1>Login</h1>\n");
-		$nStage = isset($_POST['stage'] ) ? $_POST['stage'] : 0;
+		$nStage = null != RCWeb_GetPost('stage') ? RCWeb_GetPost('stage') : 0;
 
 		if(isset($_GET['logout']))
 		{

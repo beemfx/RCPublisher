@@ -37,7 +37,7 @@ class CPageUploadFile extends CPageBase
 			print("<h1>Upload New File</h1>\n");
 			print('<div style="margin:1em">');
 			
-			$Stage = isset($_POST['stage']) ? $_POST['stage']:0;
+			$Stage = RCWeb_GetPost( 'stage' , 0 );
 
 			switch($Stage)
 			{
@@ -75,14 +75,14 @@ class CPageUploadFile extends CPageBase
 		</tr>
 		<tr>
 		<th>New Filename (Optional)</th>
-		<td><input type="text" name="unewfilename" value="<?php echo isset($_POST['unewfilename']) ? $_POST['unewfilename'] : ''?>"/></td>
+		<td><input type="text" name="unewfilename" value="<?php echo RCWeb_GetPost('unewfilename' , '')?>"/></td>
 		</tr>
 		<tr>
 		<th>Description</th>
 		<td colspan="3">
 		<textarea
 			style="height:200px;width:100%"
-			name="udesc" cols="80" rows="20"><?php printf('%s', isset($_POST['udesc'])?$_POST['udesc']:'')?></textarea>
+			name="udesc" cols="80" rows="20"><?php printf('%s', RCWeb_GetPost('udesc' ,'' ))?></textarea>
 		</td>
 		</tr>
 		<tr>
@@ -102,7 +102,7 @@ class CPageUploadFile extends CPageBase
 		//Form a full title, based on whether a title or series was or wasn't
 		//specified.
 		
-		$nURLLen = strlen($_POST['urlfile']);
+		$nURLLen = strlen(RCWeb_GetPost('urlfile'));
 		$nFileNLen = strlen($_FILES['ufile']['name']);
 		
 		if(0 != ($nURLLen*$nFileNLen))
@@ -120,11 +120,11 @@ class CPageUploadFile extends CPageBase
 		}
 		else
 		{
-			$Info = pathinfo($_POST['urlfile'], PATHINFO_BASENAME);
+			$Info = pathinfo(RCWeb_GetPost('urlfile'), PATHINFO_BASENAME);
 		}
 		
 		printf('Gathing file information about %s...<br/>', $Info);
-		$sFilename = strlen($_POST['unewfilename']) != 0 ? $_POST['unewfilename'] : $Info;
+		$sFilename = strlen(RCWeb_GetPost('unewfilename')) != 0 ? RCWeb_GetPost('unewfilename') : $Info;
 
 		if(!preg_match('/[a-zA-Z0-9]{2,20}\.[a-zA-Z0-9]{1,10}/', $sFilename))
 		{
@@ -133,32 +133,33 @@ class CPageUploadFile extends CPageBase
 			return;
 		}
 		$sFilenameParts = preg_split('/\./', $sFilename);
-		$_POST['uslug'] = $sFilename = strtolower($sFilenameParts[0]);
-		$_POST['uext']  = strtoupper($sFilenameParts[1]);
+		$sFilename = strtolower($sFilenameParts[0]);
+		RCWeb_SetPost('uslug' , $sFilename);
+		RCWeb_SetPost('uext' , strtoupper($sFilenameParts[1]) );
 		
 		$F = new CFileManager();
 
-		if($F->DoesFileExist($_POST['uslug']))
+		if($F->DoesFileExist(RCWeb_GetPost('uslug')))
 		{
-			RCError_PushError('WARNING: A file with the slug '.$_POST['uslug'].' already exists please rename the file to something else.' , 'warning' );
+			RCError_PushError('WARNING: A file with the slug '.RCWeb_GetPost('uslug').' already exists please rename the file to something else.' , 'warning' );
 			$this->DisplayForm();
 			return;
 		}
 
-		$_POST['upath'] = $sFilename[0].'/'.$sFilename[1];	
-		printf("Uploading %s to %s<br/>" , $_FILES['ufile']['name'], $_POST['upath']);
+		RCWeb_SetPost('upath' ,  $sFilename[0].'/'.$sFilename[1] );	
+		printf("Uploading %s to %s<br/>" , $_FILES['ufile']['name'], RCWeb_GetPost('upath'));
 
 		if($bUpload)
 		{
-			$_POST['ucontenttype'] = $_FILES['ufile']['type'];
+			RCWeb_SetPost('ucontenttype' , $_FILES['ufile']['type'] );
 		}
 		else
 		{
-			//$FILE = fopen( $_POST['urlfile'], 'r');
+			//$FILE = fopen( RCWeb_GetPost('urlfile'), 'r');
 			
-			$_POST['ucontenttype'] = 'unknown';//mime_content_type($_POST['urlfile']);// $FILE['type'];
+			RCWeb_SetPost('ucontenttype' , 'unknown' );
 			
-			switch(strtoupper($_POST['uext']))
+			switch(strtoupper(RCWeb_GetPost('uext')))
 			{
 			case 'PNG':
 			case 'BMP':
@@ -167,22 +168,22 @@ class CPageUploadFile extends CPageBase
 			case 'TGA':
 			case 'JPEG':
 			case 'XMB':
-				$_POST['ucontenttype'] = 'image/unknown';
+				RCWeb_SetPost('ucontenttype' , 'image/unknown' );
 				break;
 			}
 			//fclose($FILE);
 		}
-		$_POST['stage'] = 2;
+		RCWeb_SetPost('stage' , 2);
 		if($bUpload)
 		{
-			$_POST['utempfile'] = $F->CopyUploadToTempFile($_FILES['ufile']);
+			RCWeb_SetPost('utempfile' , $F->CopyUploadToTempFile($_FILES['ufile']) );
 		}
 		else
 		{
-			$_POST['utempfile'] = $F->CopyURLFileToTempFile($_POST['urlfile']);
+			RCWeb_SetPost('utempfile' , $F->CopyURLFileToTempFile(RCWeb_GetPost('urlfile')));
 		}
 		
-		if(!$_POST['utempfile'])
+		if(!RCWeb_GetPost('utempfile'))
 		{
 			RCError_PushError( 'Failed to create temporary file.' , 'warning' );
 			$this->DisplayForm();
@@ -209,14 +210,14 @@ class CPageUploadFile extends CPageBase
 	private function DisplayComplete()
 	{
 		printf('Saving file...<br/>');
-		$bCopied = CFileManager::CopyTempFileToDest($_POST['utempfile'], $_POST['upath'], $_POST['uslug'], $_POST['uext']);
+		$bCopied = CFileManager::CopyTempFileToDest(RCWeb_GetPost('utempfile'), RCWeb_GetPost('upath'), RCWeb_GetPost('uslug'), RCWeb_GetPost('uext'));
 	
 		if(!$bCopied)return;
 		
 		print('Inserting entry into database...<br/>');
 		
 		$F = new CFileManager();
-		$nID = $F->InsertFileIntoSQL($_POST['uslug'], $_POST['uext'], $_POST['ucontenttype'],$_POST['upath'],$_POST['udesc']);
+		$nID = $F->InsertFileIntoSQL(RCWeb_GetPost('uslug'), RCWeb_GetPost('uext'), RCWeb_GetPost('ucontenttype'),RCWeb_GetPost('upath'),RCWeb_GetPost('udesc'));
 		
 		printf("Inserted at %d.<br/>\n", $nID);
 	}

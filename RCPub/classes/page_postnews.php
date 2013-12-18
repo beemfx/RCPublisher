@@ -20,7 +20,7 @@ class CPostNewsPage extends CPageBase
 		{
 			print("<h1>Updating News Item</h1>\n");
 			print('<div style="margin:1em">');
-			if(isset($_POST['stage']) && $_POST['stage']==1)
+			if( RCWeb_GetPost('stage')==1 )
 			{
 				$this->Display_Stage1_Edit();
 			}
@@ -34,7 +34,7 @@ class CPostNewsPage extends CPageBase
 		{
 			print("<h1>Posting News</h1>\n");
 			print('<div style="margin:1em">');
-			if(isset($_POST['stage']) && $_POST['stage']==1)
+			if( RCWeb_GetPost('stage')==1 )
 			{
 				$this->Display_Stage1();
 			}
@@ -67,7 +67,7 @@ class CPostNewsPage extends CPageBase
 		//The news item needs to be modifed so that it can be stored in html
 		//and retrived, and displayed.
 		
-		$this->m_NewsTable->InsertStory($_POST['title'], $_POST['body']);
+		$this->m_NewsTable->InsertStory(RCWeb_GetPost('title'), RCWeb_GetPost('body'));
 		
 		print('<p>New item posted. Return <a href='.CreateHREF(PAGE_HOME).'>home</a>.</p>');
 	}
@@ -98,7 +98,7 @@ class CPostNewsPage extends CPageBase
 	private function Display_Stage1_Edit()
 	{
 		print '<p>Updating news item...</p>';		
-		$this->m_NewsTable->UpdateStory((int)$_GET['id'], $_POST['title'], $_POST['body']);
+		$this->m_NewsTable->UpdateStory((int)$_GET['id'], RCWeb_GetPost('title'), RCWeb_GetPost('body'));
 		print('<p>New item updated. Return <a href='.CreateHREF(PAGE_HOME).'>home</a>.</p>');
 	}
 }

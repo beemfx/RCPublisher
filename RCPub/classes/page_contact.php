@@ -142,7 +142,7 @@ class CContactPage extends CPageBase
 	{
 		if(!$this->ValidateEmail(RCWeb_GetPost('reply_email', '', true)))
 		{
-			RCError_PushError($_POST['reply_email'].' is not a valid email address.' , 'warning' );
+			RCError_PushError(RCWeb_GetPost('reply_email').' is not a valid email address.' , 'warning' );
 			return false;
 		}
 
@@ -154,7 +154,7 @@ class CContactPage extends CPageBase
 
 		if(strlen(RCWeb_GetPost('subject', '', true))<1)
 		{
-			$_POST['subject'] = 'no subject';
+			RCWeb_SetPost('subject' , 'no subject' );
 		}
 
 		if(!RCSpam_IsAnswerCorrect())
