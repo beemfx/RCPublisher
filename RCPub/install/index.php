@@ -7,6 +7,8 @@
 //install.php should be deleted after it is used, also after it is installed
 //the entire directory can be closed off from the rest of the web.
 
+require( '../classes/rclibrary.php' );
+
 StartHTML();
 
 $Stage = RCWeb_GetPost( 'stage' , 0 );
@@ -148,6 +150,7 @@ function DoInstall()
 		  `txtAlias` varchar(32) NOT NULL,
 		  `txtEmail` char(32) NOT NULL,
 		  `nAccessLevel` int(11) NOT NULL,
+                  `nPerms` int(11) NOT NULL,
 		  `txtLastIP` char(16) NOT NULL,
 		  PRIMARY KEY  (`id`,`txtUserName`)',	  
 	);
@@ -215,6 +218,7 @@ function DoInstall()
 	}			
 	
 	//Create the default user.
+        $FULL_PERMS = 0x0FFFFFFF;
 	$DefaultUser = array
 	(
 		 'txtUserName'  => '"'.addslashes('admin').'"',
@@ -222,6 +226,7 @@ function DoInstall()
 		 'txtAlias'     => '"'.addslashes('Administrator Account').'"',
 		 'txtEmail'     => '"'.addslashes(RCWeb_GetPost('rc_adminemail')).'"',
 		 'nAccessLevel' => '"'.addslashes('10').'"',
+                 'nPerms'       => '"'.addslashes($FULL_PERMS).'"',
 		 'txtLastIP'    => '"'.addslashes('').'"',
 	);
 	

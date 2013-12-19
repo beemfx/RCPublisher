@@ -74,7 +74,7 @@ class CTableUser extends CTable
 	
 	public function GetUserInfo($nID)
 	{
-		$this->DoSelect('id, txtUserName, txtAlias, txtEmail, nAccessLevel, txtLastIP', 'id='.$nID);
+		$this->DoSelect('id, txtUserName, txtAlias, txtEmail, nAccessLevel, txtLastIP, nPerms', 'id='.$nID);
 			
 		assert(count($this->m_rows) == 1);
 		

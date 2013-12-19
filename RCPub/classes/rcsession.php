@@ -9,7 +9,7 @@ function RCSession_Begin()
 	session_start();
 	//Always reset the user level.
 	$_SESSION['user_level'] = 0;
-        $_SESSION['user_permissions'] = 0x00000000;
+        RCSession_SetPermissions(0);
 	//Always reset the user id;
 	$_SESSION['user_id'] = -1;
 	
@@ -41,7 +41,7 @@ function RCSession_Begin()
 			$_SESSION['user_id']    = $Info['id'];
 			$_SESSION['user_level'] = $Info['nAccessLevel'];
 			$_SESSION['user_email'] = $Info['txtEmail'];
-                        RCSession_SetPermissions();
+                        RCSession_SetPermissions((int)$Info['nPerms']);
 		}
 	}
 }
@@ -65,7 +65,7 @@ function RCSession_Connect($strUser, $strFullHashPwd, $strSalt, $bRemember)
 	$_SESSION['user_alias'] = $Info['txtAlias'];
 	$_SESSION['user_level'] = $Info['nAccessLevel'];
 	$_SESSION['user_email'] = $Info['txtEmail'];
-        RCSession_SetPermissions();
+        RCSession_SetPermissions((int)$Info['nPerms']);
 	
 	setcookie(RCSESSION_COOKIENAME, (int)$_SESSION['user_id'], time()+3600*24*365);
 	
@@ -123,13 +123,15 @@ function RCSession_IsUserLoggedIn()
     return RCSession_GetUserProp( 'user_level' ) > 0;
 }
 
-function RCSession_SetPermissions()
+function RCSession_SetPermissions( $UserPerms )
 {
+   assert( 'integer' == gettype($UserPerms) );
+   
     //Reset permissions.
     $_SESSION['user_permissions'] = 0x00000000;
     
     //These permissions come from the user profile.
-    $_SESSION['user_permissions'] |= RCSession_GetUserProp( 'user_level' ) > 0 ? 0xFFFFFFFF : 0;
+    $_SESSION['user_permissions'] |= $UserPerms;//RCSession_GetUserProp( 'user_level' ) > 0 ? 0xFFFFFFFF : 0;
     
     //The following permissions are always allowed:
     $_SESSION['user_permissions'] |= RCSESSION_CONTACTUSER;
