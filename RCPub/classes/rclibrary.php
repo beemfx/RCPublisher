@@ -2,6 +2,9 @@
 
 //Some globals
 define( "RCRX_PAGESLUG" , '/^[A-Za-z0-9_]+$/' );
+define( "RCRX_USERNAME" , '/^[A-Za-z0-9]{5,}$/' );
+define( "RCRX_USERALIAS" , '/^[A-Za-z0-9_ ]{1,}$/' );
+define( "RCRX_USERALIAS_REQ", 'Names may only contain letters, numbers, spaces, and -,_.' );
 define( "RCRX_PASSWORD" , '/^[a-zA-Z0-9_*#]{5,}$/' );
 define( "RCRX_PASSWORD_REQ" , 'Passwords must be 5 characters long, and may only consist of letters, numbers, _, *, and #.' );
 

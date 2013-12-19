@@ -77,7 +77,17 @@ function RCSession_Connect( $strUser , $strFullHashPwd , $strSalt , $bRemember )
 function RCSession_GetUserProp( $property )
 {
 	assert( isset( $_SESSION[ $property ] ) );
+	if( 'user_id' == $property )
+	{
+		return (int)$_SESSION[$property];
+	}
 	return $_SESSION[ $property ];
+}
+
+function RCSession_SetUserProp( $Prop , $NewValue )
+{
+	assert( isset( $_SESSION[ $Prop ] ) );
+	$_SESSION[ $Prop ] = $NewValue;
 }
 
 function RCSession_Disconnect()

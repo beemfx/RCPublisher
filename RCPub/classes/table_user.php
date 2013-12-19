@@ -21,34 +21,32 @@ class CTableUser extends CTable
 		return count( $this->m_rows ) == 1 ? ( int ) $this->m_rows[ 0 ][ 'id' ] : false;
 	}
 
-	public function InsertNew( $sUname , $sAlias , $sEmail , $nAccess , $sPass )
+	public function InsertNew( $sUname , $sAlias , $sEmail , $Perms , $sPass )
 	{
-		assert( 'integer' == gettype( $nAccess ) );
+		assert( 'integer' == gettype( $Perms ) );
 
 		//We'll do some verification to make sure this is valid:
-		if( !preg_match( '/^[A-Za-z0-9]{6,}$/' , $sUname ) )
+		if( !preg_match( RCRX_USERNAME , $sUname ) )
 		{
-			RCError_PushError( 'User names may only contain letters and numbers and must be at least 6 charactrs long.' , 'warning' );
+			RCError_PushError( 'User names may only contain letters and numbers and must be at least 5 charactrs long.' , 'warning' );
+			return false;
+		}
+		
+		if( $this->IsUserNameTaken( $sUname  ) )
+		{
+			RCError_PushError( 'That username is already taken.' , 'warning' );
 			return false;
 		}
 
-		if( !preg_match( '/^[A-Za-z0-9_ ]*$/' , $sAlias ) )
+		if( !preg_match( RCRX_USERALIAS , $sAlias ) )
 		{
-			RCError_PushError( 'Aliases may only contain leters numbers and -,_' , 'warning' );
+			RCError_PushError( 'Names may only contain letters, numbers, spaces, and -,_' , 'warning' );
 			return false;
 		}
 
-		$strEmailRegEx = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
-
-		if( !preg_match( $strEmailRegEx , $sEmail ) )
+		if( !RCWeb_ValidateEmail( $sEmail ) )
 		{
-			RCError_PushError( 'That email address isn\'t valid.' , 'warning' );
-			return false;
-		}
-
-		if( !(1 <= $nAccess && $nAccess <= 10) )
-		{
-			RCError_PushError( 'The access level must be between 1 and 10' , 'warning' );
+			RCError_PushError( 'That email address is not valid.' , 'warning' );
 			return false;
 		}
 
@@ -66,7 +64,8 @@ class CTableUser extends CTable
 			'txtAlias' => '"'.addslashes( $sAlias ).'"' ,
 			'txtEmail' => '"'.addslashes( $sEmail ).'"' ,
 			'txtLastIP' => '"0.0.0.0"' ,
-			'nAccessLevel' => $nAccess ,
+			'nAccessLevel' => 100 ,
+			'nPerms' => $Perms ,
 		);
 
 		$this->DoInsert( $data );
@@ -90,12 +89,29 @@ class CTableUser extends CTable
 
 		return $this->m_rows[ 0 ][ 'txtPassword' ];
 	}
+	
+	public function SetUserAlias( $Id , $Alias )
+	{
+		if( !preg_match( RCRX_USERALIAS , $Alias ) )
+		{
+			RCError_PushError( RCRX_USERALIAS_REQ , 'warning' );
+			return false;
+		}
+
+		$data = array
+			(
+			'txtAlias' => '"'.addslashes($Alias).'"' ,
+		);
+
+		$this->DoUpdate( $Id , $data );
+		RCSession_SetUserProp( 'user_alias', $Alias );
+	}
 
 	public function SetUserPassword( $nID , $sPass )
 	{
-		if( !preg_match( '/^[^ ]{6,}$/' , $sPass ) )
+		if( !preg_match( RCRX_PASSWORD , $sPass ) )
 		{
-			RCError_PushError( 'Passwords must be 6 characters long and cannot contain spaces.' , 'warning' );
+			RCError_PushError( RCRX_PASSWORD_REQ , 'warning' );
 			return false;
 		}
 
@@ -129,6 +145,12 @@ class CTableUser extends CTable
 		);
 
 		$this->DoUpdate( $nID , $data );
+	}
+	
+	public function IsUserNameTaken( $UserName )
+	{
+		$this->DoSelect( 'id','txtUserName="'.$UserName.'"');
+		return count( $this->m_rows ) > 0;
 	}
 
 }

@@ -69,8 +69,7 @@ abstract class CPageBase
 		}
 		else
 		{
-			print("<p>You are not authorized to view this page. " );
-			print("Please <a href=".CreateHREF( PAGE_LOGIN ).">log in</a> to view.</p>" );
+			print("<p>You do not have the necessary permissions to view this page.</p>" );
 		}
 		//Always display an extra line at the end of the content div, that way
 		//there won't be an empty line at the end depending on what the last
