@@ -224,6 +224,7 @@ div#content h2
 	background:linear-gradient(180deg,#707070,#000000);
 	font-size:175%;
 	line-height:105%;
+	box-shadow: 5px 5px 5px #555555;
 }
 
 div#content h3
