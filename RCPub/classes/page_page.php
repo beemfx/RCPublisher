@@ -38,42 +38,57 @@ class CPagePage extends CPageBase
 	{
 		return true;
 	}
+	
+	protected function CanEdit()
+	{
+		return $this->m_PageTable->IsSlugTaken( $this->m_strPageSlug ) && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE );
+	}
 
 	protected function ProcessInput()
 	{
 		//If the stage was set then we are most likely dealing with a situation
 		//where either an update or a new post occured.
 		$this->m_strContent = RCWeb_GetPost( 'content' );
-		$this->m_strPageSlug = RCWeb_GetPost( 'pageslug' );
+		//$this->m_strPageSlug = RCWeb_GetPost( 'pageslug' );
 		$this->m_strTitle = RCWeb_GetPost( 'title' );
 		$this->m_nID = ( int ) RCWeb_GetPost( 'id' );
 		$this->m_nMode = (1 == RCWeb_GetPost( 'stage' )) ? self::MODE_EDIT : self::MODE_NEW;
+		
+		$IsSlugOriginal = $this->m_strPageSlug == RCWeb_GetPost( 'pageslug' ) || !$this->m_PageTable->IsSlugTaken( RCWeb_GetPost( 'pageslug' ) );
 
-		//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.
-		if( !preg_match( RCRX_PAGESLUG , $this->m_strPageSlug ) )
+		
+		if( !$IsSlugOriginal )
 		{
+			RCError_PushError( '"'.RCWeb_GetPost( 'pageslug' ).'" is already taken, please use a different slug.' );
+			return;
+		}
+		else if( !preg_match( RCRX_PAGESLUG , RCWeb_GetPost( 'pageslug' ) ) )
+		{
+			//We want to make sure the slug is okay, it shoudld contain only letters numbers and underscores.			
 			//If the slug isn't okay, we want to go back to the edit page.
-			RCError_PushError( $this->m_strPageSlug.' is an invalid slug. The slug may only contain alpha-numerica characters and underscores.' , 'warning' );
+			RCError_PushError( '"'.RCWeb_GetPost( 'pageslug' ).'" is an invalid slug. The slug may only contain alpha-numerica characters and underscores.' , 'warning' );
 		}
 		else
 		{
-			if( 1 == RCWeb_GetPost( 'stage' ) && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) )
+			if( 1 == RCWeb_GetPost( 'stage' ) && $this->CanEdit() )
 			{
 				//We are updating an entry.
-				$this->m_PageTable->UpdatePage( $this->m_nID , $this->m_strPageSlug , $this->m_strTitle , $this->m_strContent );
+				$this->m_PageTable->UpdatePage( $this->m_nID , RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent );
 			}
 			else if( 2 == RCWeb_GetPost( 'stage' ) && RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) )
 			{
-				if( $this->m_PageTable->IsSlugTaken( $this->m_strPageSlug ) )
+				if( $this->m_PageTable->IsSlugTaken( RCWeb_GetPost( 'pageslug' ) ) )
 				{
-					RCError_PushError( $this->m_strPageSlug.' is already taken, please use a different slug.' );
+					RCError_PushError( RCWeb_GetPost( 'pageslug' ).' is already taken, please use a different slug.' );
 					return;
 				}
 				else
 				{
-					$this->m_PageTable->CreatePage( $this->m_strPageSlug , $this->m_strTitle , $this->m_strContent );
+					$this->m_PageTable->CreatePage( RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent );
 				}
 			}
+			
+			$this->m_strPageSlug = RCWeb_GetPost( 'pageslug' );
 
 			//Now that we've updated the table, we want the page to appear, so we set the mode to
 			//page, and process the content.
@@ -117,6 +132,17 @@ class CPagePage extends CPageBase
 				{
 					$this->m_nMode = self::MODE_NEW;
 				}
+			}
+			
+			//Correct states that aren't actually allowed.
+			if( self::MODE_EDIT == $this->m_nMode && !$this->CanEdit())
+			{
+				$this->m_nMode = self::MODE_PAGE;
+			}
+			
+			if( self::MODE_NEW == $this->m_nMode && !RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) )
+			{
+				$this->m_nMode = self::MODE_PAGE;
 			}
 
 
