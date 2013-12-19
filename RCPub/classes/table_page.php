@@ -1,186 +1,187 @@
 <?php
 
 require_once('table_page_history.php');
-
 class CTablePage extends CTable
 {
+
 	const TITLE_COLUMN = 'txtTitle';
-	
+
 	public function CTablePage()
 	{
-		parent::CTable('tblPage');
+		parent::CTable( 'tblPage' );
 	}
-	
-	public function IsSlugTaken($strSlug)
+
+	public function IsSlugTaken( $strSlug )
 	{
-		$this->DoSelect('id', 'txtSlug="'.$strSlug.'"');
-		return count($this->m_rows) != 0;
+		$this->DoSelect( 'id' , 'txtSlug="'.$strSlug.'"' );
+		return count( $this->m_rows ) != 0;
 	}
-	
-	public function CreatePage($strSlug, $strTitle, $strBody)
+
+	public function CreatePage( $strSlug , $strTitle , $strBody )
 	{
-		$Cached = new CRCMarkup($strBody);
-		
+		$Cached = new CRCMarkup( $strBody );
+
 		$Title = $strTitle;
 		$Body = $strBody;
-		
-		$strSlug   = '"'.addslashes($strSlug).'"';
-		$strTitle  = '"'.addslashes($strTitle).'"';
-		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
-			
+
+		$strSlug = '"'.addslashes( $strSlug ).'"';
+		$strTitle = '"'.addslashes( $strTitle ).'"';
+		$strCached = '"'.addslashes( $Cached->GetHTML() ).'"';
+
 		$data = array
-		(
-			 'txtSlug'      => $strSlug,
-			 self::TITLE_COLUMN     => $strTitle,
-			 'txtBodyHTMLCache' => $strCached,
-			 'idVersion_Current' => 1,
+			(
+			'txtSlug' => $strSlug ,
+			self::TITLE_COLUMN => $strTitle ,
+			'txtBodyHTMLCache' => $strCached ,
+			'idVersion_Current' => 1 ,
 		);
-			
-		$PageId = $this->DoInsert($data);
-		
+
+		$PageId = $this->DoInsert( $data );
+
 		if( $PageId > 0 )
 		{
 			$History = new CTablePageHistory();
-			$History->InsertHistory($PageId, $Title, $Body);
+			$History->InsertHistory( $PageId , $Title , $Body );
 		}
 		else
 		{
-			assert(false);
+			assert( false );
 		}
 	}
-	
-	public function UpdatePage($nID, $strSlug, $strTitle, $strBody)
+
+	public function UpdatePage( $nID , $strSlug , $strTitle , $strBody )
 	{
-		$Cached = new CRCMarkup($strBody);
-		
+		$Cached = new CRCMarkup( $strBody );
+
 		$Title = $strTitle;
 		$Body = $strBody;
-		
+
 		$History = new CTablePageHistory();
-		$LatestVersion = $History->InsertHistory($nID, $Title, $Body );
-		
-		$strSlug   = '"'.addslashes($strSlug).'"';
-		$strTitle  = '"'.addslashes($strTitle).'"';
-		$strBody   = '"'.addslashes($strBody).'"';
-		$strCached = '"'.addslashes($Cached->GetHTML()).'"';
-		
+		$LatestVersion = $History->InsertHistory( $nID , $Title , $Body );
+
+		$strSlug = '"'.addslashes( $strSlug ).'"';
+		$strTitle = '"'.addslashes( $strTitle ).'"';
+		$strBody = '"'.addslashes( $strBody ).'"';
+		$strCached = '"'.addslashes( $Cached->GetHTML() ).'"';
+
 		$data = array
-		(
-			 'txtSlug'  => $strSlug,
-			 self::TITLE_COLUMN => $strTitle,
-			 'txtBodyHTMLCache' => $strCached,
-			 'idVersion_Current' => $LatestVersion,
+			(
+			'txtSlug' => $strSlug ,
+			self::TITLE_COLUMN => $strTitle ,
+			'txtBodyHTMLCache' => $strCached ,
+			'idVersion_Current' => $LatestVersion ,
 		);
-		
-		$this->DoUpdate($nID, $data);		
+
+		$this->DoUpdate( $nID , $data );
 	}
-	
-	public function DeletePage($unkIdOrSlug)
+
+	public function DeletePage( $unkIdOrSlug )
 	{
 		
 	}
-	
+
 	public function GetPages()
 	{
 		$items = 'id,txtSlug,'.self::TITLE_COLUMN;
-		$this->DoSelect($items, '', self::TITLE_COLUMN );
+		$this->DoSelect( $items , '' , self::TITLE_COLUMN );
 		return $this->m_rows;
 	}
-	
-	public function GetPage($unkIdOrSlug , $Version = null )
+
+	public function GetPage( $unkIdOrSlug , $Version = null )
 	{
 		$out = null;
-		
+
 		if( null == $Version )
 		{
 			$items = 'id,txtSlug as slug,'.self::TITLE_COLUMN.' as title,txtBodyHTMLCache as formatted';
 
-			if('integer' == gettype($unkIdOrSlug))
+			if( 'integer' == gettype( $unkIdOrSlug ) )
 			{
 				$selection = 'id='.$unkIdOrSlug;
 			}
-			else if ('string' == gettype($unkIdOrSlug))
+			else if( 'string' == gettype( $unkIdOrSlug ) )
 			{
 				$selection = 'txtSlug="'.$unkIdOrSlug.'"';
 			}
 			else
 			{
-				assert(false);
+				assert( false );
 			}
-			$this->DoSelect($items, $selection);
+			$this->DoSelect( $items , $selection );
 
 			//echo 'There are this many rows: '.count($this->m_rows);
 
-			$out = (0 == count($this->m_rows)) ? null : $this->m_rows[0];
+			$out = (0 == count( $this->m_rows )) ? null : $this->m_rows[ 0 ];
 			$this->m_rows = null;
-			if(null != $out)
+			if( null != $out )
 			{
-
+				
 			}
 		}
 		else
 		{
 			//Get the version of the page.
 		}
-		
+
 		return $out;
 	}
-	
-	public function GetContentForEdit($unkIdOrSlug , $Version = 0 )
-	{	
+
+	public function GetContentForEdit( $unkIdOrSlug , $Version = 0 )
+	{
 		$items = 'id , idVersion_Current';
-		
-		if('integer' == gettype($unkIdOrSlug))
+
+		if( 'integer' == gettype( $unkIdOrSlug ) )
 		{
 			$selection = 'id='.$unkIdOrSlug;
 		}
-		else if ('string' == gettype($unkIdOrSlug))
+		else if( 'string' == gettype( $unkIdOrSlug ) )
 		{
 			$selection = 'txtSlug="'.$unkIdOrSlug.'"';
 		}
 		else
 		{
-			assert(false);
+			assert( false );
 		}
-		$this->DoSelect($items, $selection);
-		
+		$this->DoSelect( $items , $selection );
+
 		//echo 'There are this many rows: '.count($this->m_rows);
-		
-		$out = (0 == count($this->m_rows)) ? null : $this->m_rows[0];
+
+		$out = (0 == count( $this->m_rows )) ? null : $this->m_rows[ 0 ];
 		$this->m_rows = null;
-		if(null != $out)
+		if( null != $out )
 		{
 			$History = new CTablePageHistory();
-			$Page = $History->GetPage($out['id'], 0 == $Version ? $out['idVersion_Current'] : $Version );
+			$Page = $History->GetPage( $out[ 'id' ] , 0 == $Version ? $out[ 'idVersion_Current' ] : $Version  );
 			return $Page;
 		}
 		return null;
 	}
-	
+
 	public function ResetCache()
 	{
 		//Basically there better be a id, and txtBodyHTMLCache.
 		//Get all the ids
-		$this->DoSelect('id,idVersion_Current');
-		
+		$this->DoSelect( 'id,idVersion_Current' );
+
 		$ids = $this->m_rows;
-		
-		for($i=0; $i<count($ids); $i++)
+
+		for( $i = 0; $i < count( $ids ); $i++ )
 		{
-			$nID = (int)$ids[$i]['id'];
-			$Version = (int)$ids[$i]['idVersion_Current'];
-			
+			$nID = ( int ) $ids[ $i ][ 'id' ];
+			$Version = ( int ) $ids[ $i ][ 'idVersion_Current' ];
+
 			$History = new CTablePageHistory();
-			$Item = $History->GetPage($nID, $Version);
-			$RCMarkup = new CRCMarkup($Item['txtBody']);
+			$Item = $History->GetPage( $nID , $Version );
+			$RCMarkup = new CRCMarkup( $Item[ 'txtBody' ] );
 			$sRC = $RCMarkup->GetHTML();
 			$data = array
-			(
-				 'txtBodyHTMLCache' => '"'.addslashes($sRC).'"',
+				(
+				'txtBodyHTMLCache' => '"'.addslashes( $sRC ).'"' ,
 			);
-			$this->DoUpdate($nID, $data);
+			$this->DoUpdate( $nID , $data );
 		}
 	}
+
 }
 
 ?>

@@ -84,7 +84,7 @@ div#menu_main a
 	font-weight:bold;
 	font-size:12pt;
 	background:#f5f5f5 url('menu_button_u.png') no-repeat left top;
-        background-size:100%;
+	background-size:100%;
 }
 
 div#menu_main a:hover
@@ -92,7 +92,7 @@ div#menu_main a:hover
 	color: black;
 	text-decoration:none;
 	background:#f5f5f5 url('menu_button_d.png') no-repeat left top;
-        background-size:100%;
+	background-size:100%;
 }
 
 /**********************

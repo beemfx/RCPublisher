@@ -1,4 +1,5 @@
 <?php
+
 /* RCSql is a basic interface for creating a database for RC Publisher.
  * Basically every page requires the database, so we just connect to it
  * one time and disconnect one time, and then any class that needs the
@@ -13,23 +14,20 @@ $g_rcSQL = null;
 function RCSql_Connect()
 {
 	global $g_rcSQL;
-	
+
 	global $g_rcDBHost;
 	global $g_rcDBUser;
 	global $g_rcDBPwd;
 	global $g_rcDBName;
-		
-	assert(null == $g_rcSQL);
-				// Connect to the database:
-	@ $g_rcSQL = new mysqli(
-		$g_rcDBHost,
-		$g_rcDBUser,
-		$g_rcDBPwd,
-		$g_rcDBName);
 
-	if(mysqli_connect_errno())
+	assert( null == $g_rcSQL );
+	// Connect to the database:
+	@ $g_rcSQL = new mysqli(
+		$g_rcDBHost , $g_rcDBUser , $g_rcDBPwd , $g_rcDBName );
+
+	if( mysqli_connect_errno() )
 	{
-		print('A problem occured while connecting to the database. Try again later.');
+		print('A problem occured while connecting to the database. Try again later.' );
 		echo( ' DB: '.$g_rcDBHost );
 		$g_rcSQL = null;
 		return;
@@ -39,8 +37,8 @@ function RCSql_Connect()
 function RCSql_Disconnect()
 {
 	global $g_rcSQL;
-	assert('mysqli' == get_class($g_rcSQL));
-	
+	assert( 'mysqli' == get_class( $g_rcSQL ) );
+
 	$g_rcSQL->close();
 
 	$g_rcSQL = null;
@@ -49,7 +47,7 @@ function RCSql_Disconnect()
 function RCSql_GetDb()
 {
 	global $g_rcSQL;
-	assert('mysqli' == get_class($g_rcSQL));
+	assert( 'mysqli' == get_class( $g_rcSQL ) );
 	return $g_rcSQL;
 }
 

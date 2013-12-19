@@ -3,11 +3,12 @@
 //Very basic:
 class RCSkin implements ISkin
 {
+
 	function GetId()
 	{
 		return 'Beem Software Skin';
 	}
-	
+
 	function BeginHTML( $Page )
 	{
 		print( "<!DOCTYPE html>\n<html>\n<head>\n<title>" );
@@ -17,7 +18,7 @@ class RCSkin implements ISkin
 		print( "</head>\n" );
 		print( "<body>\n" );
 	}
-	
+
 	function DrawPage( $Page )
 	{
 		print( $Page->GetHeader() );
@@ -30,14 +31,14 @@ class RCSkin implements ISkin
 		$Page->Display_PageCallback();
 		print( "<br />\n" );
 		print( $Page->GetFooter() );
-
 	}
-	
+
 	function EndHTML( $Page )
 	{
 		print( "</body>\n" );
 		print( "</html>\n" );
 	}
+
 }
 
 ?>

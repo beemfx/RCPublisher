@@ -12,40 +12,43 @@
 $RCError_NumErrors = 0;
 $RCError_ErrorStack = array();
 
-function RCError_PushError($Message , $Type = 'warning' )
+function RCError_PushError( $Message , $Type = 'warning' )
 {
-	assert( 'string' == gettype($Type) );
-	assert( 'string' == gettype($Message) );
-	
+	assert( 'string' == gettype( $Type ) );
+	assert( 'string' == gettype( $Message ) );
+
 	global $RCError_NumErrors;
 	global $RCError_ErrorStack;
-	
-	$RCError_ErrorStack[$RCError_NumErrors] = array( 'message' => $Message , 'type' => $Type );
+
+	$RCError_ErrorStack[ $RCError_NumErrors ] = array( 'message' => $Message , 'type' => $Type );
 	$RCError_NumErrors++;
-	
 }
 
 function RCError_GetErrorText()
 {
 	global $RCError_NumErrors;
 	global $RCError_ErrorStack;
-	
+
 	$Out = '';
-	
+
 	for( $i = 0; $i < $RCError_NumErrors; $i++ )
 	{
 		$Color = 'red';
-		switch( $RCError_ErrorStack[$i]['type'] )
+		switch( $RCError_ErrorStack[ $i ][ 'type' ] )
 		{
-			case 'warning': $Color = 'yellow'; break;
-			case 'error': $Color = 'red'; break;
-			case 'message': $Color = 'green'; break;
-			default: $Color = 'green'; break;
+			case 'warning': $Color = 'yellow';
+				break;
+			case 'error': $Color = 'red';
+				break;
+			case 'message': $Color = 'green';
+				break;
+			default: $Color = 'green';
+				break;
 		}
-		
-		$Out .= '<p style="color:'.$Color.'">'.$RCError_ErrorStack[$i]['message'].'</p>';
+
+		$Out .= '<p style="color:'.$Color.'">'.$RCError_ErrorStack[ $i ][ 'message' ].'</p>';
 	}
-	
+
 	return $Out;
 }
 

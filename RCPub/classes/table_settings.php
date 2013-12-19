@@ -2,44 +2,47 @@
 
 class CTableSettings extends CTable
 {
+
 	public function CTableSettings()
 	{
-		parent::CTable('tblGlobalSettings');
+		parent::CTable( 'tblGlobalSettings' );
 	}
-	
-	function GetSettingID($strSetting)
+
+	function GetSettingID( $strSetting )
 	{
-		$this->DoSelect('id' , 'txtName="'.$strSetting.'"');
-		return count($this->m_rows) == 1 ? (int)$this->m_rows[0]['id'] : null;
+		$this->DoSelect( 'id' , 'txtName="'.$strSetting.'"' );
+		return count( $this->m_rows ) == 1 ? ( int ) $this->m_rows[ 0 ][ 'id' ] : null;
 	}
-	
-	function GetSetting($strSetting)
+
+	function GetSetting( $strSetting )
 	{
-		$this->DoSelect('txtSetting' , 'txtName="'.$strSetting.'"');
-		
-		return count($this->m_rows) == 1 ? $this->m_rows[0]['txtSetting'] : null;
+		$this->DoSelect( 'txtSetting' , 'txtName="'.$strSetting.'"' );
+
+		return count( $this->m_rows ) == 1 ? $this->m_rows[ 0 ][ 'txtSetting' ] : null;
 	}
-	
-	function SetSetting($strSetting, $strNewValue)
+
+	function SetSetting( $strSetting , $strNewValue )
 	{
 		$data = array
-		(
-			 'txtName'   => '"'.addslashes($strSetting).'"',
-			 'txtSetting' => '"'.addslashes($strNewValue).'"',
+			(
+			'txtName' => '"'.addslashes( $strSetting ).'"' ,
+			'txtSetting' => '"'.addslashes( $strNewValue ).'"' ,
 		);
-		
-		$OldSetting = $this->GetSettingID($strSetting);
-		
-		if(null == $OldSetting)
+
+		$OldSetting = $this->GetSettingID( $strSetting );
+
+		if( null == $OldSetting )
 		{
 			//Create an all new setting...
-			$this->DoInsert($data);
+			$this->DoInsert( $data );
 		}
 		else
 		{
 			//Update the old setting.
-			$this->DoUpdate($OldSetting, $data);
+			$this->DoUpdate( $OldSetting , $data );
 		}
 	}
+
 }
+
 ?>
