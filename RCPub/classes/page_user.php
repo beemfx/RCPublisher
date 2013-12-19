@@ -17,7 +17,6 @@ $PAGEUSER_MODIFIABLE_SETTINGS = array
 	array( 'type' => RCSESSION_CREATEFILE , 'desc' => 'Upload File' ) ,
 	array( 'type' => RCSESSION_MODIFYFILE , 'desc' => 'Edit File' ) ,
 	array( 'type' => RCSESSION_CREATEUSER , 'desc' => 'Create New User' ) ,
-	array( 'type' => RCSESSION_MODIFYUSER , 'desc' => 'Edit User' ) ,
 	array( 'type' => RCSESSION_EDITSETTINGS , 'desc' => 'Edit Settings' ) ,
 );
 class CPageUser extends CPageBase
@@ -53,10 +52,8 @@ class CPageUser extends CPageBase
 	{
 		printf( '<h1>User Settings [%s]</h1>' , RCSession_GetUserProp( 'user' ) );
 		//No matter what we display the form.
-		if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) )
-		{
-			$this->DisplayChangeUser();
-		}
+
+		$this->DisplayChangeUser();
 
 		if( RCSession_IsPermissionAllowed( RCSESSION_CREATEUSER ) )
 		{
@@ -67,7 +64,8 @@ class CPageUser extends CPageBase
 	private function DisplayChangeUser()
 	{
 		?>
-		<h3>Change Password</h3>
+		<h3>Change User Settings</h3>
+		Leave password fields blank if you don't wish to change it.
 		<div style="width:100%;margin:0;padding:1em">
 			<form action=<?php print CreateHREF( PAGE_USER ) ?> method="post" name="PChangeForm">
 
@@ -76,15 +74,18 @@ class CPageUser extends CPageBase
 					<tr><th>Old Password:</th><td><input type="password" name="opass" value="<?php ?>" style="width:50%"/></td></tr>
 					<tr><th>New Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:50%"/></td></tr>
 					<tr><th>Confirm New:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:50%"/></td></tr>
-		<?php
-		global $PAGEUSER_MODIFIABLE_SETTINGS;
-		for( $i = 0; $i < count( $PAGEUSER_MODIFIABLE_SETTINGS ); $i++ )
-		{
-			$Set = $PAGEUSER_MODIFIABLE_SETTINGS[ $i ];
-			$IsSet = RCSession_IsPermissionAllowed( $Set[ 'type' ] );
-			printf( "<tr><th>%s</th><td><input type=\"checkbox\" name=\"user_perm_%s\" %s/></td></tr>\n" , $Set[ 'desc' ] , $Set[ 'type' ] , $IsSet ? 'checked' : ''  );
-		}
-		?>
+					<?php
+					if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) )
+					{
+						global $PAGEUSER_MODIFIABLE_SETTINGS;
+						for( $i = 0; $i < count( $PAGEUSER_MODIFIABLE_SETTINGS ); $i++ )
+						{
+							$Set = $PAGEUSER_MODIFIABLE_SETTINGS[ $i ];
+							$IsSet = RCSession_IsPermissionAllowed( $Set[ 'type' ] );
+							printf( "<tr><th>%s</th><td><input type=\"checkbox\" name=\"user_perm_%s\" %s/></td></tr>\n" , $Set[ 'desc' ] , $Set[ 'type' ] , $IsSet ? 'checked' : ''  );
+						}
+					}
+					?>
 				</table>
 				<center><input class="button" type="button" value="Submit" onclick="javascript:onSubmitPChange()"/></center>
 			</form>
@@ -118,6 +119,12 @@ class CPageUser extends CPageBase
 	{
 		$NewPw = RCWeb_GetPost( 'npass' );
 
+		if( 0 == strlen( $NewPw ) && 0 == strlen( RCWeb_GetPost( 'npassc' ) ) )
+		{
+			//We didn't want to update the password, so don't show a warning.
+			return;
+		}
+
 		if( strlen( $NewPw ) <= 0 )
 		{
 			RCError_PushError( RCRX_PASSWORD_REQ , 'warning' );
@@ -146,6 +153,11 @@ class CPageUser extends CPageBase
 
 	private function UpdateUser_UpdatePerms()
 	{
+		if( !RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) )
+		{
+			return;
+		}
+		
 		global $PAGEUSER_MODIFIABLE_SETTINGS;
 		$UserPerms = $this->m_UserTable->GetPerms( ( int ) RCSession_GetUserProp( 'user_id' ) );
 
@@ -193,7 +205,7 @@ class CPageUser extends CPageBase
 		<script type="text/javascript">
 					function onSubmitPChange()
 					{
-						if (document.PChangeForm.npass.value.length >= 0)
+						if (document.PChangeForm.npass.value.length > 0)
 						{
 							encryptPassword();
 						}
