@@ -2,14 +2,14 @@
 
 require_once('table_user.php');
 
-$g_rcCookieName = 'rc2pageh';
+define( 'RCSESSION_COOKIENAME' , 'rc2pageh' );
 
 function RCSession_Begin()
 {	
-	global $g_rcCookieName;
 	session_start();
 	//Always reset the user level.
 	$_SESSION['user_level'] = 0;
+        $_SESSION['user_permissions'] = 0x00000000;
 	//Always reset the user id;
 	$_SESSION['user_id'] = -1;
 	
@@ -28,11 +28,11 @@ function RCSession_Begin()
 	
 	//Check if there is a login cookie, and if not already logged in
 	//automatically login if the ip address is the same.
-	if(isset($_COOKIE[$g_rcCookieName]) && $_COOKIE[$g_rcCookieName] != 0)
+	if(isset($_COOKIE[RCSESSION_COOKIENAME]) && $_COOKIE[RCSESSION_COOKIENAME] != 0)
 	{
 		$T = new CTableUser();
 		
-		$Info = $T->GetUserInfo((int)$_COOKIE[$g_rcCookieName]);
+		$Info = $T->GetUserInfo((int)$_COOKIE[RCSESSION_COOKIENAME]);
 
 		if($Info['txtLastIP']==$_SERVER['REMOTE_ADDR'])
 		{
@@ -41,13 +41,13 @@ function RCSession_Begin()
 			$_SESSION['user_id']    = $Info['id'];
 			$_SESSION['user_level'] = $Info['nAccessLevel'];
 			$_SESSION['user_email'] = $Info['txtEmail'];
+                        RCSession_SetPermissions();
 		}
 	}
 }
 
 function RCSession_Connect($strUser, $strFullHashPwd, $strSalt, $bRemember)
 {	
-	global $g_rcCookieName;
 	$T = new CTableUser();
 	
 	$nID = $T->GetUserId($strUser, $strFullHashPwd, $strSalt);
@@ -65,8 +65,9 @@ function RCSession_Connect($strUser, $strFullHashPwd, $strSalt, $bRemember)
 	$_SESSION['user_alias'] = $Info['txtAlias'];
 	$_SESSION['user_level'] = $Info['nAccessLevel'];
 	$_SESSION['user_email'] = $Info['txtEmail'];
+        RCSession_SetPermissions();
 	
-	setcookie($g_rcCookieName, (int)$_SESSION['user_id'], time()+3600*24*365);
+	setcookie(RCSESSION_COOKIENAME, (int)$_SESSION['user_id'], time()+3600*24*365);
 	
 	//Update the the IP to the current IP since we are logging in from there.
 	$T->UpdateIP($nID, $_SERVER['REMOTE_ADDR']);
@@ -75,16 +76,14 @@ function RCSession_Connect($strUser, $strFullHashPwd, $strSalt, $bRemember)
 
 function RCSession_GetUserProp($property)
 {
-	global $g_rcCookieName;
 	assert(isset($_SESSION[$property]));
 	return $_SESSION[$property];
 }
 
 function RCSession_Disconnect()
 {
-	global $g_rcCookieName;
 	session_destroy();
-	setcookie($g_rcCookieName, '', -1);
+	setcookie(RCSESSION_COOKIENAME, '', -1);
 	
 	$_SESSION['user_id']    = 0;
 	$_SESSION['user']       = '';
@@ -116,15 +115,25 @@ function RCSession_IsPermissionAllowed( $Perm )
 {
     assert( 'integer' == gettype($Perm) );
     
-    if( RCSESSION_CONTACTUSER == $Perm ) return true;
-    if( RCSESSION_CREATEFEEDBACK == $Perm ) return true;
-    
-    return RCSession_GetUserProp( 'user_level' ) > 0;
+    return  0 != ($Perm&$_SESSION['user_permissions']);
 }
 
 function RCSession_IsUserLoggedIn()
 {
     return RCSession_GetUserProp( 'user_level' ) > 0;
+}
+
+function RCSession_SetPermissions()
+{
+    //Reset permissions.
+    $_SESSION['user_permissions'] = 0x00000000;
+    
+    //These permissions come from the user profile.
+    $_SESSION['user_permissions'] |= RCSession_GetUserProp( 'user_level' ) > 0 ? 0xFFFFFFFF : 0;
+    
+    //The following permissions are always allowed:
+    $_SESSION['user_permissions'] |= RCSESSION_CONTACTUSER;
+    $_SESSION['user_permissions'] |= RCSESSION_CREATEFEEDBACK;
 }
 
 ?>
