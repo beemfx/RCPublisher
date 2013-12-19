@@ -221,7 +221,7 @@ class CPagePage extends CPageBase
 	{
 		//$Comment = new CTableComment();
 		//$Comment->InsertComment( $this->m_nID , 'My totally new comment!' , 'Ryan' , 'beemfx@gmail.com' );	
-		if(RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ))
+		if(RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) && 0 != $this->m_nID )
 		{	
 			$strVersion = self::VERSION_DEFAULT == $this->m_Version ? '' : '&v='.$this->m_Version;
 			$strEditLink = sprintf(

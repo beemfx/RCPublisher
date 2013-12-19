@@ -110,7 +110,6 @@ define( 'RCSESSION_CREATEFEEDBACK' , (1<<14) );
 define( 'RCSESSION_MODIFYFEEDBACK' , (1<<15) );
 define( 'RCSESSION_DELETEFEEDBACK' , (1<<16) );
 
-
 function RCSession_IsPermissionAllowed( $Perm )
 {
     assert( 'integer' == gettype($Perm) );

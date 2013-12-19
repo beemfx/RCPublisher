@@ -105,6 +105,20 @@ class CTableUser extends CTable
 		
 		$this->DoUpdate($nID, $data);
 	}
+        
+        public function GetPerms($nID)
+        {
+            $this->DoSelect('nPerms','id='.$nID);
+            assert(count($this->m_rows) == 1);
+            return $this->m_rows[0]['nPerms'];
+        }
+        
+        public function SetPerms($nID, $Perms)
+        {
+            assert( 'integer' == gettype($Perms) );
+            $data = array( 'nPerms' =>'"'.$Perms.'"',);
+            $this->DoUpdate($nID, $data);
+        }
 	
 	public function UpdateIP($nID, $sIP)
 	{
