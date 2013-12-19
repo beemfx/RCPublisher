@@ -216,11 +216,13 @@ div#content h1
 
 div#content h2
 {
-	padding: 2px 3px 2px;
-	border: 0px solid black;
+	padding: 2px .5em 2px;
+	border: 3px solid #101010;
+	border-radius:25px;
 	color: white;
-	background: #707070 url('h1_top_black.png') repeat-x left top;
-	font-size: 175%;
+	background: #707070;
+	background:linear-gradient(180deg,#707070,#000000);
+	font-size:175%;
 	line-height:105%;
 }
 
