@@ -127,7 +127,8 @@ div.rc_item_title h1, div.rc_item_title a{
 }
 
 div.rc_item_title h1 {
-    background: #707070 url('img/h1_top_black.png') repeat-x left top;
+    background: #707070;
+	 background:linear-gradient(180deg,#707070,#000000);
     color:white;
     display:block;
 }

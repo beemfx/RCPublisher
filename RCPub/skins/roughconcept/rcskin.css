@@ -209,8 +209,8 @@ div#content h1
 	font-size:  200%;
 	text-align: center;
 	border:     0px solid black;
-	background-color:#707070;
-	background: #707070 url('h1_bottom.png') repeat-x left bottom;
+	background: #707070;
+	background:linear-gradient(180deg,#707070,#707070,#707070,#707070,#FFFFFF);
 	color:#eee;
 }
 
