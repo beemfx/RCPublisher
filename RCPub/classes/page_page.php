@@ -38,7 +38,7 @@ class CPagePage extends CPageBase
 	{
 		return true;
 	}
-	
+
 	protected function CanEdit()
 	{
 		return $this->m_PageTable->IsSlugTaken( $this->m_strPageSlug ) && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE );
@@ -53,10 +53,10 @@ class CPagePage extends CPageBase
 		$this->m_strTitle = RCWeb_GetPost( 'title' );
 		$this->m_nID = ( int ) RCWeb_GetPost( 'id' );
 		$this->m_nMode = (1 == RCWeb_GetPost( 'stage' )) ? self::MODE_EDIT : self::MODE_NEW;
-		
+
 		$IsSlugOriginal = $this->m_strPageSlug == RCWeb_GetPost( 'pageslug' ) || !$this->m_PageTable->IsSlugTaken( RCWeb_GetPost( 'pageslug' ) );
 
-		
+
 		if( !$IsSlugOriginal )
 		{
 			RCError_PushError( '"'.RCWeb_GetPost( 'pageslug' ).'" is already taken, please use a different slug.' );
@@ -87,7 +87,7 @@ class CPagePage extends CPageBase
 					$this->m_PageTable->CreatePage( RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent );
 				}
 			}
-			
+
 			$this->m_strPageSlug = RCWeb_GetPost( 'pageslug' );
 
 			//Now that we've updated the table, we want the page to appear, so we set the mode to
@@ -133,13 +133,13 @@ class CPagePage extends CPageBase
 					$this->m_nMode = self::MODE_NEW;
 				}
 			}
-			
+
 			//Correct states that aren't actually allowed.
-			if( self::MODE_EDIT == $this->m_nMode && !$this->CanEdit())
+			if( self::MODE_EDIT == $this->m_nMode && !$this->CanEdit() )
 			{
 				$this->m_nMode = self::MODE_PAGE;
 			}
-			
+
 			if( self::MODE_NEW == $this->m_nMode && !RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) )
 			{
 				$this->m_nMode = self::MODE_PAGE;
@@ -230,6 +230,29 @@ class CPagePage extends CPageBase
 		$this->DisplayEditForm();
 	}
 
+	protected function GetContentHeader()
+	{
+		$Out = '';
+
+		switch( $this->m_nMode )
+		{
+			case self::MODE_PAGE : 
+				$Out = $this->CreatePageHeader();
+				break;
+			case self::MODE_EDIT : 
+				$Out = '';
+				break;
+			case self::MODE_NEW : 
+				$Out = '';
+				break;
+			case self::MODE_LIST : 
+				$Out = 'All Pages';
+				break;
+		}
+		
+		return $Out;
+	}
+
 	protected function DisplayPage()
 	{
 		$this->DisplayContentBlock();
@@ -239,7 +262,7 @@ class CPagePage extends CPageBase
 		}
 	}
 
-	protected function DisplayContentBlock()
+	protected function CreatePageHeader()
 	{
 		//$Comment = new CTableComment();
 		//$Comment->InsertComment( $this->m_nID , 'My totally new comment!' , 'Ryan' , 'beemfx@gmail.com' );	
@@ -254,8 +277,11 @@ class CPagePage extends CPageBase
 			$strEditLink = '';
 		}
 
-		printf( '<h1>%s%s</h1>' , $this->m_strTitle , $strEditLink );
+		return sprintf( '%s%s' , $this->m_strTitle , $strEditLink );
+	}
 
+	protected function DisplayContentBlock()
+	{
 		echo '<div style="margin:0;padding:1em">'."\n";
 		echo $this->m_strContent;
 		echo '</div>';
@@ -303,16 +329,16 @@ class CPagePage extends CPageBase
 			<input type="hidden" name="comment_stage" value="1"/>
 			<input type="hidden" name="comment_page_id" value="<?php echo $this->m_nID ?>"/>
 			<span class="leave_comment_header">Name:</span>
-		<?php
-		if( RCSession_GetUserProp( 'user_id' ) >= 0 )
-		{
-			echo RCSession_GetUserProp( 'user_alias' );
-		}
-		else
-		{
-			echo '<input type="text" name="comment_name" value="'.RCWeb_GetPost( 'comment_name' , '' ).'"/>';
-		}
-		?>
+			<?php
+			if( RCSession_GetUserProp( 'user_id' ) >= 0 )
+			{
+				echo RCSession_GetUserProp( 'user_alias' );
+			}
+			else
+			{
+				echo '<input type="text" name="comment_name" value="'.RCWeb_GetPost( 'comment_name' , '' ).'"/>';
+			}
+			?>
 			<br/>
 			<span class="leave_comment_header">Email:</span>
 			<?php
@@ -337,118 +363,117 @@ class CPagePage extends CPageBase
 			?>
 			<input class="button" type="submit" value="Post Comment"/>
 		</form>
-			<?php
+		<?php
+	}
+
+	protected function ProcessComment()
+	{
+		assert( 0 != $this->m_nID );
+		if( $this->m_nID != ( int ) RCWeb_GetPost( 'comment_page_id' ) )
+			return;
+
+		$Name = RCWeb_GetPost( 'comment_name' );
+		$Email = RCWeb_GetPost( 'comment_email' );
+		$Comment = RCWeb_GetPost( 'comment_comment' );
+
+		if( RCSession_GetUserProp( 'user_id' ) >= 0 )
+		{
+			$Name = RCSession_GetUserProp( 'user_alias' );
+			$Email = RCSession_GetUserProp( 'user_email' );
 		}
 
-		protected function ProcessComment()
+		//Make sure the input is good. Then post.
+		if( strlen( $Name ) < 1 )
 		{
-			assert( 0 != $this->m_nID );
-			if( $this->m_nID != ( int ) RCWeb_GetPost( 'comment_page_id' ) )
-				return;
-
-			$Name = RCWeb_GetPost( 'comment_name' );
-			$Email = RCWeb_GetPost( 'comment_email' );
-			$Comment = RCWeb_GetPost( 'comment_comment' );
-
-			if( RCSession_GetUserProp( 'user_id' ) >= 0 )
-			{
-				$Name = RCSession_GetUserProp( 'user_alias' );
-				$Email = RCSession_GetUserProp( 'user_email' );
-			}
-
-			//Make sure the input is good. Then post.
-			if( strlen( $Name ) < 1 )
-			{
-				RCError_PushError( 'A name is required to leave a comment.' , 'warning' );
-				return;
-			}
-
-			if( !RCWeb_ValidateEmail( $Email ) )
-			{
-				RCError_PushError( 'The email address provided was not valid.' , 'warning' );
-				return;
-			}
-
-			if( strlen( $Comment ) < 3 )
-			{
-				RCError_PushError( 'You must actually leave a comment.' , 'warning' );
-				return;
-			}
-
-			if( !RCSpam_IsAnswerCorrect() )
-			{
-				RCError_PushError( 'You entered an incorrect response for the humanity check.' , 'warning' );
-				return;
-			}
-
-			if( strlen( $Name ) >= 50 )
-			{
-				$Name = substr( $Name , 0 , 50 );
-			}
-
-			if( strlen( $Email ) >= 50 )
-			{
-				$Email = substr( $Email , 0 , 50 );
-			}
-
-			$CmtTable = new CTableComment();
-			$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
-			//Clear all post properties...
-			RCWeb_ClearPostData();
+			RCError_PushError( 'A name is required to leave a comment.' , 'warning' );
+			return;
 		}
 
-		protected function DisplayContent()
+		if( !RCWeb_ValidateEmail( $Email ) )
 		{
-			switch( $this->m_nMode )
-			{
-				case self::MODE_PAGE : $this->DisplayPage();
-					break;
-				case self::MODE_EDIT : $this->DisplayEditPage();
-					break;
-				case self::MODE_NEW : $this->DisplayNewPage();
-					break;
-				case self::MODE_LIST : $this->DisplayPageList();
-					break;
-			}
-
-			if( self::MODE_LIST != $this->m_nMode && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) )
-			{
-				$this->DisplayPageHistory();
-			}
+			RCError_PushError( 'The email address provided was not valid.' , 'warning' );
+			return;
 		}
 
-		private function DisplayPageHistory()
+		if( strlen( $Comment ) < 3 )
 		{
-			printf( '<h3>Page History</h3>' );
-			$HistoryTable = new CTablePageHistory();
-			$History = $HistoryTable->GetHistory( $this->m_nID );
-
-			print("<ul>\n" );
-			for( $i = 0; $i < count( $History ); $i++ )
-			{
-				$Event = $History[ $i ];
-				$Link = CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug.'&v='.$Event[ 'idVersion' ] );
-				printf( "<li><a href=%s>%d (%s): %s</a></li>\n" , $Link , ( int ) $Event[ 'idVersion' ] , $Event[ 'dtPretty' ] , $Event[ 'txtTitle' ] );
-			}
-			print("</ul>\n" );
+			RCError_PushError( 'You must actually leave a comment.' , 'warning' );
+			return;
 		}
 
-		private function DisplayPageList()
+		if( !RCSpam_IsAnswerCorrect() )
 		{
-			$Pages = $this->m_PageTable->GetPages();
-
-			printf( '<h1>All Pages</h1>' );
-			printf( '<ul>' );
-			for( $i = 0; $i < count( $Pages ); $i++ )
-			{
-				printf( '<li><a href=%s>%s</a></li>' , CreateHREF( PAGE_PAGE , 'p='.$Pages[ $i ][ 'txtSlug' ] ) , $Pages[ $i ][ 'txtTitle' ] );
-			}
-			printf( '</ul>' );
+			RCError_PushError( 'You entered an incorrect response for the humanity check.' , 'warning' );
+			return;
 		}
 
-		private function DisplayEditForm()
+		if( strlen( $Name ) >= 50 )
 		{
-			?>
+			$Name = substr( $Name , 0 , 50 );
+		}
+
+		if( strlen( $Email ) >= 50 )
+		{
+			$Email = substr( $Email , 0 , 50 );
+		}
+
+		$CmtTable = new CTableComment();
+		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
+		//Clear all post properties...
+		RCWeb_ClearPostData();
+	}
+
+	protected function DisplayContent()
+	{
+		switch( $this->m_nMode )
+		{
+			case self::MODE_PAGE : $this->DisplayPage();
+				break;
+			case self::MODE_EDIT : $this->DisplayEditPage();
+				break;
+			case self::MODE_NEW : $this->DisplayNewPage();
+				break;
+			case self::MODE_LIST : $this->DisplayPageList();
+				break;
+		}
+
+		if( self::MODE_LIST != $this->m_nMode && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) )
+		{
+			$this->DisplayPageHistory();
+		}
+	}
+
+	private function DisplayPageHistory()
+	{
+		printf( '<h3>Page History</h3>' );
+		$HistoryTable = new CTablePageHistory();
+		$History = $HistoryTable->GetHistory( $this->m_nID );
+
+		print("<ul>\n" );
+		for( $i = 0; $i < count( $History ); $i++ )
+		{
+			$Event = $History[ $i ];
+			$Link = CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug.'&v='.$Event[ 'idVersion' ] );
+			printf( "<li><a href=%s>%d (%s): %s</a></li>\n" , $Link , ( int ) $Event[ 'idVersion' ] , $Event[ 'dtPretty' ] , $Event[ 'txtTitle' ] );
+		}
+		print("</ul>\n" );
+	}
+
+	private function DisplayPageList()
+	{
+		$Pages = $this->m_PageTable->GetPages();
+
+		printf( '<ul>' );
+		for( $i = 0; $i < count( $Pages ); $i++ )
+		{
+			printf( '<li><a href=%s>%s</a></li>' , CreateHREF( PAGE_PAGE , 'p='.$Pages[ $i ][ 'txtSlug' ] ) , $Pages[ $i ][ 'txtTitle' ] );
+		}
+		printf( '</ul>' );
+	}
+
+	private function DisplayEditForm()
+	{
+		?>
 		<div style="width:100%;margin:0;padding:1em">
 			<form action=<?php print CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug ) ?> method="post">
 				<input type="hidden" name="stage" value="<?php echo self::MODE_NEW == $this->m_nMode ? '2' : '1' ?>"/>

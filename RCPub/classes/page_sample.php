@@ -15,6 +15,11 @@ class CPageSample extends CPageBase
 	{
 		parent::CPageBase( 'Sample' );
 	}
+	
+	protected function GetContentHeader()
+	{
+		return "TODO...\n";
+	}
 
 	protected function DisplayContent()
 	{

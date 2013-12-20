@@ -30,10 +30,14 @@ class CContactPage extends CPageBase
 			}
 		}
 	}
+	
+	protected function GetContentHeader()
+	{
+		return "Contact\n";
+	}
 
 	protected function DisplayContent()
 	{
-		print("<h1>Contact</h1>\n" );
 		print('<div style="margin:1em">' );
 		if( isset( $_GET[ 'sent' ] ) )
 		{

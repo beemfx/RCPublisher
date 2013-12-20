@@ -13,6 +13,8 @@ abstract class CPageBase
 
 	//Abstract interface:
 	protected abstract function DisplayContent();
+	
+	protected abstract function GetContentHeader();
 
 	protected abstract function IsPageAllowed();
 
@@ -62,6 +64,13 @@ abstract class CPageBase
 
 	public function Display_PageCallback()
 	{
+		$ContentHeader = $this->GetContentHeader();
+		if( null != $ContentHeader )
+		{
+			print( "<div id=\"content_header\">\n" );
+			print '<h1>'.$ContentHeader.'</h1>';
+			print( "</div>\n" );
+		}
 		print("<div id=\"content\">\n" );
 		if( $this->IsPageAllowed() )
 		{

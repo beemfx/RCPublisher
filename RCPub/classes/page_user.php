@@ -48,10 +48,14 @@ class CPageUser extends CPageBase
 			$this->InsertNewUser();
 		}
 	}
+	
+	protected function GetContentHeader()
+	{
+		return sprintf( 'User Settings [%s]' , RCSession_GetUserProp( 'user' ) );
+	}
 
 	protected function DisplayContent()
 	{
-		printf( '<h1>User Settings [%s]</h1>' , RCSession_GetUserProp( 'user' ) );
 		//No matter what we display the form.
 
 		$this->DisplayChangeUser();

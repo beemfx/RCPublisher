@@ -16,6 +16,14 @@ class CPostNewsPage extends CPageBase
 	{
 		return RCSession_IsPermissionAllowed( RCSESSION_CREATENEWS );
 	}
+	
+	protected function GetContentHeader()
+	{
+		if( isset( $_GET[ 'mode' ] ) && $_GET[ 'mode' ] == 'edit' )
+			return "News Content Manager\n";
+		else
+			return print("Posting News\n" );
+	}
 
 	protected function DisplayContent()
 	{
@@ -23,7 +31,6 @@ class CPostNewsPage extends CPageBase
 
 		if( isset( $_GET[ 'mode' ] ) && $_GET[ 'mode' ] == 'edit' )
 		{
-			print("<h1>Updating News Item</h1>\n" );
 			print('<div style="margin:1em">' );
 			if( RCWeb_GetPost( 'stage' ) == 1 )
 			{
@@ -37,7 +44,6 @@ class CPostNewsPage extends CPageBase
 		}
 		else
 		{
-			print("<h1>Posting News</h1>\n" );
 			print('<div style="margin:1em">' );
 			if( RCWeb_GetPost( 'stage' ) == 1 )
 			{

@@ -20,11 +20,14 @@ class CEmailPage extends CPageBase
 	{
 		return RCSession_IsUserLoggedIn();
 	}
+	
+	protected function GetContentHeader()
+	{
+		return "Email\n";
+	}
 
 	protected function DisplayContent()
 	{
-		print("<h1>Email</h1>\n" );
-
 		//Check to see if we want to delete:
 		if( isset( $_GET[ 'delete' ] ) && isset( $_GET[ 'message' ] ) )
 		{

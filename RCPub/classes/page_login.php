@@ -57,10 +57,14 @@ class CLoginPage extends CPageBase
 		</script>
 		<?php
 	}
+	
+	protected function GetContentHeader()
+	{
+		return "Login\n";
+	}
 
 	protected function DisplayContent()
 	{
-		print("<h1>Login</h1>\n" );
 		$nStage = null != RCWeb_GetPost( 'stage' ) ? RCWeb_GetPost( 'stage' ) : 0;
 
 		if( isset( $_GET[ 'logout' ] ) )

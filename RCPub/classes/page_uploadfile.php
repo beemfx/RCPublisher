@@ -19,6 +19,11 @@ class CPageUploadFile extends CPageBase
 	{
 		return RCSession_IsPermissionAllowed( RCSESSION_CREATEFILE ) || RCSession_IsPermissionAllowed( RCSESSION_MODIFYFILE ) || RCSession_IsPermissionAllowed( RCSESSION_DELETEFILE );
 	}
+	
+	protected function GetContentHeader()
+	{
+		return 'File Manager';
+	}
 
 	protected function DisplayContent()
 	{
@@ -28,7 +33,6 @@ class CPageUploadFile extends CPageBase
 		{
 			$F = new CFileManager();
 			?>
-			<h1>File Manager</h1>
 			<div style="margin:1em">
 				<a href=<?php echo CreateHREF( PAGE_UPLOADFILE , 'mode=upload' ) ?>>Upload File</a>
 				<?php
@@ -40,7 +44,6 @@ class CPageUploadFile extends CPageBase
 		}
 		else if( $_REQUEST[ 'mode' ] == 'upload' )
 		{
-			print("<h1>Upload New File</h1>\n" );
 			print('<div style="margin:1em">' );
 
 			if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFILE ) )

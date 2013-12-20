@@ -82,11 +82,14 @@ class CPageSettings extends CPageBase
 			$Manager->DeleteAllThumbs();
 		}
 	}
+	
+	protected function GetContentHeader()
+	{
+		return 'RC Publisher Settings';
+	}
 
 	protected function DisplayContent()
 	{
-		echo '<h1>RC Publisher Settings</h1>';
-
 		//If submit was pressed, we update the settings.
 		if( RCWeb_GetPost( 'stage' ) == 'us' )
 		{

@@ -18,6 +18,11 @@ class CNewsPage extends CPageBase
 	{
 		return true;
 	}
+	
+	protected function GetContentHeader()
+	{
+		return "News Archives\n";
+	}
 
 	protected function DisplayContent()
 	{
@@ -43,7 +48,6 @@ class CNewsPage extends CPageBase
 	private function DisplayYearList()
 	{
 		$strYear = '';
-		print '<h1>News Archives</h1>'."\n";
 		if( isset( $_GET[ 'archive' ] ) )
 		{
 			$strYear = isset( $_GET[ 'year' ] ) ? $_GET[ 'year' ] : date( 'Y' );

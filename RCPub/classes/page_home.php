@@ -21,6 +21,11 @@ class CPageHome extends CPageBase
 	{
 		return true;
 	}
+	
+	protected function GetContentHeader()
+	{
+		return null;
+	}
 
 	protected function DisplayContent()
 	{
