@@ -42,7 +42,7 @@ body, #wrapper, #header
 
 div#header
 {
-	margin-bottom:-5px;
+	margin-bottom:-4px;
 }
 
 
@@ -54,46 +54,39 @@ div#header
 {
 	left:  0px;
 	top:   0px;
-	width: 100%;
-	border:0px solid black;
+	width: auto;
+	border:0;
+	background:#000000;
+	background:linear-gradient(180deg,#000000,#707070);
+	text-align: center;
 }
-
-div#menu_main p
-{
-	padding: 0;
-	margin: 0;
-	border: 0;
-	border-top:1px solid #000;
-	border-bottom:1px solid #000;
-	border-left: 0px solid #000;
-	text-align: left;
-}
-
 
 div#menu_main a
 {
-	color: #000;
+	color: #FFF;
 	width: 7em;
-	border: 0;
-	border-right:0px solid #000;
+	border:0;
+	border: 2px solid #000;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
 	display:inline-block;
 	margin:0;
-	padding: .2em 0;
+	padding: .4em 0;
 	text-align:center;
 	font:normal normal normal 8pt/100% Arial;
 	text-decoration:none;
 	font-weight:bold;
 	font-size:12pt;
-	background:#f5f5f5 url('menu_button_u.png') no-repeat left top;
-	background-size:100%;
+	background-color:#707070;
+	background:linear-gradient(180deg,#707070,#000000);
 }
 
 div#menu_main a:hover
 {
-	color: black;
 	text-decoration:none;
-	background:#f5f5f5 url('menu_button_d.png') no-repeat left top;
-	background-size:100%;
+	background-color:#000000;
+	background:linear-gradient(0deg,#707070,#000000);
+	color: #ddd;
 }
 
 /**********************

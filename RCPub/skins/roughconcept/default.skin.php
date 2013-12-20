@@ -33,12 +33,6 @@ class RCSkin implements ISkin
 				print("</div>\n" ); //header
 				?>
 				<div id="menu_main">
-					<!-- Load the background image, so that there isn't that delay when
-					it loads -->
-					<img src="images/menu_button_d.png"
-						  alt="bg_down" title="bg_down"
-						  style="display:none" />
-					<p>
 						<?php print( $Page->GetNav1() ); ?>
 				</div>
 				<div id="menu_sub">
