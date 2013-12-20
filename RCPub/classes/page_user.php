@@ -71,6 +71,7 @@ class CPageUser extends CPageBase
 	private function DisplayListOfUsers()
 	{
 		$Users = $this->m_UserTable->GetUsers();
+		echo '<h3>All Users</h3>';
 		
 		for( $i=0; $i < count($Users); $i++ )
 		{
@@ -108,11 +109,11 @@ class CPageUser extends CPageBase
 
 				<input type="hidden" name="stage" value="upass"/>
 				<table style ="width:50%">
-					<tr><th>Name:</th><td><input type="text" name="nuname" value="<?php echo RCSession_GetUserProp( 'user_alias' ); ?>" style="width:50%"/></td></tr>
-					<tr><th>Email:</th><td><input type="text" name="nuemail" value="<?php echo RCSession_GetUserProp( 'user_email' ); ?>" style="width:50%"/></td></tr>
-					<tr><th>Old Password:</th><td><input type="password" name="opass" value="<?php ?>" style="width:50%"/></td></tr>
-					<tr><th>New Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:50%"/></td></tr>
-					<tr><th>Confirm New:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:50%"/></td></tr>
+					<tr><th>Name:</th><td><input type="text" name="nuname" value="<?php echo RCSession_GetUserProp( 'user_alias' ); ?>" style="width:75%"/></td></tr>
+					<tr><th>Email:</th><td><input type="text" name="nuemail" value="<?php echo RCSession_GetUserProp( 'user_email' ); ?>" style="width:75%"/></td></tr>
+					<tr><th>Old Password:</th><td><input type="password" name="opass" value="<?php ?>" style="width:75%"/></td></tr>
+					<tr><th>New Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:75%"/></td></tr>
+					<tr><th>Confirm New:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:75%"/></td></tr>
 					<?php
 					if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYUSER ) )
 					{
@@ -135,11 +136,11 @@ class CPageUser extends CPageBase
 
 				<input type="hidden" name="stage" value="nuser"/>
 				<table style ="width:50%">
-					<tr><th>Username:</th><td><input type="text" name="uname" value="<?php echo RCWeb_GetPost( 'uname' ) ?>" style="width:50%"/></td></tr>
-					<tr><th>Real Name:</th><td><input type="text" name="ualias" value="<?php echo RCWeb_GetPost( 'ualias' ) ?>" style="width:50%"/></td></tr>
-					<tr><th>Email:</th><td><input type="text" name="uemail" value="<?php echo RCWeb_GetPost( 'uemail' ) ?>" style="width:50%"/></td></tr>
-					<tr><th>Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:50%"/></td></tr>
-					<tr><th>Confirm Password:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:50%"/></td></tr>
+					<tr><th>Username:</th><td><input type="text" name="uname" value="<?php echo RCWeb_GetPost( 'uname' ) ?>" style="width:75%"/></td></tr>
+					<tr><th>Real Name:</th><td><input type="text" name="ualias" value="<?php echo RCWeb_GetPost( 'ualias' ) ?>" style="width:75%"/></td></tr>
+					<tr><th>Email:</th><td><input type="text" name="uemail" value="<?php echo RCWeb_GetPost( 'uemail' ) ?>" style="width:75%"/></td></tr>
+					<tr><th>Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:75%"/></td></tr>
+					<tr><th>Confirm Password:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:75%"/></td></tr>
 					<?php
 					$this->DisplayUserPermsChecklist( 'create_user_perm_' , false  , true );
 					?>
