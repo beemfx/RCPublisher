@@ -196,6 +196,7 @@ abstract class CPageBase
 					height:28px;
 					border-bottom:2px solid #707070;
 					background:#eee;
+					font:normal normal normal 12pt/120% Times;
 				}
 
 				div#UO *
