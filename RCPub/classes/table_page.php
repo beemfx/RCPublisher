@@ -17,8 +17,9 @@ class CTablePage extends CTable
 		return count( $this->m_rows ) != 0;
 	}
 
-	public function CreatePage( $strSlug , $strTitle , $strBody )
+	public function CreatePage( $strSlug , $strTitle , $strBody, $idCreator )
 	{
+		assert( 'integer' == gettype($idCreator) );
 		$Cached = new CRCMarkup( $strBody );
 
 		$Title = $strTitle;
@@ -34,6 +35,8 @@ class CTablePage extends CTable
 			self::TITLE_COLUMN => $strTitle ,
 			'txtBodyHTMLCache' => $strCached ,
 			'idVersion_Current' => 1 ,
+			'idCreator' => $idCreator,
+			'idOwner' => $idCreator,
 		);
 
 		$PageId = $this->DoInsert( $data );
@@ -41,7 +44,7 @@ class CTablePage extends CTable
 		if( $PageId > 0 )
 		{
 			$History = new CTablePageHistory();
-			$History->InsertHistory( $PageId , $Title , $Body );
+			$History->InsertHistory( $PageId , $Title , $Body , $idCreator );
 		}
 		else
 		{
@@ -49,15 +52,16 @@ class CTablePage extends CTable
 		}
 	}
 
-	public function UpdatePage( $nID , $strSlug , $strTitle , $strBody )
+	public function UpdatePage( $nID , $strSlug , $strTitle , $strBody , $idUser )
 	{
+		assert( 'integer' == gettype( $idUser ) );
 		$Cached = new CRCMarkup( $strBody );
 
 		$Title = $strTitle;
 		$Body = $strBody;
 
 		$History = new CTablePageHistory();
-		$LatestVersion = $History->InsertHistory( $nID , $Title , $Body );
+		$LatestVersion = $History->InsertHistory( $nID , $Title , $Body , $idUser );
 
 		$strSlug = '"'.addslashes( $strSlug ).'"';
 		$strTitle = '"'.addslashes( $strTitle ).'"';
@@ -70,6 +74,7 @@ class CTablePage extends CTable
 			self::TITLE_COLUMN => $strTitle ,
 			'txtBodyHTMLCache' => $strCached ,
 			'idVersion_Current' => $LatestVersion ,
+			'idOwner' => $idUser,
 		);
 
 		$this->DoUpdate( $nID , $data );
@@ -78,6 +83,13 @@ class CTablePage extends CTable
 	public function DeletePage( $unkIdOrSlug )
 	{
 		
+	}
+	
+	public function GetOwner( $PageId )
+	{
+		$this->DoSelect( 'idCreator, idOwner', 'id='.$PageId );
+		assert( 1 == count($this->m_rows) );
+		return $this->m_rows[0];
 	}
 
 	public function GetPages()

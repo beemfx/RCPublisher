@@ -73,7 +73,7 @@ class CPagePage extends CPageBase
 			if( 1 == RCWeb_GetPost( 'stage' ) && $this->CanEdit() )
 			{
 				//We are updating an entry.
-				$this->m_PageTable->UpdatePage( $this->m_nID , RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent );
+				$this->m_PageTable->UpdatePage( $this->m_nID , RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent, RCSession_GetUserProp( 'user_id' ) );
 			}
 			else if( 2 == RCWeb_GetPost( 'stage' ) && RCSession_IsPermissionAllowed( RCSESSION_CREATEPAGE ) )
 			{
@@ -84,7 +84,7 @@ class CPagePage extends CPageBase
 				}
 				else
 				{
-					$this->m_PageTable->CreatePage( RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent );
+					$this->m_PageTable->CreatePage( RCWeb_GetPost( 'pageslug' ) , $this->m_strTitle , $this->m_strContent, RCSession_GetUserProp( 'user_id' ) );
 				}
 			}
 
@@ -437,15 +437,22 @@ class CPagePage extends CPageBase
 				break;
 		}
 
-		if( self::MODE_LIST != $this->m_nMode && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) )
+		if( self::MODE_LIST != $this->m_nMode && RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) && self::MODE_NEW != $this->m_nMode )
 		{
 			$this->DisplayPageHistory();
 		}
 	}
-
+	
 	private function DisplayPageHistory()
 	{
 		printf( '<h3>Page History</h3>' );
+		$OwnerInfo = $this->m_PageTable->GetOwner( $this->m_nID );
+		$UserTable = new CTableUser();
+		
+		$CreatorInfo = $UserTable->GetUserInfo( $OwnerInfo['idCreator'] );
+		
+		printf( 'Created by %s (%s)' , $CreatorInfo['txtAlias'] , $CreatorInfo['txtUserName'] );
+		
 		$HistoryTable = new CTablePageHistory();
 		$History = $HistoryTable->GetHistory( $this->m_nID );
 
@@ -453,8 +460,9 @@ class CPagePage extends CPageBase
 		for( $i = 0; $i < count( $History ); $i++ )
 		{
 			$Event = $History[ $i ];
+			$UserInfo = $UserTable->GetUserInfo( $Event['idUser'] );
 			$Link = CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug.'&v='.$Event[ 'idVersion' ] );
-			printf( "<li><a href=%s>%d (%s): %s</a></li>\n" , $Link , ( int ) $Event[ 'idVersion' ] , $Event[ 'dtPretty' ] , $Event[ 'txtTitle' ] );
+			printf( "<li><a href=%s>%d (%s): \"%s\"</a> by %s (%s)</li>\n" , $Link , ( int ) $Event[ 'idVersion' ] , $Event[ 'dtPretty' ] , $Event[ 'txtTitle' ], $UserInfo['txtAlias'] , $UserInfo['txtUserName'] );
 		}
 		print("</ul>\n" );
 	}

@@ -54,6 +54,8 @@ function DoInstall()
 		  `txtTitle` char(64) NOT NULL,
 		  `txtBodyHTMLCache` text NOT NULL,
 		  `idVersion_Current` int(11) NOT NULL,
+		  `idCreator` int(11) NOT NULL,
+		  `idOwner` int(11) NOT NULL,
 		  PRIMARY KEY  (`id`),
 		  UNIQUE KEY `txtSlug` (`txtSlug`)' ,
 	);
@@ -68,6 +70,7 @@ function DoInstall()
 		  `txtTitle` char(64) NOT NULL,
 		  `txtBody` text NOT NULL,
 		  `dt` datetime NOT NULL,
+		  `idUser` int(11) NOT NULL,
 		  PRIMARY KEY  (`id`),
         KEY  (`idVersion`)'
 	);

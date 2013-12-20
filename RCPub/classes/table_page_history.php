@@ -8,9 +8,11 @@ class CTablePageHistory extends CTable
 		parent::CTable( 'tblPageHistory' );
 	}
 
-	public function InsertHistory( $PageId , $Title , $Body )
+	public function InsertHistory( $PageId , $Title , $Body , $idUser )
 	{
 		assert( 'integer' == gettype( $PageId ) );
+		assert( 'integer' == gettype( $idUser ) );
+		assert( 0 != $idUser );
 
 		$Title = '"'.addslashes( $Title ).'"';
 		$Body = '"'.addslashes( $Body ).'"';
@@ -37,6 +39,7 @@ class CTablePageHistory extends CTable
 			'txtTitle' => $Title ,
 			'txtBody' => $Body ,
 			'dt' => 'now()' ,
+			'idUser' => $idUser,
 		);
 
 		$this->DoInsert( $data );
@@ -46,7 +49,7 @@ class CTablePageHistory extends CTable
 
 	public function GetHistory( $PageId )
 	{
-		$items = 'idVersion , txtTitle , dt, date_format(dt, "%M %d %Y, %l:%i %p") as dtPretty';
+		$items = 'idVersion , txtTitle , dt, date_format(dt, "%M %d %Y, %l:%i %p") as dtPretty, idUser';
 		$this->DoSelect( $items , 'idPage='.$PageId , 'dt DESC' );
 		return $this->m_rows;
 	}
