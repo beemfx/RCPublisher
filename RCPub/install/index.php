@@ -202,6 +202,8 @@ function DoInstall()
 		'txtNav' => addslashes( '[[home Home]][[login Log In]][[newpage New Page]]' ) ,
 		'txtMiniNav' => addslashes( '[[contact Contact]]' ) ,
 		'txtSkin' => addslashes( 'default' ) ,
+		'nThumbnailQuality' => '"100"',
+		'nThumbnailWidth' => '"300"',
 	);
 
 	foreach( $InitialSettings as $Setting => $Value )
