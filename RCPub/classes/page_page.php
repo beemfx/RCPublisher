@@ -98,15 +98,57 @@ class CPagePage extends CPageBase
 			exit;
 		}
 	}
+	
+	protected function DisplayPre_HandleCommentEditing()
+	{
+		//Technically this is pretty bad, since we can delete any comment from
+		//anywhere, but at least the deleter comment needs permissions.
+		$DoDelete = RCWeb_GetGet( 'dcomment' , null );
+		$DoApprove = RCWeb_GetGet( 'acomment' , null );
+		
+		if( null == $DoDelete && null == $DoApprove )
+		{
+			return;
+		}
+		
+		$TableComment = new CTableComment();
+		
+		if( null != $DoApprove && RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK ))
+		{
+			$TableComment->ApproveComment((int)$DoApprove);
+			RCError_PushError( 'Comment approved.' , 'message' );
+		}
+		else if( null != $DoApprove )
+		{
+			RCError_PushError( 'You do not have permissions to approve comments.' , 'warning' );
+		}
+		
+		if( null != $DoDelete && RCSession_IsPermissionAllowed( RCSESSION_DELETEFEEDBACK ))
+		{
+			$TableComment->DeleteComment((int)$DoDelete);
+			RCError_PushError( 'Comment deleted.' , 'message' );
+		}
+		else if( null != $DoDelete )
+		{
+			RCError_PushError( 'You do not have permissions to delete feedback.' , 'warning' );
+		}
+		
+		$strRedirect = 'Location: '.CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug , true );
+		header( $strRedirect );
+		exit;
+	}
 
 	protected function DisplayPre()
 	{
+		
 		$this->m_strTitle = '';
 		$this->m_PageTable = new CTablePage();
 		//The page slug should be passed in the p parameter.
 
 		$this->m_strPageSlug = RCWeb_GetGet( 'p' );
 		$this->m_Version = RCWeb_GetGet( 'v' , self::VERSION_DEFAULT );
+		
+		$this->DisplayPre_HandleCommentEditing();
 
 		if( 0 != RCWeb_GetPost( 'stage' , 0 ) )
 		{
@@ -294,7 +336,8 @@ class CPagePage extends CPageBase
 	protected function DisplayCommentBlock()
 	{
 		$Comment = new CTableComment();
-		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID );
+		$ShowAllFeedback = RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK );
+		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID , !$ShowAllFeedback );
 
 		echo '<div id="comment_block">';
 		echo '<h3>Comments</h3>';
@@ -307,7 +350,16 @@ class CPagePage extends CPageBase
 			printf( '<h4>Comment from: %s [%s]</h4>' , $c[ 'txtName' ] , 0 <= $c[ 'idUser' ] ? 'Member' : 'Visitor'  );
 			echo '<p class="text">'.$c[ 'txtCommentFormat' ].'</p>';
 			echo '<p class="date">'.$c[ 'dt' ].'</p>';
+			if( RCSession_IsPermissionAllowed( RCSESSION_DELETEFEEDBACK ) )
+			{
+				echo '[<a href='.CreateHREF( PAGE_PAGE , 'dcomment='.$c['id'].'&p='.$this->m_strPageSlug ).'>Delete</a>]';
+			}
+			if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK ) && !$c['bApproved'] )
+			{
+				echo '[<a href='.CreateHREF( PAGE_PAGE , 'acomment='.$c['id'].'&p='.$this->m_strPageSlug ).'>Approve</a>]';
+			}
 			echo '</div>';
+			echo "\n";
 		}
 		echo '</div>';
 

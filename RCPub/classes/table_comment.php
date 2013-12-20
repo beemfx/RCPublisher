@@ -62,11 +62,17 @@ class CTableComment extends CTable
 		}
 	}
 
-	public function GetFormattedCommentsForPage( $PageId )
+	public function GetFormattedCommentsForPage( $PageId , $OnlyApproved = true )
 	{
 		assert( 'integer' == gettype( $PageId ) );
 		//TODO: Should re-add bApproved to the filter.
-		$this->DoSelect( 'id, idUser , txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , 'idContent='.$PageId , 'dtPosted desc' );
+		$Condition = 'idContent='.$PageId;
+		if( $OnlyApproved )
+		{
+			$Condition .= ' && bApproved';
+		}
+		
+		$this->DoSelect( 'id, idUser , bApproved, txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , $Condition, 'dtPosted desc' );
 		return $this->m_rows;
 	}
 
@@ -74,6 +80,13 @@ class CTableComment extends CTable
 	{
 		assert( 'integer' == gettype( $Id ) );
 		$this->DoDelete( $Id );
+	}
+	
+	public function ApproveComment( $Id )
+	{
+		assert( 'integer' == gettype( $Id ) );
+		$data = array( 'bApproved' => '1' );
+		$this->DoUpdate( $Id , $data );
 	}
 
 	public function ResetCache()
