@@ -20,9 +20,9 @@ class CPostNewsPage extends CPageBase
 	protected function GetContentHeader()
 	{
 		if( isset( $_GET[ 'mode' ] ) && $_GET[ 'mode' ] == 'edit' )
-			return "News Content Manager\n";
+			return 'Editing News Story';
 		else
-			return print("Posting News\n" );
+			return "Posting News";
 	}
 
 	protected function DisplayContent()
