@@ -391,7 +391,7 @@ class CPagePage extends CPageBase
 		echo "\n";
 		echo '<div id="comment_block_leave_feedback">';
 		echo '<h3>Leave Feedback</h3>';
-		echo 'Comments are limited to '.MAX_COMMENT_LEN.' characters.';
+		echo 'Comments are limited to '.MAX_COMMENT_LEN.' characters, and do not appear until they are approved by a moderator. An email address is required to leave feedback, but it will not appear on this site.';
 		$this->DisplayCommentBlock_LeaveFeedback_CommentForm();
 		echo '</div>';
 	}
@@ -426,7 +426,6 @@ class CPagePage extends CPageBase
 			}
 			?>
 			<br/>
-			(Your email address will not appear on this site.)<br/>
 			<span class="leave_comment_header">Comment:</span>
 			<textarea name="comment_comment" style="height:100px;width:100%" onKeyDown="RCTextArea_LimitText(this.form.comment_comment,this.form.comment_countdown,<?php echo MAX_COMMENT_LEN?>);" onKeyUp="RCTextArea_LimitText(this.form.comment_comment,this.form.comment_countdown,<?php echo MAX_COMMENT_LEN?>);"><?php print RCWeb_GetPost( 'comment_comment' , '' ); ?></textarea>
 			You have <input readonly type="text" name="comment_countdown" size="3" value="<?php echo MAX_COMMENT_LEN?>"> characters left.
