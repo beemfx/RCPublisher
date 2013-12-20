@@ -73,7 +73,7 @@ class CTableNews extends CTable
 	public function ObtainRecentNews( $count )
 	{
 		//$res = $this->DoQuery('select txtTitle, date_format(dtPosted, "%M %e, %Y") as dt, txtBody from tblNews order by dtPosted desc limit '.$nNewsStories);
-		$this->DoSelect( 'txtTitle as title, date_format(dtPosted, "%M %e, %Y") as date, txtBody as body, txtBodyHTMLCache as formatted' , '' , 'dtPosted desc' , ( int ) $count );
+		$this->DoSelect( 'id' , '' , 'dtPosted desc' , ( int ) $count );
 		return $this->m_rows;
 	}
 
@@ -114,6 +114,46 @@ class CTableNews extends CTable
 				'txtBodyHTMLCache' => '"'.addslashes( $sRC ).'"' ,
 			);
 			$this->DoUpdate( $nID , $data );
+		}
+	}
+
+	public function DisplayArticle( $nID )
+	{
+		if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYNEWS ) )
+		{
+			$strEditLink = sprintf(
+				' [<a href=%s>Edit</a>]' , CreateHREF( PAGE_POSTNEWS , 'mode=edit&id='.$nID ) );
+		}
+		else
+		{
+			$strEditLink = '';
+		}
+
+		$story = $this->GetStory( ( int ) $nID );
+
+
+		if( null != $story )
+		{
+			printf( "<h3>%s - <i><small>%s</small></i>%s</h3>\n" , $story[ 'txtTitle' ] , $story[ 'dt' ] , $strEditLink );
+
+			print('<div class="news_body">' );
+			print($story[ 'formatted' ] );
+			print('</div>' );
+		}
+	}
+
+	public function DisplayRecentArticles( $Count )
+	{
+		$Stories = $this->ObtainRecentNews( $Count );
+
+		for( $i = 0; $i < count( $Stories ); $i++ )
+		{
+			$this->DisplayArticle( $Stories[ $i ][ 'id' ] );
+		}
+
+		if( 0 == count( $Stories ) )
+		{
+			echo 'No news.';
 		}
 	}
 

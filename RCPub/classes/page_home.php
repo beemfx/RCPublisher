@@ -59,20 +59,11 @@ class CPageHome extends CPageBase
 	{
 		$NewsTable = new CTableNews();
 		$nNumStories = $this->GetGlobalSetting( 'nHomeNewsStories' );
-		$Stories = $NewsTable->ObtainRecentNews( $nNumStories );
+		
 		print('<div class="news">' );
 		printf( '<h2><a class="tlink" href=%s>News</a></h2>' , CreateHREF( PAGE_NEWS , 'archive' ) );
 
-		for( $i = 0; $i < count( $Stories ); $i++ )
-		{
-			$story = $Stories[ $i ];
-			printf( "<h3>%s - <i><small>%s</small></i></h3>\n" , $story[ 'title' ] , $story[ 'date' ] );
-
-			print($story[ 'formatted' ] );
-		}
-
-		if( 0 == $nNumStories )
-			echo 'No news.';
+		$NewsTable->DisplayRecentArticles( $nNumStories );
 
 		print('</div>' );
 

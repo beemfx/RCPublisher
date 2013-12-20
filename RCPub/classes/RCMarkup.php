@@ -130,6 +130,10 @@ class CRCMarkup
 				$bNoLink = true;
 				$bUseThumb = false;
 			}
+			else if( preg_match( '/^inline$/' , $Parms[ $i ] ) )
+			{
+				$sBlockType = 'image_block_inline';
+			}
 			else if( preg_match( '/^right$|^left$/' , $Parms[ $i ] ) )
 				$sPoseString = 'float:'.$Parms[ $i ].';';
 			else if( preg_match( '/^center$/' , $Parms[ $i ] ) )

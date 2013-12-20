@@ -39,7 +39,9 @@ function ShowBlogEntry()
 			$strContent = 'Error: Couldn\'t find prerendered text for '.$row[ 'post_title' ];
 		}
 
+		print '<div class="b2EvoContent">';
 		print $strContent;
+		print '</div>';
 
 		$res->free();
 	}

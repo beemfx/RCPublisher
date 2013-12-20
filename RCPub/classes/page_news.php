@@ -94,27 +94,7 @@ class CNewsPage extends CPageBase
 
 	private function DisplayArticle( $nID )
 	{
-		if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYNEWS ) )
-		{
-			$strEditLink = sprintf(
-				' [<a href=%s>Edit</a>]' , CreateHREF( PAGE_POSTNEWS , 'mode=edit&id='.$nID ) );
-		}
-		else
-		{
-			$strEditLink = '';
-		}
-
-		$story = $this->m_NewsTable->GetStory( ( int ) $nID );
-
-
-		if( null != $story )
-		{
-			printf( "<h3>%s - <i><small>%s</small></i>%s</h3>\n" , $story[ 'txtTitle' ] , $story[ 'dt' ] , $strEditLink );
-
-			print('<p>' );
-			print($story[ 'formatted' ] );
-			print('</p>' );
-		}
+		$this->m_NewsTable->DisplayArticle($nID);
 	}
 
 }

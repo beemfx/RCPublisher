@@ -256,7 +256,7 @@ div#content ul
 
 div.news
 {
-
+	
 }
 
 div.news h3
@@ -265,6 +265,16 @@ div.news h3
 }
 
 div.news p
+{
+	margin:0 2em;
+}
+
+div.b2EvoContent
+{
+	margin:1em;
+}
+
+div.news_body
 {
 	margin:0 2em;
 }
@@ -279,90 +289,6 @@ div.home_seg
 	vertical-align:top;
 	margin:0;
 	border:0;
-}
-
-/*******************************
-*** TABLE OF CONTENTS STYLES ***
-*******************************/
-
-div#toc_list
-{
-	padding:2px;
-}
-
-div#toc_list p
-{
-	margin:2em;
-}
-
-
-div#toc_list a,
-div#toc_list a:visited
-{
-	color:black;
-	font-size:120%;
-	font-weight:normal;
-	font-weight:bold;
-}
-
-div#toc_list a.sort_link
-{
-	font-size:130%;
-	text-decoration: none;
-	color:white;
-}
-
-div#toc_list a:hover.sort_link
-{
-	text-decoration:underline;
-}
-
-div#toc_list th
-{
-	background:gray;
-}
-
-
-/******************************
-*** STYLES FOR PAGE BUTTONS ***
-******************************/
-div#page_buttons
-{
-	text-align:center;
-}
-
-div#page_buttons a, a.current_page, div#page_buttons a:visited
-{
-	padding: 0px;
-	margin:0px;
-	text-decoration: none;
-	color: white;
-	margin: 0px 1px;
-	display:inline-block;
-	width:   30px;
-	border:  2px outset black;
-	background-color:blue;
-	text-align:center;
-	font-weight:normal;
-}
-
-div#page_buttons a:hover
-{
-	text-decoration:none;
-	border-style:inset;
-}
-
-
-div#page_buttons a.current_page
-{
-	border-style:inset;
-}
-
-div#page_buttons p
-{
-	margin:0;
-	border:0;
-	padding:1em;
 }
 
 a.big_link
@@ -436,7 +362,7 @@ div.note_block
 	background-color:#eee;
 }
 
-div.image_block
+div.image_block, div.image_block_inline
 {
 	display:block;
 	padding:0;
@@ -444,9 +370,20 @@ div.image_block
 	border:0;
 	text-align:left;
 	font-size:75%;
+	border:5px solid black;
+	background-color:black;
+	border-radius:5px;
+	box-shadow: 5px 5px 5px #555555;
 }
 
-div.image_block img
+div.image_block_inline
+{
+	border-radius:0;
+	border:0;
+	box-shadow:none;
+}
+
+div.image_block img, div.image_block_inline img
 {
 	display:block;
 	padding:0;
@@ -470,7 +407,6 @@ div.image_caption
 	border:0;
 	padding:.25em;
 	color:#fff;
-	background-color:#000;
 }
 
 /*********
