@@ -16,6 +16,13 @@ class CTablePage extends CTable
 		$this->DoSelect( 'id' , 'txtSlug="'.$strSlug.'"' );
 		return count( $this->m_rows ) != 0;
 	}
+	
+	public function GetPageTitle( $Id )
+	{
+		assert( 'integer' == gettype( $Id) );
+		$this->DoSelect( self::TITLE_COLUMN , 'id='.$Id );
+		return count( $this->m_rows ) == 1 ? $this->m_rows[0][self::TITLE_COLUMN] : 'NO PAGE';
+	}
 
 	public function CreatePage( $strSlug , $strTitle , $strBody, $idCreator )
 	{

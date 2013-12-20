@@ -75,6 +75,12 @@ class CTableComment extends CTable
 		$this->DoSelect( 'id, idUser , bApproved, txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , $Condition, 'dtPosted desc' );
 		return $this->m_rows;
 	}
+	
+	public function GetFormattedNotApprovedComments()
+	{
+		$this->DoSelect( 'id, idUser , idContent, bApproved, txtCommentFormat, txtName, date_format(dtPosted, "%W %M %D, %Y @ %r") as dt' , '!bApproved', 'dtPosted desc' );
+		return $this->m_rows;
+	}
 
 	public function DeleteComment( $Id )
 	{

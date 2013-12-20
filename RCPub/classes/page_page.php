@@ -133,7 +133,7 @@ class CPagePage extends CPageBase
 			RCError_PushError( 'You do not have permissions to delete feedback.' , 'warning' );
 		}
 		
-		$strRedirect = 'Location: '.CreateHREF( PAGE_PAGE , 'p='.$this->m_strPageSlug , true );
+		$strRedirect = 'Location: '.CreateHREF( PAGE_PAGE , strlen( $this->m_strPageSlug) > 0 ? 'p='.$this->m_strPageSlug: '' , true );
 		header( $strRedirect );
 		exit;
 	}
@@ -332,6 +332,42 @@ class CPagePage extends CPageBase
 		echo $this->m_strContent;
 		echo '</div>';
 	}
+	
+	protected function RenderComments( $Comments , $ForModeration = false )
+	{
+		for( $i = 0; $i < count( $Comments ); $i++ )
+		{
+			$c = $Comments[ $i ];
+
+			echo '<div class="comment">';
+			printf( '<h4>Comment from: %s [%s]</h4>' , $c[ 'txtName' ] , 0 <= $c[ 'idUser' ] ? 'Member' : 'Visitor'  );
+			if( $ForModeration )
+			{
+				echo '<p><b>Page:</b> '.$this->m_PageTable->GetPageTitle( (int)$c['idContent'] );
+			}
+			echo '<p class="text">'.$c[ 'txtCommentFormat' ].'</p>';
+			echo '<p class="date">'.$c[ 'dt' ].'</p>';
+			$DLink = 'dcomment='.$c['id'];
+			$ALink = 'acomment='.$c['id'];
+			
+			if( !$ForModeration )
+			{
+				$DLink .= '&p='.$this->m_strPageSlug;
+				$ALink .= '&p='.$this->m_strPageSlug;
+			}
+			
+			if( RCSession_IsPermissionAllowed( RCSESSION_DELETEFEEDBACK ) )
+			{
+				echo '[<a href='.CreateHREF( PAGE_PAGE , $DLink ).'>Delete</a>]';
+			}
+			if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK ) && !$c['bApproved'] )
+			{
+				echo '[<a href='.CreateHREF( PAGE_PAGE , $ALink ).'>Approve</a>]';
+			}
+			echo '</div>';
+			echo "\n";
+		}
+	}
 
 	protected function DisplayCommentBlock()
 	{
@@ -341,26 +377,7 @@ class CPagePage extends CPageBase
 
 		echo '<div id="comment_block">';
 		echo '<h3>Comments</h3>';
-
-		for( $i = 0; $i < count( $Comments ); $i++ )
-		{
-			$c = $Comments[ $i ];
-
-			echo '<div class="comment">';
-			printf( '<h4>Comment from: %s [%s]</h4>' , $c[ 'txtName' ] , 0 <= $c[ 'idUser' ] ? 'Member' : 'Visitor'  );
-			echo '<p class="text">'.$c[ 'txtCommentFormat' ].'</p>';
-			echo '<p class="date">'.$c[ 'dt' ].'</p>';
-			if( RCSession_IsPermissionAllowed( RCSESSION_DELETEFEEDBACK ) )
-			{
-				echo '[<a href='.CreateHREF( PAGE_PAGE , 'dcomment='.$c['id'].'&p='.$this->m_strPageSlug ).'>Delete</a>]';
-			}
-			if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK ) && !$c['bApproved'] )
-			{
-				echo '[<a href='.CreateHREF( PAGE_PAGE , 'acomment='.$c['id'].'&p='.$this->m_strPageSlug ).'>Approve</a>]';
-			}
-			echo '</div>';
-			echo "\n";
-		}
+		$this->RenderComments( $Comments );
 		echo '</div>';
 
 		if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFEEDBACK ) )
@@ -530,6 +547,25 @@ class CPagePage extends CPageBase
 			printf( '<li><a href=%s>%s</a></li>' , CreateHREF( PAGE_PAGE , 'p='.$Pages[ $i ][ 'txtSlug' ] ) , $Pages[ $i ][ 'txtTitle' ] );
 		}
 		printf( '</ul>' );
+		
+		if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK ))
+		{
+			$CommentTable = new CTableComment();
+			
+			echo '<div id="comment_block">';
+			print( '<h3>Comments Needing Moderation</h3>' );
+			$Comments = $CommentTable->GetFormattedNotApprovedComments();
+			if( 0 == count( $Comments) )
+			{
+				print 'None!';
+			}
+			else
+			{
+				$this->RenderComments( $Comments , true );
+			}
+			echo '</div>';
+		
+		}
 	}
 
 	private function DisplayEditForm()
