@@ -61,7 +61,12 @@ class CTableMail extends CTable
 	public function PostMail( $nFromUser , $nToUser , $strName , $strFromEmail , $strSubject , $strMessage )
 	{
 		assert( 'integer' == gettype( $nToUser ) );
-
+		
+		$strMessage = strip_tags(substr( $strMessage, 0, MAX_EMAIL_LEN ));
+		$strName = strip_tags(substr( $strName , 0, 25 ));
+		$strFromEmail = substr( $strFromEmail, 0,  40 );
+		$strSubject = strip_tags(substr( $strSubject, 0, 100 ));
+		
 		//We make sure the $nToUser is a real user.
 		$UserTable = new CTableUser();
 
@@ -101,6 +106,7 @@ class CTableMail extends CTable
 		);
 
 		$this->DoInsert( $insert );
+		return true;
 	}
 
 }
