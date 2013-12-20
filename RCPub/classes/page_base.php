@@ -25,7 +25,8 @@ abstract class CPageBase
 
 	public function GetPreClosingHeadScript()
 	{
-		return $this->GetGlobalSetting( 'txtScriptHeader' );
+		$Scripts = "<script type=\"text/javascript\" src=\"js/rclibrary.js\"></script>\n";
+		return $Scripts.$this->GetGlobalSetting( 'txtScriptHeader' );
 	}
 
 	public function GetHeader()
