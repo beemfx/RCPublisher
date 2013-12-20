@@ -102,7 +102,8 @@ class CContactPage extends CPageBase
 				</tr>
 				<tr>
 					<td colspan="2">
-						<textarea name="message" style="height:200px;width:100%"><?php print RCWeb_GetPost( 'message' , '' ) ?></textarea>
+						<textarea name="message" style="height:200px;width:100%" onKeyDown="RCTextArea_LimitText(this.form.message,this.form.message_countdown,<?php echo MAX_EMAIL_LEN?>);" onKeyUp="RCTextArea_LimitText(this.form.message,this.form.message_countdown,<?php echo MAX_EMAIL_LEN?>);"><?php print RCWeb_GetPost( 'message' , '' ) ?></textarea>
+						You have <input readonly type="text" name="message_countdown" size="3" value="<?php echo MAX_EMAIL_LEN?>" /> characters left.
 					</td>
 				</tr>
 				<tr>
