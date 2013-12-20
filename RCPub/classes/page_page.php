@@ -336,7 +336,7 @@ class CPagePage extends CPageBase
 	protected function DisplayCommentBlock()
 	{
 		$Comment = new CTableComment();
-		$ShowAllFeedback = RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK );
+		$ShowAllFeedback = RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK|RCSESSION_DELETEFEEDBACK );
 		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID , !$ShowAllFeedback );
 
 		echo '<div id="comment_block">';

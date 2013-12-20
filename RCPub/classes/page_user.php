@@ -19,6 +19,8 @@ $PAGEUSER_MODIFIABLE_SETTINGS = array
 	array( 'type' => RCSESSION_CREATEUSER , 'desc' => 'Create New User' ) ,
 	array( 'type' => RCSESSION_EDITSETTINGS , 'desc' => 'Edit Settings' ) ,
 	array( 'type' => RCSESSION_MODIFYUSER , 'desc' => 'Change User Permissions' ) ,
+	array( 'type' => RCSESSION_MODIFYFEEDBACK , 'desc' => 'Approve Comments' ) ,
+	array( 'type' => RCSESSION_DELETEFEEDBACK , 'desc' => 'Delete Comments' ) ,
 );
 class CPageUser extends CPageBase
 {
