@@ -28,6 +28,7 @@ class CPagePage extends CPageBase
 	private $m_nMode = self::MODE_UNK;
 	private $m_Version = self::VERSION_DEFAULT;
 	private $m_PageTable;
+	private $m_nOwnerId;
 
 	public function CPagePage()
 	{
@@ -164,12 +165,14 @@ class CPagePage extends CPageBase
 			{
 				$this->m_nMode = self::MODE_NEW;
 				$this->m_nID = 0;
+				$this->m_nOwnerId = 0;
 			}
 			else if( $Page == null )
 			{
 				$this->m_strTitle = 'Unknown Page';
 				$this->m_strContent = "Couldn't find the specified page.";
 				$this->m_nID = 0;
+				$this->m_nOwnerId = 0;
 				return;
 			}
 
@@ -184,6 +187,7 @@ class CPagePage extends CPageBase
 				$this->m_strTitle = 'Unknown Page';
 				$this->m_strContent = "Couldn't find the specified page.";
 				$this->m_nID = 0;
+				$this->m_nOwnerId = 0;
 				return;
 			}
 
@@ -193,6 +197,7 @@ class CPagePage extends CPageBase
 				$this->m_strContent = $Page[ 'formatted' ];
 				$this->m_strTitle = $Page[ 'title' ];
 				$this->m_nID = ( int ) $Page[ 'id' ];
+				$this->m_nOwnerId = (int)$Page['idOwner'];
 			}
 			else if( self::MODE_EDIT == $this->m_nMode )
 			{
@@ -201,10 +206,11 @@ class CPagePage extends CPageBase
 				$this->m_strContent = $EditData[ 'txtBody' ];
 				$this->m_strTitle = $EditData[ 'txtTitle' ];
 				$this->m_nID = ( int ) $Page[ 'id' ];
+				$this->m_nOwnerId = (int)$Page['idOwner'];
 			}
 			else if( self::MODE_NEW == $this->m_nMode )
 			{
-				
+				$this->m_nOwnerId = RCSession_GetUserProp( 'user_id' );
 			}
 
 			//We now have all the info, so we can process comments.
@@ -264,8 +270,6 @@ class CPagePage extends CPageBase
 
 	protected function CreatePageHeader()
 	{
-		//$Comment = new CTableComment();
-		//$Comment->InsertComment( $this->m_nID , 'My totally new comment!' , 'Ryan' , 'beemfx@gmail.com' );	
 		if( RCSession_IsPermissionAllowed( RCSESSION_MODIFYPAGE ) && 0 != $this->m_nID )
 		{
 			$strVersion = self::VERSION_DEFAULT == $this->m_Version ? '' : '&v='.$this->m_Version;
@@ -414,7 +418,7 @@ class CPagePage extends CPageBase
 		}
 
 		$CmtTable = new CTableComment();
-		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
+		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email , $this->m_strTitle , $this->m_nOwnerId );
 		RCError_PushError( 'Comment submitted.' , 'message' );
 		//Clear all post properties...
 		RCWeb_ClearPostData();

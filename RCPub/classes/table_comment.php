@@ -8,7 +8,7 @@ class CTableComment extends CTable
 		parent::CTable( 'tblComment' );
 	}
 
-	public function InsertComment( $ContentId , $CommentText , $Name , $Email )
+	public function InsertComment( $ContentId , $CommentText , $Name , $Email , $PageTitle, $OwnerId )
 	{
 		assert( 'integer' == gettype( $ContentId ) );
 		assert( 'string' == gettype( $CommentText ) );
@@ -20,6 +20,8 @@ class CTableComment extends CTable
 		$Email = substr( $Email , 0, 50 );
 		
 		$Cached = new CRCMarkup( $CommentText );
+		
+		$CommentTextForEmail = $CommentText;
 
 		$CommentText = '"'.addslashes( $CommentText ).'"';
 		$CachedText = '"'.addslashes( $Cached->GetHTML() ).'"';
@@ -40,6 +42,24 @@ class CTableComment extends CTable
 		);
 
 		$this->DoInsert( $Insert );
+		
+		//Email about comment:
+		if( 0 != $OwnerId )
+		{
+			$TableUser = new CTableUser();
+			$UserInfo = $TableUser->GetUserInfo($OwnerId);
+			if( null != $UserInfo )
+			{
+				$msg = sprintf( "From: %s\nEmail %s\nComment: %s\n" , $Name , $Email , $CommentTextForEmail );
+
+				$headers = 'From: '.$Email."\r\n".
+					'Reply-To: '.$Email."\r\n".
+					'X-Mailer: PHP/'.phpversion();
+
+				mail( $UserInfo[ 'txtEmail' ] , 'New Comment: '.$PageTitle , $msg , $headers );
+				//RCError_PushError('Notified '.$UserInfo['txtEmail']);
+			}
+		}
 	}
 
 	public function GetFormattedCommentsForPage( $PageId )

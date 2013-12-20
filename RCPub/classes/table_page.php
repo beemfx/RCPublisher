@@ -108,7 +108,7 @@ class CTablePage extends CTable
 
 		if( null == $Version )
 		{
-			$items = 'id,txtSlug as slug,'.self::TITLE_COLUMN.' as title,txtBodyHTMLCache as formatted';
+			$items = 'id,txtSlug as slug,idOwner,'.self::TITLE_COLUMN.' as title,txtBodyHTMLCache as formatted';
 
 			if( 'integer' == gettype( $unkIdOrSlug ) )
 			{
