@@ -11,9 +11,7 @@ The following features are still in development:
 Building
 ========
 
-The Visual Studio Project for 2012 requies PHP Tools for Visual Studio
-
-http://www.devsense.com/products/php-tools
+A NetBEANS project is included.
 
 Installing
 ==========
