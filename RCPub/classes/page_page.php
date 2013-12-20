@@ -413,16 +413,6 @@ class CPagePage extends CPageBase
 			return;
 		}
 
-		if( strlen( $Name ) >= 50 )
-		{
-			$Name = substr( $Name , 0 , 50 );
-		}
-
-		if( strlen( $Email ) >= 50 )
-		{
-			$Email = substr( $Email , 0 , 50 );
-		}
-
 		$CmtTable = new CTableComment();
 		$CmtTable->InsertComment( $this->m_nID , $Comment , $Name , $Email );
 		RCError_PushError( 'Comment submitted.' , 'message' );

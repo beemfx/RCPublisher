@@ -14,8 +14,11 @@ class CTableComment extends CTable
 		assert( 'string' == gettype( $CommentText ) );
 		assert( 'string' == gettype( $Name ) );
 		assert( 'string' == gettype( $Email ) );
-
-
+		
+		$CommentText = substr( $CommentText , 0 , MAX_COMMENT_LEN );
+		$Name = substr( strip_tags( $Name ) , 0, 50 );
+		$Email = substr( $Email , 0, 50 );
+		
 		$Cached = new CRCMarkup( $CommentText );
 
 		$CommentText = '"'.addslashes( $CommentText ).'"';

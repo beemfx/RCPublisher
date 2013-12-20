@@ -31,6 +31,8 @@ class CTableNews extends CTable
 	public function UpdateStory( $nID , $title , $body )
 	{
 		$Cached = new CRCMarkup( $body );
+		
+		$title = substr( strip_tags($title), 0, 120 );
 
 		$title = '"'.addslashes( $title ).'"';
 		$body = '"'.addslashes( $body ).'"';
@@ -51,6 +53,8 @@ class CTableNews extends CTable
 
 	public function InsertStory( $title , $body )
 	{
+		$title = substr( strip_tags($title), 0, 120 );
+		
 		$Cached = new CRCMarkup( $body );
 
 		$title = '"'.addslashes( $title ).'"';

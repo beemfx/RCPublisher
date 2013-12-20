@@ -24,6 +24,11 @@ class CTableUser extends CTable
 	public function InsertNew( $sUname , $sAlias , $sEmail , $Perms , $sPass )
 	{
 		assert( 'integer' == gettype( $Perms ) );
+		
+		$sUname = substr( $sUname , 0 , 32 );
+		$sAlias = substr( strip_tags( $sAlias ) , 0, 32 );
+		$sEmail = substr( $sEmail , 0, 32 );
+		$sPass = substr( $sPass, 0, 41 );
 
 		//We'll do some verification to make sure this is valid:
 		if( !preg_match( RCRX_USERNAME , $sUname ) )
@@ -92,6 +97,7 @@ class CTableUser extends CTable
 	
 	public function SetUserAlias( $Id , $Alias )
 	{
+		$Alias = substr( $Alias , 0, 32 );
 		if( !preg_match( RCRX_USERALIAS , $Alias ) )
 		{
 			RCError_PushError( RCRX_USERALIAS_REQ , 'warning' );
@@ -109,6 +115,8 @@ class CTableUser extends CTable
 	
 	public function SetUserEmail( $Id , $Email )
 	{
+		$Email = substr( $Email , 0, 32 );
+		
 		if( !RCWeb_ValidateEmail( $Email ) )
 		{
 			RCError_PushError( 'Invalid email address.' , 'warning' );
@@ -126,6 +134,8 @@ class CTableUser extends CTable
 
 	public function SetUserPassword( $nID , $sPass )
 	{
+		$sPass = substr( $sPass , 0, 41 );
+		
 		if( !preg_match( RCRX_PASSWORD , $sPass ) )
 		{
 			RCError_PushError( RCRX_PASSWORD_REQ , 'warning' );

@@ -145,7 +145,7 @@ function DoInstall()
 		  `txtAlias` varchar(32) NOT NULL,
 		  `txtEmail` char(32) NOT NULL,
 		  `nAccessLevel` int(11) NOT NULL,
-                  `nPerms` int(11) NOT NULL,
+        `nPerms` int(11) NOT NULL,
 		  `txtLastIP` char(16) NOT NULL,
 		  PRIMARY KEY  (`id`,`txtUserName`)' ,
 	);
@@ -331,12 +331,12 @@ function StartHTML()
 			</style>
 		</head>
 		<body>
-	<?php
-}
+			<?php
+		}
 
-function EndHTML()
-{
-	?>
+		function EndHTML()
+		{
+			?>
 		</body>
 	</html>
 	<?php

@@ -21,6 +21,9 @@ class CTablePage extends CTable
 	{
 		assert( 'integer' == gettype($idCreator) );
 		$Cached = new CRCMarkup( $strBody );
+		
+		$strSlug = substr( $strSlug, 0, 32 );
+		$strTitle = substr( strip_tags($strTitle) , 0, 64 );
 
 		$Title = $strTitle;
 		$Body = $strBody;

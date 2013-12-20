@@ -1,7 +1,7 @@
 <?php
 
 //Some globals
-define( "RCRX_PAGESLUG" , '/^[A-Za-z0-9_]+$/' );
+define( "RCRX_PAGESLUG" , '/^[A-Za-z0-9_]{1,32}$/' );
 define( "RCRX_USERNAME" , '/^[A-Za-z0-9]{5,}$/' );
 define( "RCRX_USERALIAS" , '/^[A-Za-z0-9_ ]{1,}$/' );
 define( "RCRX_USERALIAS_REQ", 'Names may only contain letters, numbers, spaces, and -,_.' );

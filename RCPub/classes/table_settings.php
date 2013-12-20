@@ -23,6 +23,8 @@ class CTableSettings extends CTable
 
 	function SetSetting( $strSetting , $strNewValue )
 	{
+		assert( strlen( $strSetting ) <= 20 );
+		
 		$data = array
 			(
 			'txtName' => '"'.addslashes( $strSetting ).'"' ,

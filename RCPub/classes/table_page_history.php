@@ -13,6 +13,8 @@ class CTablePageHistory extends CTable
 		assert( 'integer' == gettype( $PageId ) );
 		assert( 'integer' == gettype( $idUser ) );
 		assert( 0 != $idUser );
+		
+		$Title = substr( $Title , 0, 64 );
 
 		$Title = '"'.addslashes( $Title ).'"';
 		$Body = '"'.addslashes( $Body ).'"';
