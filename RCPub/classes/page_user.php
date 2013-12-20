@@ -109,6 +109,7 @@ class CPageUser extends CPageBase
 				<input type="hidden" name="stage" value="upass"/>
 				<table style ="width:50%">
 					<tr><th>Name:</th><td><input type="text" name="nuname" value="<?php echo RCSession_GetUserProp( 'user_alias' ); ?>" style="width:50%"/></td></tr>
+					<tr><th>Email:</th><td><input type="text" name="nuemail" value="<?php echo RCSession_GetUserProp( 'user_email' ); ?>" style="width:50%"/></td></tr>
 					<tr><th>Old Password:</th><td><input type="password" name="opass" value="<?php ?>" style="width:50%"/></td></tr>
 					<tr><th>New Password:</th><td><input type="password" name="npass" value="<?php ?>" style="width:50%"/></td></tr>
 					<tr><th>Confirm New:</th><td><input type="password" name="npassc" value="<?php ?>" style="width:50%"/></td></tr>
@@ -158,6 +159,15 @@ class CPageUser extends CPageBase
 		else
 		{
 			RCError_PushError( RCRX_USERALIAS_REQ , 'warning' );
+		}
+		
+		if( RCWeb_ValidateEmail( RCWeb_GetPost( 'nuemail' ) ) )
+		{
+				$this->m_UserTable->SetUserEmail(  RCSession_GetUserProp( 'user_id' ) , RCWeb_GetPost( 'nuemail' ) );
+		}
+		else
+		{
+			RCError_PushError( 'Invalid email address.' , 'warning' );
 		}
 		
 		$NewPw = RCWeb_GetPost( 'npass' );
@@ -225,6 +235,7 @@ class CPageUser extends CPageBase
 	{
 		$this->UpdateUser_UpdatePasswordAndName();
 		$this->UpdateUser_UpdatePerms();
+		RCError_PushError( 'User settings updated.' , 'message' );
 	}
 
 	protected function InsertNewUser()

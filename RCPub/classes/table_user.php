@@ -106,6 +106,23 @@ class CTableUser extends CTable
 		$this->DoUpdate( $Id , $data );
 		RCSession_SetUserProp( 'user_alias', $Alias );
 	}
+	
+	public function SetUserEmail( $Id , $Email )
+	{
+		if( !RCWeb_ValidateEmail( $Email ) )
+		{
+			RCError_PushError( 'Invalid email address.' , 'warning' );
+			return false;
+		}
+
+		$data = array
+			(
+			'txtEmail' => '"'.addslashes($Email).'"' ,
+		);
+
+		$this->DoUpdate( $Id , $data );
+		RCSession_SetUserProp( 'user_email', $Email );
+	}
 
 	public function SetUserPassword( $nID , $sPass )
 	{

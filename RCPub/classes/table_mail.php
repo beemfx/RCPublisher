@@ -73,7 +73,7 @@ class CTableMail extends CTable
 		//This will assert and bail if the user wasn't valid.
 		$UserInfo = $UserTable->GetUserInfo( $nToUser );
 
-		//First send the message by acutal mail:
+		//First send the message by actual mail:
 		{
 			$msg = sprintf( "From: %s\nReply Email: %s\nSubject: %s\n\n%s" , $strName , $strFromEmail , $strSubject , $strMessage );
 
