@@ -30,6 +30,7 @@ body, #wrapper, #header
 	padding:0;
 	background-color:#7bcff7;
 	font:normal normal normal 12pt/120% Times;
+	background-image:url('rcbodybg.jpg');
 }
 
 #wrapper
@@ -351,8 +352,6 @@ div#footer p
 /**********************************
 *** STYLES FOR IMBEDDED CONTENT ***
 **********************************/
-/* The blog portion of the stie uses the image_block for pictures. */
-/* Image block. */
 div.note_block
 {
 	display:block;
@@ -381,6 +380,11 @@ div.image_block_inline
 	border-radius:0;
 	border:0;
 	box-shadow:none;
+}
+
+div.image_block
+{
+	margin:0 1em;
 }
 
 div.image_block img, div.image_block_inline img
