@@ -18,6 +18,7 @@ if( !file_exists( 'config/config.php' ) )
 }
 
 require( 'classes/rclibrary.php' );
+require( 'classes/plugin_manager.php' );
 require_once( 'classes/rcerror.php' );
 require_once( 'classes/table_base.php' );
 require_once( 'classes/table_mail.php' );
@@ -35,8 +36,10 @@ require_once('classes/rcsession.php');
 RCSql_Connect();
 RCSettings_Init();
 RCSession_Begin();
+PluginManager_Init();
+PluginManager_GetInstance()->RegisterPlugin('b2evoplug');
 
-$strContent = isset( $_GET[ 'c' ] ) ? $_GET[ 'c' ] : (isset( $_GET[ 'content' ] ) ? $_GET[ 'content' ] : '');
+$strContent = RCWeb_GetGet( 'c' , '' );
 
 switch( $strContent )
 {
@@ -97,6 +100,7 @@ assert( $Skin instanceof ISkin );
 
 $Page->Display( $Skin );
 
+PluginManager_Deinit();
 RCSettings_Deinit();
 RCSql_Disconnect();
 ?>

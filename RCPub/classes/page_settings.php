@@ -21,16 +21,11 @@ $g_Settings = array
 	'txtSidebarHTML' => array( 'desc' => 'Home Page Sidebar' , 'type' => 'textarea' , ) ,
 	'txtFeatureSlug' => array( 'desc' => 'Featured Page (slug)' , 'type' => 'text' , ) ,
 	'txtBlogLink' => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text' , ) ,
-	//b2evo Plugin Settings (should actually be a plugin in the future).
-	'txtB2Host' => array( 'desc' => 'b2evolution Host' , 'type' => 'text' , ) ,
-	'txtB2User' => array( 'desc' => 'b2evolution User' , 'type' => 'text' , ) ,
-	'txtB2Pwd' => array( 'desc' => 'b2evolution Password' , 'type' => 'text' , ) ,
-	'txtB2Db' => array( 'desc' => 'b2evolution Database' , 'type' => 'text' , ) ,
 	//ImageMagick settings.
 	'txtConvertPath' => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text' , ) ,
 	'nThumbnailWidth' => array( 'desc' => 'Thumbnail width' , 'type' => 'text' , ) ,
 	'nThumbnailQuality' => array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 100 ) ,
-	'bAllowComments' => array( 'desc' => 'Allow comments on pages', 'type' => 'checkbox' ) ,
+	'bAllowComments' => array( 'desc' => 'Allow comments on pages' , 'type' => 'checkbox' ) ,
 );
 class CPageSettings extends CPageBase
 {
@@ -47,6 +42,23 @@ class CPageSettings extends CPageBase
 		return RCSession_IsPermissionAllowed( RCSESSION_EDITSETTINGS );
 	}
 
+	private function DisplayPre_HandleChangedSetting( $Setting , $Atts )
+	{
+		//RCError_PushError($Setting.' is '.RCWeb_GetPost( $Setting , '' ) );
+		
+		if( !IsPageAllowed() )
+			return;
+		
+		if( 'checkbox' == $Atts[ 'type' ] )
+		{
+			$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '0' ) );
+		}
+		else
+		{
+			$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '' ) );
+		}
+	}
+
 	protected function DisplayPre()
 	{
 		if( RCWeb_GetPost( 'stage' ) == 'us' )
@@ -54,14 +66,23 @@ class CPageSettings extends CPageBase
 			global $g_Settings;
 			foreach( $g_Settings as $Setting => $Atts )
 			{
-				//RCError_PushError($Setting.' is '.RCWeb_GetPost( $Setting , '' ) );
-				if( 'checkbox' == $Atts['type'] )
+				$this->DisplayPre_HandleChangedSetting( $Setting , $Atts );
+			}
+
+			$Pm = PluginManager_GetInstance();
+
+			for( $i = 0; $i < $Pm->GetPluginCount(); $i++ )
+			{
+				$Plugin = $Pm->GetPluginByIndex( $i );
+				$PlgSettings = $Plugin->GetSettings();
+				if( null == $PlgSettings )
 				{
-					$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '0' ) );
+					continue;
 				}
-				else
+
+				foreach( $PlgSettings as $Setting => $Atts )
 				{
-					$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '' ) );
+					$this->DisplayPre_HandleChangedSetting( $Setting , $Atts );
 				}
 			}
 		}
@@ -91,10 +112,10 @@ class CPageSettings extends CPageBase
 			$Manager->DeleteAllThumbs();
 		}
 	}
-	
+
 	protected function GetContentHeader()
 	{
-		return 'RC Publisher Settings';
+		return 'Settings';
 	}
 
 	protected function DisplayContent()
@@ -124,37 +145,64 @@ class CPageSettings extends CPageBase
 		$this->DisplayForm();
 	}
 
+	private function DisplayForm_ShowSetting( $Setting , $Atts )
+	{
+		switch( $Atts[ 'type' ] )
+		{
+			case 'text':
+				printf( '<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>' , $Atts[ 'desc' ] , $Setting , htmlspecialchars( $this->GetGlobalSetting( $Setting ) , ENT_QUOTES ) );
+				break;
+			case 'textarea':
+				printf( '<p><b>%s</b></br><textarea style="height:5em;width:90%%" name="%s" cols="80" rows="20">%s</textarea></p>' , $Atts[ 'desc' ] , $Setting , $this->GetGlobalSetting( $Setting ) );
+				break;
+			case 'selectnumber':
+				printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateNumberList( $Atts[ 'num_min' ] , $Atts[ 'num_max' ] , ( int ) $this->GetGlobalSetting( $Setting ) ) );
+				break;
+			case 'checkbox':
+				printf( '<p><b>%s</b>: <input type="checkbox" name="%s" value="1" style="width:50%%" %s/></p>' , $Atts[ 'desc' ] , $Setting , 0 == $this->GetGlobalSetting( $Setting ) ? '' : 'checked'  );
+				break;
+			case 'skinchooser':
+				printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateSkinChooser( $this->GetGlobalSetting( $Setting ) ) );
+				break;
+		}
+	}
+
 	private function DisplayForm()
 	{
 		global $g_Settings;
 		?>
-		<div style="width:100%;margin:0;padding:1em">
+
+		<div style="margin:1em;padding:1em">
+			<h2>Maintenance</h2>
 			<p><center><a href=<?php print CreateHREF( PAGE_SETTINGS , 'action=recache' ) ?>>Reset Cache</a> | <a href=<?php print CreateHREF( PAGE_SETTINGS , 'action=reimagethumb' ) ?>>Generate Thumbnails</a> | <a href=<?php print CreateHREF( PAGE_SETTINGS , 'action=purgethumb' ) ?>>Delete Thumbnails</a></center></p>
 		<form action=<?php print CreateHREF( PAGE_SETTINGS ) ?> method="post">
 			<input type="hidden" name="stage" value="us"/>
 			<?php
+			print '<h2>RC Publisher Settings</h2><br/>';
 			foreach( $g_Settings as $Setting => $Atts )
 			{
-				switch( $Atts[ 'type' ] )
+				$this->DisplayForm_ShowSetting( $Setting , $Atts );
+			}
+
+			$Pm = PluginManager_GetInstance();
+
+			for( $i = 0; $i < $Pm->GetPluginCount(); $i++ )
+			{
+				$Plugin = $Pm->GetPluginByIndex( $i );
+				printf( '<h2>Settings for %s</h2><br />' , $Plugin->GetName() );
+				$PlgSettings = $Plugin->GetSettings();
+				if( null == $PlgSettings )
 				{
-					case 'text':
-						printf( '<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>' , $Atts[ 'desc' ] , $Setting , htmlspecialchars( $this->GetGlobalSetting( $Setting ) , ENT_QUOTES ) );
-						break;
-					case 'textarea':
-						printf( '<p><b>%s</b></br><textarea style="height:5em;width:90%%" name="%s" cols="80" rows="20">%s</textarea></p>' , $Atts[ 'desc' ] , $Setting , $this->GetGlobalSetting( $Setting ) );
-						break;
-					case 'selectnumber':
-						printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateNumberList( $Atts[ 'num_min' ] , $Atts[ 'num_max' ] , ( int ) $this->GetGlobalSetting( $Setting ) ) );
-						break;
-					case 'checkbox':
-						printf( '<p><b>%s</b>: <input type="checkbox" name="%s" value="1" style="width:50%%" %s/></p>' , $Atts[ 'desc' ] , $Setting , 0 == $this->GetGlobalSetting( $Setting ) ? '' : 'checked' );
-						break;
-					case 'skinchooser':
-						printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateSkinChooser( $this->GetGlobalSetting( $Setting ) ) );
-						break;
+					print( 'No settings for this plugin.' );
+					continue;
+				}
+				foreach( $PlgSettings as $Setting => $Atts )
+				{
+					$this->DisplayForm_ShowSetting( $Setting , $Atts );
 				}
 			}
 			?>
+			<br />
 			<center><input class="button" type="submit" value="Submit"/></center>
 		</form>
 		</div>
