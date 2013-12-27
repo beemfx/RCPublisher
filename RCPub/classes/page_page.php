@@ -376,8 +376,20 @@ class CPagePage extends CPageBase
 		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID , !$ShowAllFeedback );
 
 		echo "\n<div id=\"rc_comment_block\">\n";
-		echo '<h3>Comments</h3>';
-		$this->RenderComments( $Comments );
+		if( 0 == count( $Comments ) )
+		{
+			if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFEEDBACK ) )
+			{
+				printf( '<h3>Feedback for %s</h3>', $this->m_strTitle );
+				print( 'No feedback yet.' );
+			}
+		}
+		else
+		{
+			printf( '<h3>Feedback for %s</h3>', $this->m_strTitle );
+			$this->RenderComments( $Comments );
+		}
+		
 		echo '</div>';
 
 		if( RCSession_IsPermissionAllowed( RCSESSION_CREATEFEEDBACK ) )
