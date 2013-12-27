@@ -46,7 +46,7 @@ class CPageSettings extends CPageBase
 	{
 		//RCError_PushError($Setting.' is '.RCWeb_GetPost( $Setting , '' ) );
 		
-		if( !IsPageAllowed() )
+		if( !$this->IsPageAllowed() )
 			return;
 		
 		if( 'checkbox' == $Atts[ 'type' ] )
