@@ -461,33 +461,33 @@ div.image_caption
  Comments
 *********/
 
-div#comment_block
+div#rc_comment_block
 {
 	margin:0 20%;
 	border:0px solid black;
 	padding:1em;
 }
 
-div#comment_block h3
+div#rc_comment_block h3
 {
 	text-align:center;
 }
 
-div.comment
+div.rc_comment, div.bComment
 {
 	margin:1em;
 	border:1px dashed gray;
 	padding:.25em;
 }
 
-div#comment_block p.text
+div#rc_comment_block p.text
 {
 	margin:0 1em;
 	border:0;
 	padding:0;
 }
 
-div#comment_block p.date
+div#rc_comment_block p.date
 {
 	margin:0;
 	padding:0;
@@ -504,7 +504,7 @@ span.leave_comment_header
 	font-weight:bold;
 }
 
-div#comment_block_leave_feedback
+div#rc_comment_block_leave_feedback
 {
 	border:1px dashed red;
 	margin:0 30%;
@@ -512,14 +512,14 @@ div#comment_block_leave_feedback
 	font-size:small;
 }
 
-div#comment_block_leave_feedback input
+div#rc_comment_block_leave_feedback input
 {
 	border:1px solid red;
 	color:darkred;
 	background-color:lightcyan;
 }
 
-div#comment_block_leave_feedback input.button
+div#rc_comment_block_leave_feedback input.button
 {
 	display:block;
 	border:1px solid red;
@@ -529,7 +529,7 @@ div#comment_block_leave_feedback input.button
 	font-weight:bold;
 }
 
-div#comment_block_leave_feedback br
+div#rc_comment_block_leave_feedback br
 {
 	margin:2px 0;
 }

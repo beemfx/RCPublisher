@@ -339,7 +339,7 @@ class CPagePage extends CPageBase
 		{
 			$c = $Comments[ $i ];
 
-			echo '<div class="comment">';
+			echo '<div class="rc_comment">';
 			printf( '<h4>Comment from: %s [%s]</h4>' , $c[ 'txtName' ] , 0 <= $c[ 'idUser' ] ? 'Member' : 'Visitor'  );
 			if( $ForModeration )
 			{
@@ -375,7 +375,7 @@ class CPagePage extends CPageBase
 		$ShowAllFeedback = RCSession_IsPermissionAllowed( RCSESSION_MODIFYFEEDBACK|RCSESSION_DELETEFEEDBACK );
 		$Comments = $Comment->GetFormattedCommentsForPage( $this->m_nID , !$ShowAllFeedback );
 
-		echo '<div id="comment_block">';
+		echo "\n<div id=\"rc_comment_block\">\n";
 		echo '<h3>Comments</h3>';
 		$this->RenderComments( $Comments );
 		echo '</div>';
@@ -389,7 +389,7 @@ class CPagePage extends CPageBase
 	protected function DisplayCommentBlock_LeaveFeedback()
 	{
 		echo "\n";
-		echo '<div id="comment_block_leave_feedback">';
+		echo '<div id="rc_comment_block_leave_feedback">';
 		echo '<h3>Leave Feedback</h3>';
 		echo 'Comments are limited to '.MAX_COMMENT_LEN.' characters, and do not appear until they are approved by a moderator. An email address is required to leave feedback, but it will not appear on this site.';
 		$this->DisplayCommentBlock_LeaveFeedback_CommentForm();
@@ -551,7 +551,7 @@ class CPagePage extends CPageBase
 		{
 			$CommentTable = new CTableComment();
 			
-			echo '<div id="comment_block">';
+			echo '<div id="rc_comment_block">';
 			print( '<h3>Comments Needing Moderation</h3>' );
 			$Comments = $CommentTable->GetFormattedNotApprovedComments();
 			if( 0 == count( $Comments) )
