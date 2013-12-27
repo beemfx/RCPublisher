@@ -72,7 +72,7 @@ abstract class CPageBase
 			print '<h1>'.$ContentHeader.'</h1>';
 			print( "</div>\n" );
 		}
-		print("<div id=\"content\">\n" );
+		print("\n<div id=\"rc_content\">\n" );
 		if( $this->IsPageAllowed() )
 		{
 			$this->DisplayContent();
@@ -86,7 +86,7 @@ abstract class CPageBase
 		//tag was.
 		print('<br />' );
 
-		print("</div>\n" );
+		print("\n</div> <!-- div#rc_content -->\n" );
 	}
 
 	//Public interface:
@@ -239,7 +239,7 @@ abstract class CPageBase
 				<a href=<?php print CreateHREF( PAGE_LOGIN , 'logout' ) ?>>Logout</a>
 			</div>
 			<script language="javascript" type="text/javascript">
-				document.getElementById('wrapper').style.marginTop = '40px';
+				document.getElementById('rc_wrapper').style.marginTop = '40px';
 			</script>
 			<?php
 		}

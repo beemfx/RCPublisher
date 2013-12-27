@@ -24,7 +24,7 @@ function ShowBlogEntry()
 		$row = $res->fetch_assoc();
 		$sBlogURL = $Settings->GetSetting( 'txtBlogLink' );
 		$sBlogURL = preg_replace( '/{{slug}}/' , '' , $sBlogURL );
-		printf( '<h2><a class="tlink" href="%s">Latest Blog: %s</a> <i><span style="font-size:80%%;white-space:nowrap">- %s</span></i></h2>' , $sBlogURL , $row[ 'post_title' ] , $row[ 'dt' ] );
+		printf( '<h2><a href="%s">Latest Blog: %s</a> <i><span style="font-size:80%%;white-space:nowrap">- %s</span></i></h2>' , $sBlogURL , $row[ 'post_title' ] , $row[ 'dt' ] );
 
 		//Okay, now lets get the prerendered version of the post:
 		$res2 = $db->query( 'select itpr_content_prerendered as blog_text from evo_items__prerendering where itpr_format="htmlbody" and itpr_itm_ID='.$row[ 'post_ID' ] );

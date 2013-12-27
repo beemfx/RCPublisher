@@ -31,12 +31,12 @@ class CPageHome extends CPageBase
 	{
 		?>
 		<!-- Left column. -->
-		<div class="home_seg" style="width:70%;">
+		<div class="rc_column" style="width:70%;">
 			<?php $this->ShowNews(); ?>
 			<?php $this->ShowBlog(); ?>
 		</div>
 		<!-- Right column -->
-		<div class="home_seg" style="width:28%">
+		<div class="rc_column" style="width:28%">
 
 			<?php $this->ShowSidebar(); ?>
 			<?php $this->ShowFeature(); ?>
@@ -66,7 +66,7 @@ class CPageHome extends CPageBase
 		$nNumStories = $this->GetGlobalSetting( 'nHomeNewsStories' );
 		
 		print('<div class="news">' );
-		printf( '<h2><a class="tlink" href=%s>News</a></h2>' , CreateHREF( PAGE_NEWS , 'archive' ) );
+		printf( '<h2><a href=%s>News</a></h2>' , CreateHREF( PAGE_NEWS , 'archive' ) );
 
 		$NewsTable->DisplayRecentArticles( $nNumStories );
 

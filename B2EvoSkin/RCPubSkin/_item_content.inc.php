@@ -146,7 +146,7 @@ switch( $content_mode ) {
 				 ) );
 		}
 
-		echo('<div class="bText">');
+		echo('<div class="b2EvoContent">');
 
 		// URL link, if the post has one:
 		$Item->url_link( array(
