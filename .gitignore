@@ -1,6 +1,9 @@
 RCPub/nbproject/private
+RCPub/nbproject/configs
 RCExtra/nbproject/private
+RCExtra/nbproject/configs
 B2EvoSkin/nbproject/private
+B2EvoSkin/nbproject/configs
 *.suo
 *.phppub
 *.phppub.user
