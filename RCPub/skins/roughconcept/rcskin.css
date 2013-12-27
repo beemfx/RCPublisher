@@ -21,6 +21,9 @@
 	background-color:white;
 	position:relative;
 }
+html {
+  overflow-y: scroll;
+}
 
 
 body, #wrapper, #header
@@ -35,7 +38,7 @@ body, #wrapper, #header
 
 #wrapper
 {
-	width:800px;
+	width:900px;
 	margin: 10px auto;
 	padding: 0;
 }
@@ -57,7 +60,11 @@ div#header
 	width: auto;
 	border:0;
 	background:#000000;
-	background:linear-gradient(180deg,#000000,#707070);
+	background:-webkit-gradient(linear, top, bottom, from(#000000), to(#707070));
+	background:-webkit-linear-gradient(to bottom, #000000, #707070); /* For Safari */
+	background:-o-linear-gradient(to bottom, #000000, #707070); /* For Opera 11.1 to 12.0 */
+	background:-moz-linear-gradient(to bottom, #000000, #707070); /* For Firefox 3.6 to 15 */
+	background:linear-gradient(to bottom,#000000,#707070);
 	text-align: center;
 }
 
@@ -78,14 +85,22 @@ div#menu_main a
 	font-weight:bold;
 	font-size:12pt;
 	background-color:#707070;
-	background:linear-gradient(180deg,#707070,#000000);
+	background:-webkit-gradient(linear, top, bottom, from(#707070), to(#000000));
+	background:-webkit-linear-gradient(to bottom, #707070, #000000); /* For Safari */
+	background:-o-linear-gradient(to bottom, #707070, #000000); /* For Opera 11.1 to 12.0 */
+	background:-moz-linear-gradient(to bottom, #707070, #000000); /* For Firefox 3.6 to 15 */
+	background:linear-gradient(to bottom,#707070,#000000);
 }
 
 div#menu_main a:hover
 {
 	text-decoration:none;
 	background-color:#000000;
-	background:linear-gradient(0deg,#707070,#000000);
+	background:-webkit-gradient(linear, top, bottom, to(#707070), from(#000000));
+	background:-webkit-linear-gradient(to top, #707070, #000000); /* For Safari */
+	background:-o-linear-gradient(to top, #707070, #000000); /* For Opera 11.1 to 12.0 */
+	background:-moz-linear-gradient(to top, #707070, #000000); /* For Firefox 3.6 to 15 */
+	background:linear-gradient(to top,#707070,#000000);
 	color: #ddd;
 }
 
@@ -214,11 +229,15 @@ div#content h1, div#content_header h1
 	text-align: center;
 	border:     0px solid black;
 	background: #000;
-	background:linear-gradient(180deg,#777,#777,#000,#000,#000);
+	background:-webkit-gradient(linear, top, bottom, from(#777), to(#000));
+	background:-webkit-linear-gradient(to bottom,#777,#777,#000,#000,#000); /* For Safari */
+	background:-o-linear-gradient(to bottom,#777,#777,#000,#000,#000); /* For Opera 11.1 to 12.0 */
+	background:-moz-linear-gradient(to bottom,#777,#777,#000,#000,#000); /* For Firefox 3.6 to 15 */
+	background:linear-gradient(to bottom,#777,#777,#000,#000,#000);
 	border:0px solid #444;
 	border-top:0;
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
+	border-bottom-left-radius:20px;
+	border-bottom-right-radius:20px;
 	color:#eee;
 }
 
@@ -226,10 +245,14 @@ div#content h2
 {
 	padding: 2px .5em 2px;
 	border: 3px solid #101010;
-	border-radius:25px;
+	border-radius:20px;
 	color: white;
 	background: #707070;
-	background:linear-gradient(180deg,#707070,#000000);
+	background:-webkit-gradient(linear, top, bottom, from(#707070), to(#000000));
+	background:-webkit-linear-gradient(to bottom, #707070, #000000); /* For Safari */
+	background:-o-linear-gradient(to bottom, #707070, #000000); /* For Opera 11.1 to 12.0 */
+	background:-moz-linear-gradient(to bottom, #707070, #000000); /* For Firefox 3.6 to 15 */
+	background:linear-gradient(to bottom, #707070,#000000); /* Standard syntax */
 	font-size:175%;
 	line-height:105%;
 	box-shadow: 5px 5px 5px #555555;
