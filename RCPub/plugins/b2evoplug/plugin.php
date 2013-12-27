@@ -1,10 +1,8 @@
 <?php
 
-function ShowBlogEntry()
+function b2evoPlug_ShowBlogEntry()
 {
-	$Settings = new CTableSettings();
-
-	@ $db = new mysqli( $Settings->GetSetting( 'txtB2Host' ) , $Settings->GetSetting( 'txtB2User' ) , $Settings->GetSetting( 'txtB2Pwd' ) , $Settings->GetSetting( 'txtB2Db' ) );
+	@ $db = new mysqli( RCSettings_GetSetting( 'txtB2Host' ) , RCSettings_GetSetting( 'txtB2User' ) , RCSettings_GetSetting( 'txtB2Pwd' ) , RCSettings_GetSetting( 'txtB2Db' ) );
 
 	if( mysqli_connect_errno() )
 	{
@@ -22,7 +20,7 @@ function ShowBlogEntry()
 	if( $res == true )
 	{
 		$row = $res->fetch_assoc();
-		$sBlogURL = $Settings->GetSetting( 'txtBlogLink' );
+		$sBlogURL = RCSettings_GetSetting( 'txtBlogLink' );
 		$sBlogURL = preg_replace( '/{{slug}}/' , '' , $sBlogURL );
 		printf( '<h2><a href="%s">Latest Blog: %s</a> <i><span style="font-size:80%%;white-space:nowrap">- %s</span></i></h2>' , $sBlogURL , $row[ 'post_title' ] , $row[ 'dt' ] );
 

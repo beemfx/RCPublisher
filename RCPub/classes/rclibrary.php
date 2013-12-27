@@ -89,4 +89,39 @@ function RCSpam_IsAnswerCorrect()
 	return true;
 }
 
+
+$RCSettings_Table = null;
+
+function RCSettings_Init()
+{
+	global $RCSettings_Table;
+	assert( null == $RCSettings_Table );
+	
+	$RCSettings_Table = new CTableSettings();
+}
+
+function RCSettings_Deinit()
+{
+	global $RCSettings_Table;
+	assert( null != $RCSettings_Table );
+	
+	$RCSettings_Table = null;
+}
+
+function RCSettings_GetSetting( $Setting )
+{
+	global $RCSettings_Table;
+	assert( null != $RCSettings_Table );
+	
+	return $RCSettings_Table->GetSetting( $Setting );
+}
+
+function RCSettings_SetSetting( $Setting , $Value )
+{
+	global $RCSettings_Table;
+	assert( null != $RCSettings_Table );
+	
+	$RCSettings_Table->SetSetting( $Setting , $Value );
+}
+
 ?>

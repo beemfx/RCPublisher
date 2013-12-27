@@ -82,8 +82,8 @@ class CPageHome extends CPageBase
 
 	private function ShowBlog()
 	{
-		require('B2EvoShowBlog.php');
-		ShowBlogEntry();
+		require('plugins/b2evoplug/plugin.php');
+		b2evoPlug_ShowBlogEntry();
 	}
 
 	private function ShowFeature()

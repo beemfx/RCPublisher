@@ -33,6 +33,7 @@ require_once('classes/rcsession.php');
 
 
 RCSql_Connect();
+RCSettings_Init();
 RCSession_Begin();
 
 $strContent = isset( $_GET[ 'c' ] ) ? $_GET[ 'c' ] : (isset( $_GET[ 'content' ] ) ? $_GET[ 'content' ] : '');
@@ -96,5 +97,6 @@ assert( $Skin instanceof ISkin );
 
 $Page->Display( $Skin );
 
+RCSettings_Deinit();
 RCSql_Disconnect();
 ?>

@@ -111,8 +111,7 @@ abstract class CPageBase
 
 	public function GetGlobalSetting( $strSettingName )
 	{
-		$Settings = new CTableSettings();
-		return $Settings->GetSetting( $strSettingName );
+		return RCSettings_GetSetting( $strSettingName );
 	}
 
 	//When changing a global setting the newvalue must be formatted correctly
@@ -121,8 +120,7 @@ abstract class CPageBase
 	//for exampe ChangeGlobalSetting('strOwner', '"Jack"').
 	protected function ChangeGlobalSetting( $strSettingName , $strNewValue )
 	{
-		$Settings = new CTableSettings();
-		return $Settings->SetSetting( $strSettingName , $strNewValue );
+		return RCSettings_SetSetting( $strSettingName , $strNewValue );
 	}
 
 	protected function GetNumMessages()

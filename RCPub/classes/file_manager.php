@@ -48,10 +48,9 @@ class CFileManager extends CTable
 		$Info = $this->ResolveFileInfo( $strSlug );
 
 		//Only create a thumb if it's an image.
-		$Settings = new CTableSettings();
-		$ConvertPath = $Settings->GetSetting( 'txtConvertPath' );
-		$ThumbSize = ( int ) $Settings->GetSetting( 'nThumbnailWidth' );
-		$Quality = ( int ) $Settings->GetSetting( 'nThumbnailQuality' );
+		$ConvertPath = RCSettings_GetSetting( 'txtConvertPath' );
+		$ThumbSize = ( int ) RCSettings_GetSetting( 'nThumbnailWidth' );
+		$Quality = ( int ) RCSettings_GetSetting( 'nThumbnailQuality' );
 
 		if( preg_match( '/image/' , $Info[ 'type' ] ) )
 		{

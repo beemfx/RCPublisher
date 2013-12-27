@@ -135,8 +135,6 @@ function RCSession_IsUserLoggedIn()
 function RCSession_SetPermissions( $UserPerms )
 {
 	assert( 'integer' == gettype( $UserPerms ) );
-	
-	$Settings = new CTableSettings();
 
 	//Reset permissions.
 	$_SESSION[ 'user_permissions' ] = 0x00000000;
@@ -145,7 +143,7 @@ function RCSession_SetPermissions( $UserPerms )
 	$_SESSION[ 'user_permissions' ] |= $UserPerms; //RCSession_GetUserProp( 'user_level' ) > 0 ? 0xFFFFFFFF : 0;
 	//The following permissions are always allowed:
 	$_SESSION[ 'user_permissions' ] |= RCSESSION_CONTACTUSER;
-	if( '1' == $Settings->GetSetting( 'bAllowComments' ) )
+	if( '1' == RCSettings_GetSetting( 'bAllowComments' ) )
 	{
 		$_SESSION[ 'user_permissions' ] |= RCSESSION_CREATEFEEDBACK;
 	}
