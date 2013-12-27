@@ -30,6 +30,7 @@ $g_Settings = array
 	'txtConvertPath' => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text' , ) ,
 	'nThumbnailWidth' => array( 'desc' => 'Thumbnail width' , 'type' => 'text' , ) ,
 	'nThumbnailQuality' => array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 100 ) ,
+	'bAllowComments' => array( 'desc' => 'Allow comments on pages', 'type' => 'checkbox' ) ,
 );
 class CPageSettings extends CPageBase
 {
@@ -53,7 +54,15 @@ class CPageSettings extends CPageBase
 			global $g_Settings;
 			foreach( $g_Settings as $Setting => $Atts )
 			{
-				$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '' ) );
+				//RCError_PushError($Setting.' is '.RCWeb_GetPost( $Setting , '' ) );
+				if( 'checkbox' == $Atts['type'] )
+				{
+					$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '0' ) );
+				}
+				else
+				{
+					$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '' ) );
+				}
 			}
 		}
 
@@ -136,6 +145,9 @@ class CPageSettings extends CPageBase
 						break;
 					case 'selectnumber':
 						printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateNumberList( $Atts[ 'num_min' ] , $Atts[ 'num_max' ] , ( int ) $this->GetGlobalSetting( $Setting ) ) );
+						break;
+					case 'checkbox':
+						printf( '<p><b>%s</b>: <input type="checkbox" name="%s" value="1" style="width:50%%" %s/></p>' , $Atts[ 'desc' ] , $Setting , 0 == $this->GetGlobalSetting( $Setting ) ? '' : 'checked' );
 						break;
 					case 'skinchooser':
 						printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateSkinChooser( $this->GetGlobalSetting( $Setting ) ) );

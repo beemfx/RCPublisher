@@ -21,6 +21,7 @@ $PAGEUSER_MODIFIABLE_SETTINGS = array
 	array( 'type' => RCSESSION_MODIFYUSER , 'desc' => 'Change User Permissions' ) ,
 	array( 'type' => RCSESSION_MODIFYFEEDBACK , 'desc' => 'Approve Comments' ) ,
 	array( 'type' => RCSESSION_DELETEFEEDBACK , 'desc' => 'Delete Comments' ) ,
+	array( 'type' => RCSESSION_CREATEFEEDBACK , 'desc' => 'Post Comments (If global comments are allowed, this has no effect.)' ) ,
 );
 class CPageUser extends CPageBase
 {

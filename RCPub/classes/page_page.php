@@ -445,6 +445,9 @@ class CPagePage extends CPageBase
 		assert( 0 != $this->m_nID );
 		if( $this->m_nID != ( int ) RCWeb_GetPost( 'comment_page_id' ) )
 			return;
+		
+		if( !RCSession_IsPermissionAllowed( RCSESSION_CREATEFEEDBACK ) )
+			return;
 
 		$Name = RCWeb_GetPost( 'comment_name' );
 		$Email = RCWeb_GetPost( 'comment_email' );
