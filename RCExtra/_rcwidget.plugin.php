@@ -111,18 +111,17 @@ class rcwidget_plugin extends Plugin
 		 require_once($rcPath.'classes/table_base.php');
 		 require_once($rcPath.'classes/file_manager.php');
 		 require_once($rcPath.'classes/table_settings.php');
+		 require_once($rcPath.'classes/rclibrary.php' );
 		 
 		 global $g_rcBaseUrl;
 		 $g_rcBaseUrl = $this->Settings->get( 'rcurl' );
 		 
 		 RCSql_Connect();
-		 
-		 $Settings = new CTableSettings();
-		 
+		 RCSettings_Init();		 
 		
 		 if('n' == $params['navtype'] || 'm' == $params['navtype'])
 		 {
-			 $Formatter = new CRCMarkup( $Settings->GetSetting( 'n' == $params['navtype'] ? 'txtNav' : 'txtMiniNav' ) );
+			 $Formatter = new CRCMarkup( RCSettings_GetSetting( 'n' == $params['navtype'] ? 'txtNav' : 'txtMiniNav' ) );
 			 $c = $Formatter->GetHTML();
 		 }
 		 else if( 'f' == $params['navtype'])
@@ -130,7 +129,8 @@ class rcwidget_plugin extends Plugin
 			 $Formatter = new CRCMarkup( $params['freetext'] );
 			 $c = $Formatter->GetHTML();
 		 }
-
+		 
+		 RCSettings_Deinit();
 		 RCSql_Disconnect();
 		 
 		echo $c;
