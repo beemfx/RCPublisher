@@ -13,11 +13,11 @@ $g_Settings = array
 	'txtWebsiteTitle' => array( 'desc' => 'Website Title' , 'type' => 'text' , ) ,
 	'txtSkin' => array( 'desc' => 'Skin' , 'type' => 'skinchooser' , ) ,
 	'txtScriptHeader' => array( 'desc' => 'Pre &lt;/head&gt; Scripting' , 'type' => 'textarea' , ) ,
-	'txtHeader' => array( 'desc' => 'Page Header' , 'type' => 'textarea' , ) ,
-	'txtFooter' => array( 'desc' => 'Page Footer' , 'type' => 'textarea' , ) ,
+	'txtHeader' => array( 'desc' => 'Page Header' , 'type' => 'textarea_w_rcformat' , ) ,
+	'txtFooter' => array( 'desc' => 'Page Footer' , 'type' => 'textarea_w_rcformat' , ) ,
 	'nHomeNewsStories' => array( 'desc' => 'Homage Page News Stores' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 12 ) ,
-	'txtNav' => array( 'desc' => 'Navigation Bar' , 'type' => 'textarea' , ) ,
-	'txtMiniNav' => array( 'desc' => 'Mini-Navigation Bar' , 'type' => 'textarea' , ) ,
+	'txtNav' => array( 'desc' => 'Navigation Bar' , 'type' => 'textarea_w_rcformat' , ) ,
+	'txtMiniNav' => array( 'desc' => 'Mini-Navigation Bar' , 'type' => 'textarea_w_rcformat' , ) ,
 	'txtSidebarHTML' => array( 'desc' => 'Home Page Sidebar' , 'type' => 'textarea' , ) ,
 	'txtFeatureSlug' => array( 'desc' => 'Featured Page (slug)' , 'type' => 'text' , ) ,
 	'txtBlogLink' => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text' , ) ,
@@ -56,6 +56,11 @@ class CPageSettings extends CPageBase
 		else
 		{
 			$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '' ) );
+			if( 'textarea_w_rcformat' == $Atts['type'] )
+			{
+				$Formatter = new CRCMarkup( RCWeb_GetPost( $Setting , '' ) );
+				$this->ChangeGlobalSetting( $Setting.'HTML' , $Formatter->GetHTML() );
+			}
 		}
 	}
 
@@ -152,6 +157,7 @@ class CPageSettings extends CPageBase
 			case 'text':
 				printf( '<p><b>%s</b>: <input type="text" name="%s" value="%s" style="width:50%%"/></p>' , $Atts[ 'desc' ] , $Setting , htmlspecialchars( $this->GetGlobalSetting( $Setting ) , ENT_QUOTES ) );
 				break;
+			case 'textarea_w_rcformat':
 			case 'textarea':
 				printf( '<p><b>%s</b></br><textarea style="height:5em;width:90%%" name="%s" cols="80" rows="20">%s</textarea></p>' , $Atts[ 'desc' ] , $Setting , $this->GetGlobalSetting( $Setting ) );
 				break;

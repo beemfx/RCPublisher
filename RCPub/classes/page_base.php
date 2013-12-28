@@ -31,20 +31,17 @@ abstract class CPageBase
 
 	public function GetHeader()
 	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting( 'txtHeader' ) );
-		return $Formatter->GetHTML();
+		return $this->GetGlobalSetting( 'txtHeaderHTML' );
 	}
 
 	public function GetNav1()
 	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting( 'txtNav' ) );
-		return $Formatter->GetHTML();
+		return $this->GetGlobalSetting( 'txtNavHTML' );
 	}
 
 	public function GetNav2()
 	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting( 'txtMiniNav' ) );
-		return $Formatter->GetHTML();
+		return $this->GetGlobalSetting( 'txtMiniNavHTML' );
 	}
 
 	public function GetErrorText()
@@ -59,8 +56,7 @@ abstract class CPageBase
 
 	public function GetFooter()
 	{
-		$Formatter = new CRCMarkup( $this->GetGlobalSetting( 'txtFooter' ) );
-		return $Formatter->GetHTML();
+		return $this->GetGlobalSetting( 'txtFooterHTML' );
 	}
 
 	public function Display_PageCallback()
