@@ -34,6 +34,10 @@ $g_rcBaseUrl = '';
 function CreateHREF( $strContent , $strVars = null , $bNoQuotes = false )
 {
 	global $g_rcBaseUrl;
+	if( '' == $g_rcBaseUrl )
+	{
+		$g_rcBaseUrl = dirname($_SERVER['REQUEST_URI']).'/';
+	}
 	$strIndex = $g_rcBaseUrl.'index.php?c='.$strContent;
 
 	$strLink = $strIndex;

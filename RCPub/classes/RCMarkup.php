@@ -198,7 +198,6 @@ class CRCMarkup
 	{
 		$BlogDesc = strlen( $matches[ 4 ] ) > 0 ? $matches[ 4 ] : $matches[ 2 ];
 
-		global $GLOBAL_SETTINGS_BLOGURL;
 		$sLink = sprintf( '%s' , $matches[ 2 ] );
 		return sprintf( '<a href="%s">%s</a>' , $sLink , $BlogDesc );
 	}

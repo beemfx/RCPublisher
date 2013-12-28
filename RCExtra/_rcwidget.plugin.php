@@ -78,8 +78,8 @@ class rcwidget_plugin extends Plugin
 				  'label' => T_('Nav Menu'),
 				  'note' => T_('Which nav menu to be displayed.'),
 				  'type' => 'select',
-				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu', ),
-				  'defaultvalue' => 'n',
+				  'options' => array('f' => 'Freestyle RC Markup', 'm' => 'Mini Menu', 'n' => 'Menu', 'ft' => 'Footer', 'hd' => 'Header' ),
+				  'defaultvalue' => 'f',
 			 ),
 			 
 			 'freetext' => array(
@@ -119,12 +119,25 @@ class rcwidget_plugin extends Plugin
 		 RCSql_Connect();
 		 RCSettings_Init();		 
 		
-		 if('n' == $params['navtype'] || 'm' == $params['navtype'])
+		 switch( $params['navtype'] )
 		 {
-			 $Formatter = new CRCMarkup( RCSettings_GetSetting( 'n' == $params['navtype'] ? 'txtNav' : 'txtMiniNav' ) );
-			 $c = $Formatter->GetHTML();
+			 case 'n': 
+				 $c = RCSettings_GetSetting( 'txtNavHTML' ); 
+				 break;
+			 case 'm': 
+				 $c = RCSettings_GetSetting( 'txtMiniNavHTML' );
+				 break;
+			 case 'f': 
+				 break;
+			 case 'ft': 
+				 $c = RCSettings_GetSetting( 'txtFooterHTML' );
+				 break;
+			 case 'hd': 
+				 $c = RCSettings_GetSetting( 'txtHeaderHTML' );
+				 break;
 		 }
-		 else if( 'f' == $params['navtype'])
+		 
+		 if( 'f' == $params['navtype'])
 		 {
 			 $Formatter = new CRCMarkup( $params['freetext'] );
 			 $c = $Formatter->GetHTML();
