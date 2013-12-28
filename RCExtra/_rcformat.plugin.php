@@ -66,6 +66,7 @@ class rcformat_plugin extends Plugin
 		 
 		 require_once($rcPath.'config/config.php');
 		 require_once($rcPath.'classes/rcsql.php');
+		 require_once($rcPath.'classes/rclibrary.php');
 		 require_once($rcPath.'classes/table_base.php');
 		 require_once($rcPath.'classes/table_settings.php');
 		 require_once($rcPath.'classes/RCMarkup.php');
