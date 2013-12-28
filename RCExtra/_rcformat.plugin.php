@@ -72,11 +72,13 @@ class rcformat_plugin extends Plugin
 		 require_once($rcPath.'classes/file_manager.php');
 		 
 		 RCSql_Connect();
+		 RCSettings_Init();
 		 
 		 $Formatter = new CRCMarkup( $c );
 		 
 		 $c = $Formatter->GetHTML();
 		 
+		 RCSettings_Deinit();
 		 RCSql_Disconnect();
 		 
 		 return true;
