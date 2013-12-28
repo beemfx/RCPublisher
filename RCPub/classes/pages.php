@@ -18,7 +18,7 @@ define( 'PAGE_PAGE' , 'page' );
 define( 'PAGE_SETTINGS' , 'settings' );
 define( 'PAGE_USER' , 'user' );
 
-$g_rcBaseUrl = '';
+$g_rcBaseUrl = dirname($_SERVER['REQUEST_URI']).'/';
 
 //CreateHREF:
 //Creates a link for the page.
@@ -34,10 +34,7 @@ $g_rcBaseUrl = '';
 function CreateHREF( $strContent , $strVars = null , $bNoQuotes = false )
 {
 	global $g_rcBaseUrl;
-	if( '' == $g_rcBaseUrl )
-	{
-		$g_rcBaseUrl = dirname($_SERVER['REQUEST_URI']).'/';
-	}
+	
 	$strIndex = $g_rcBaseUrl.'index.php?c='.$strContent;
 
 	$strLink = $strIndex;
