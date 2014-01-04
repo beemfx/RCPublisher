@@ -18,7 +18,7 @@ define( 'PAGE_PAGE' , 'page' );
 define( 'PAGE_SETTINGS' , 'settings' );
 define( 'PAGE_USER' , 'user' );
 
-$g_rcBaseUrl = dirname($_SERVER['REQUEST_URI']).'/';
+$g_rcBaseUrl = true ? $g_rcWWWPath : dirname($_SERVER['REQUEST_URI']).'/';
 
 //CreateHREF:
 //Creates a link for the page.

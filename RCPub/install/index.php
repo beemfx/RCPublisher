@@ -241,6 +241,7 @@ function DoInstall()
 	fprintf( $fout , "<?php\n" );
 	fprintf( $fout , "\t\$g_rcPrefix = \"%s\";\n\n" , RCWeb_GetPost( 'rc_prefix' ) );
 	fprintf( $fout , "\t\$g_rcFilepath = \"%s\";\n\n" , RCWeb_GetPost( 'rc_filepath' ) );
+	fprintf( $fout , "\t\$g_rcWWWPath = \"%s\";\n\n" , RCWeb_GetPost( 'rc_wwwpath' ) );
 	fprintf( $fout , "\t\$g_rcDBHost = \"%s\";\n" , RCWeb_GetPost( 'db_host' ) );
 	fprintf( $fout , "\t\$g_rcDBUser = \"%s\";\n" , RCWeb_GetPost( 'db_user' ) );
 	fprintf( $fout , "\t\$g_rcDBPwd = \"%s\";\n" , RCWeb_GetPost( 'db_pass' ) );
@@ -278,10 +279,15 @@ function DoSetup()
 //whatever page the stories are displayed on).
 	global $g_rcPrefix;
 	global $g_rcFilepath;
+	global $g_rcWWWPath;
 	global $g_rcDBHost;
 	global $g_rcDBPwd;
 	global $g_rcDBUser;
 	global $g_rcDBUser;
+	
+	$RequestUri = preg_replace( '/install\//' , '', $_SERVER['REQUEST_URI'] );
+	$DefaultWWW = sprintf( 'http://%s%s' , $_SERVER['SERVER_NAME'], $RequestUri );
+	
 	?>
 	<h1>RC Publisher Installer</h1>
 	<form method="post" action="index.php">
@@ -307,7 +313,10 @@ function DoSetup()
 		<h3>RC Publisher Setup</h3>
 		<table>
 			<tr>
-				<th>Files Location (relative to base URL not this software):</th><td><input type="text" name="rc_filepath" value="<?php echo strlen( $g_rcFilepath ) > 0 ? $g_rcFilepath : "rcfiles"; ?>"/></td>
+				<th>Files Location (relative to base URL not this software):</th><td style="width:50%"><input style="width:100%" type="text" name="rc_filepath" value="<?php echo strlen( $g_rcFilepath ) > 0 ? $g_rcFilepath : "rcfiles"; ?>"/></td>
+			</tr>
+			<tr>
+				<th>Full URL To Root (i.e. http://www.domain.com/path/):</th><td><input style="width:100%" type="text" name="rc_wwwpath" value="<?php echo strlen( $g_rcWWWPath ) > 0 ? $g_rcWWWPath : $DefaultWWW; ?>"/></td>
 			</tr>
 			<tr>
 				<th>Table prefix:</th><td><input type="text" name="rc_prefix" value="rc2_"/></td>
@@ -328,7 +337,7 @@ function StartHTML()
 		<head>
 			<title>RC Publisher Installer</title>
 			<style type="text/css">
-				body{width:400px;margin:0 auto;border:2px solid red;padding:1em;}
+				body{width:900px;margin:0 auto;border:2px solid red;padding:1em;}
 				th{text-align:right}
 			</style>
 		</head>
