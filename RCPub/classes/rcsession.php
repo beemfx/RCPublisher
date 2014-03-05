@@ -3,6 +3,7 @@
 require_once('table_user.php');
 
 define( 'RCSESSION_COOKIENAME' , 'rc2pageh' );
+define( 'RCSESSION_REMEMBEREDCONNECTIONS' , 2 );
 
 function RCSession_Begin()
 {
@@ -34,7 +35,7 @@ function RCSession_Begin()
 
 		$Info = $T->GetUserInfo( ( int ) $_COOKIE[ RCSESSION_COOKIENAME ] );
 
-		if( $Info[ 'txtLastIP' ] == $_SERVER[ 'REMOTE_ADDR' ] )
+		if( $Info[ 'txtLastIP' ] == $_SERVER[ 'REMOTE_ADDR' ] || $Info[ 'txtLastIP2' ] == $_SERVER[ 'REMOTE_ADDR' ] )
 		{
 			$_SESSION[ 'user' ] = $Info[ 'txtUserName' ];
 			$_SESSION[ 'user_alias' ] = $Info[ 'txtAlias' ];
@@ -70,7 +71,19 @@ function RCSession_Connect( $strUser , $strFullHashPwd , $strSalt , $bRemember )
 	setcookie( RCSESSION_COOKIENAME , ( int ) $_SESSION[ 'user_id' ] , time() + 3600 * 24 * 365 );
 
 	//Update the the IP to the current IP since we are logging in from there.
-	$T->UpdateIP( $nID , $_SERVER[ 'REMOTE_ADDR' ] );
+	if( $Info[ 'txtLastIP' ] == $_SERVER[ 'REMOTE_ADDR' ] || $Info[ 'txtLastIP2' ] == $_SERVER[ 'REMOTE_ADDR' ] )
+	{
+		//Don't need to update anything.
+	}
+	else
+	{
+		$Index = $Info['nLastUpdateIP'];
+		$Index += RCSESSION_REMEMBEREDCONNECTIONS;
+		$Index ++;
+		$Index %= RCSESSION_REMEMBEREDCONNECTIONS;
+		
+		$T->UpdateIP( $nID , $_SERVER[ 'REMOTE_ADDR' ] , $Index );
+	}
 	return true;
 }
 

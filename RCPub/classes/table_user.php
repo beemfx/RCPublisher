@@ -69,7 +69,9 @@ class CTableUser extends CTable
 			'txtAlias' => '"'.addslashes( $sAlias ).'"' ,
 			'txtEmail' => '"'.addslashes( $sEmail ).'"' ,
 			'txtLastIP' => '"0.0.0.0"' ,
+			'txtLastIP2' => '"0.0.0.0"' ,
 			'nAccessLevel' => 100 ,
+			'nLastUpdateIP' => 0,
 			'nPerms' => $Perms ,
 		);
 
@@ -79,7 +81,7 @@ class CTableUser extends CTable
 
 	public function GetUserInfo( $nID )
 	{
-		$this->DoSelect( 'id, txtUserName, txtAlias, txtEmail, nAccessLevel, txtLastIP, nPerms' , 'id='.$nID );
+		$this->DoSelect( 'id, txtUserName, txtAlias, txtEmail, nAccessLevel, txtLastIP, txtLastIP2, nLastUpdateIP, nPerms' , 'id='.$nID );
 
 		assert( count( $this->m_rows ) == 1 );
 
@@ -164,11 +166,21 @@ class CTableUser extends CTable
 		$this->DoUpdate( $nID , $data );
 	}
 
-	public function UpdateIP( $nID , $sIP )
+	public function UpdateIP( $nID , $sIP , $Index )
 	{
+		$IpToUpdate = '';
+		
+		switch( $Index )
+		{
+			case 0: $IpToUpdate = 'txtLastIP'; break;
+			case 1: $IpToUpdate = 'txtLastIP2'; break;
+			default: assert( false ); break;
+		}
+		
 		$data = array
 			(
-			'txtLastIP' => '"'.$sIP.'"' ,
+			$IpToUpdate => '"'.$sIP.'"' ,
+			'nLastUpdateIP' => '"'.$Index.'"' ,
 		);
 
 		$this->DoUpdate( $nID , $data );

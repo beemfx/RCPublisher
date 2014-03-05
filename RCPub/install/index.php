@@ -147,6 +147,8 @@ function DoInstall()
 		  `nAccessLevel` int(11) NOT NULL,
         `nPerms` int(11) NOT NULL,
 		  `txtLastIP` char(16) NOT NULL,
+		  `txtLastIP2` char(16) NOT NULL,
+		  `nLastUpdateIP` int(11) NOT NULL,
 		  PRIMARY KEY  (`id`,`txtUserName`)' ,
 	);
 
@@ -223,6 +225,8 @@ function DoInstall()
 		'nAccessLevel' => '"'.addslashes( '10' ).'"' ,
 		'nPerms' => '"'.addslashes( $FULL_PERMS ).'"' ,
 		'txtLastIP' => '"'.addslashes( '' ).'"' ,
+		'txtLastIP2' => '"'.addslashes( '' ).'"' ,
+		'nLastUpdateIP' =>'"'.addslashes('0').'"',
 	);
 
 	$qry = 'insert into '.RCWeb_GetPost( 'rc_prefix' ).'tblUser ('.implode( ',' , array_keys( $DefaultUser ) ).') values ('.implode( ',' , array_values( $DefaultUser ) ).')';
