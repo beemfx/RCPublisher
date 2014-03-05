@@ -79,7 +79,7 @@ class CPageUser extends CPageBase
 		for( $i=0; $i < count($Users); $i++ )
 		{
 			$User = $Users[$i];
-			printf( "<p>%s (%d) - %s</p>\n", $User['txtUserName'], $User['id'], $User['txtAlias']);
+			printf( "<p>%s (%d) - %s; Last IPs: %s , %s</p>\n", $User['txtUserName'], $User['id'], $User['txtAlias'], $User['txtLastIP'], $User['txtLastIP2']);
 		}
 	}
 

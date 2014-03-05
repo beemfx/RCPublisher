@@ -10,7 +10,7 @@ class CTableUser extends CTable
 
 	public function GetUsers()
 	{
-		$this->DoSelect( 'id,txtUserName,txtAlias' , '' , 'txtAlias' );
+		$this->DoSelect( 'id,txtUserName,txtAlias,txtLastIP,txtLastIP2' , '' , 'txtAlias' );
 		return $this->m_rows;
 	}
 
