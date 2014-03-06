@@ -103,9 +103,10 @@ class rcwidget_plugin extends Plugin
 		 global $g_rcDBPwd;
 		 global $g_rcDBName;
 		 global $g_rcFilepath;
+		 global $g_rcWWWPath;
 		 
-		 require_once($rcPath.'classes/pages.php');
 		 require_once($rcPath.'config/config.php');
+		 require_once($rcPath.'classes/pages.php');
 		 require_once($rcPath.'classes/rcsql.php');
 		 require_once($rcPath.'classes/RCMarkup.php');
 		 require_once($rcPath.'classes/table_base.php');
@@ -161,8 +162,10 @@ class rcwidget_plugin extends Plugin
 		global $g_rcDBPwd;
 		global $g_rcDBName;
 		global $g_rcFilepath;
-		require_once($rcPath.'classes/pages.php');
+		global $g_rcWWWPath;
+		
 		require_once($rcPath.'config/config.php');
+		require_once($rcPath.'classes/pages.php');
 		require_once($rcPath.'classes/rcsql.php');
 		require_once($rcPath.'classes/RCMarkup.php');
 		require_once($rcPath.'classes/table_base.php');
