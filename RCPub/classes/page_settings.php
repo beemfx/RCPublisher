@@ -10,6 +10,7 @@ require_once('page_base.php');
 
 $g_Settings = array
 	(
+	'txtHeaderSiteConfig' => array( 'desc' => 'RC Publisher Configuration' , 'help' => 'Configuration settings.' , 'type' => 'header' , ) ,
 	'txtWebsiteTitle' => array( 'desc' => 'Website Title' , 'type' => 'text' , ) ,
 	'txtSkin' => array( 'desc' => 'Skin' , 'type' => 'skinchooser' , ) ,
 	'txtScriptHeader' => array( 'desc' => 'Pre &lt;/head&gt; Scripting' , 'type' => 'textarea' , ) ,
@@ -22,20 +23,23 @@ $g_Settings = array
 	'txtFeatureSlug' => array( 'desc' => 'Featured Page (slug)' , 'type' => 'text' , ) ,
 	'txtBlogLink' => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text' , ) ,
 	//Email Settings
+	'txtHeaderEmail' => array( 'desc' => 'SMTP Settings' , 'help' => 'Settings required to send email from the RC Software.' , 'type' => 'header' , ) ,
 	'txtEmailServer' => array( 'desc' => 'Email SMTP Sever e.g. smtp.gmail.com' , 'type' => 'text' , ) ,
 	'txtEmailPort' => array( 'desc' => 'Email SMTP Port' , 'type' => 'text' , ) ,
 	'txtEmailEncryption' => array( 'desc' => 'Email Encryption (ssl or tls)' , 'type' => 'text' , ) ,
 	'txtEmailUsername' => array( 'desc' => 'Email user name' , 'type' => 'text' , ) ,
 	'txtEmailPassword' => array( 'desc' => 'Email password' , 'type' => 'text' , ) ,
 	//ImageMagick settings.
+	'txtHeaderImageMagick' => array( 'desc' => 'ImageMagick Settings' , 'help' => 'Settings for software image editing.' , 'type' => 'header' , ) ,
 	'txtConvertPath' => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text' , ) ,
 	'nThumbnailWidth' => array( 'desc' => 'Thumbnail width' , 'type' => 'text' , ) ,
 	'nThumbnailQuality' => array( 'desc' => 'Thumbnail quality (0-100)' , 'type' => 'selectnumber' , 'num_min' => 0 , 'num_max' => 100 ) ,
+	'txtHeaderGlobalComments' => array( 'desc' => 'Global Comment Settings' , 'help' => 'Overrides any comment settings for individual users.' , 'type' => 'header' , ) ,
 	'bAllowComments' => array( 'desc' => 'Allow comments on pages' , 'type' => 'checkbox' ) ,
 );
+
 class CPageSettings extends CPageBase
 {
-
 	const RQ_USERLEVEL = 5;
 
 	public function CPageSettings()
@@ -55,7 +59,11 @@ class CPageSettings extends CPageBase
 		if( !$this->IsPageAllowed() )
 			return;
 		
-		if( 'checkbox' == $Atts[ 'type' ] )
+		if( 'header' == $Atts[ 'type' ] )
+		{
+			//Don't do anything for a header.
+		}
+		else if( 'checkbox' == $Atts[ 'type' ] )
 		{
 			$this->ChangeGlobalSetting( $Setting , RCWeb_GetPost( $Setting , '0' ) );
 		}
@@ -176,6 +184,10 @@ class CPageSettings extends CPageBase
 			case 'skinchooser':
 				printf( '<p><b>%s: </b><select name="%s" size="1">%s</select></p>' , $Atts[ 'desc' ] , $Setting , $this->CreateSkinChooser( $this->GetGlobalSetting( $Setting ) ) );
 				break;
+			case 'header':
+			{
+				printf( '<h2>%s</h2><p><i>%s</i></p>' , $Atts[ 'desc' ] , $Atts[ 'help' ] );
+			} break;
 		}
 	}
 
@@ -190,7 +202,7 @@ class CPageSettings extends CPageBase
 		<form action=<?php print CreateHREF( PAGE_SETTINGS ) ?> method="post">
 			<input type="hidden" name="stage" value="us"/>
 			<?php
-			print '<h2>RC Publisher Settings</h2><br/>';
+			//print '<h2>RC Publisher Settings</h2><br/>';
 			foreach( $g_Settings as $Setting => $Atts )
 			{
 				$this->DisplayForm_ShowSetting( $Setting , $Atts );
