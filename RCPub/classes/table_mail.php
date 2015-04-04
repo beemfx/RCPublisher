@@ -1,6 +1,8 @@
 <?php
 
 require_once( 'table_user.php' );
+require_once( 'phpmailer/PHPMailerAutoload.php' );
+
 class CTableMail extends CTable
 {
 
@@ -57,7 +59,7 @@ class CTableMail extends CTable
 		assert( 'integer' == gettype( $nMsg ) );
 		$this->DoDelete( $nMsg , 'idUser_To='.$nUser );
 	}
-
+	
 	public function PostMail( $nFromUser , $nToUser , $strName , $strFromEmail , $strSubject , $strMessage )
 	{
 		assert( 'integer' == gettype( $nToUser ) );
@@ -75,13 +77,8 @@ class CTableMail extends CTable
 
 		//First send the message by actual mail:
 		{
-			$msg = sprintf( "From: %s\nReply Email: %s\nSubject: %s\n\n%s" , $strName , $strFromEmail , $strSubject , $strMessage );
-
-			$headers = 'From: '.$strFromEmail."\r\n".
-				'Reply-To: '.$strFromEmail."\r\n".
-				'X-Mailer: PHP/'.phpversion();
-
-			mail( $UserInfo[ 'txtEmail' ] , 'RC Mail: '.$strSubject , $msg , $headers );
+			$msg = sprintf( "From: %s\nReply Email: %s\nSubject: %s\n\n%s" , $strName , $strFromEmail , $strSubject , $strMessage );	
+			$this->PostMail_SendRealEmail( $UserInfo[ 'txtEmail' ] , $strFromEmail , $strName , 'RC Mail: '.$strSubject , $msg );
 		}
 
 		//Modify the message so that it has paragraph markers
@@ -108,7 +105,68 @@ class CTableMail extends CTable
 		$this->DoInsert( $insert );
 		return true;
 	}
+	
+	private function PostMail_SendRealEmail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
+	{
+		if( true )
+		{
+			$this->PostMail_SendRealEmail_PhpMailer( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body );
+		}
+		else
+		{
+			$this->PostMail_SendRealEmail_Mail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body );
+		}
+	}
 
+	private function PostMail_SendRealEmail_Mail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
+	{
+		$headers = 'From: '.$FromAddr."\r\n".
+				'Reply-To: '.$FromAddr."\r\n".
+				'X-Mailer: PHP/'.phpversion();
+			
+		mail( $ToAddr , $Subject , $Body , $headers );
+	}
+	
+	private function PostMail_SendRealEmail_PhpMailer( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
+	{
+		$mail = new PHPMailer;
+
+		//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+		$mail->isSMTP();                                      // Set mailer to use SMTP
+		$mail->Host = RCSettings_GetSetting( 'txtEmailServer' ); // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = RCSettings_GetSetting( 'txtEmailUsername' );                 // SMTP username
+		$mail->Password = RCSettings_GetSetting( 'txtEmailPassword' );                           // SMTP password
+		$mail->SMTPSecure = RCSettings_GetSetting( 'txtEmailEncryption' );                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = RCSettings_GetSetting( 'txtEmailPort' );                                 // TCP port to connect to
+
+		$mail->From = $FromAddr;
+		$mail->FromName = $FromPerson;
+		$mail->addAddress($ToAddr , 'RC Software Mailer');     // Add a recipient
+		$mail->addReplyTo($FromAddr, $FromPerson);
+		//$mail->addCC('cc@example.com');
+		//$mail->addBCC('bcc@example.com');
+
+		//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+		//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$mail->Subject = $Subject;
+		$mail->Body    = $Body;
+		$mail->AltBody = strip_tags($Body);
+
+		if(!$mail->send()) 
+		{
+			$ErrString = 'Message could not be sent.' . 'Mailer Error: ' . $mail->ErrorInfo;
+			RCError_PushError( $ErrString );
+			//echo $ErrString;
+		} 
+		else 
+		{
+			//echo 'Message has been sent';
+		}
+	}
 }
 
 ?>

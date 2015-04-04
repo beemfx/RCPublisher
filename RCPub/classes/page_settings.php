@@ -21,6 +21,12 @@ $g_Settings = array
 	'txtSidebarHTML' => array( 'desc' => 'Home Page Sidebar' , 'type' => 'textarea' , ) ,
 	'txtFeatureSlug' => array( 'desc' => 'Featured Page (slug)' , 'type' => 'text' , ) ,
 	'txtBlogLink' => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text' , ) ,
+	//Email Settings
+	'txtEmailServer' => array( 'desc' => 'Email SMTP Sever e.g. smtp.gmail.com' , 'type' => 'text' , ) ,
+	'txtEmailPort' => array( 'desc' => 'Email SMTP Port' , 'type' => 'text' , ) ,
+	'txtEmailEncryption' => array( 'desc' => 'Email Encryption (ssl or tls)' , 'type' => 'text' , ) ,
+	'txtEmailUsername' => array( 'desc' => 'Email user name' , 'type' => 'text' , ) ,
+	'txtEmailPassword' => array( 'desc' => 'Email password' , 'type' => 'text' , ) ,
 	//ImageMagick settings.
 	'txtConvertPath' => array( 'desc' => 'Path to ImageMagick convert' , 'type' => 'text' , ) ,
 	'nThumbnailWidth' => array( 'desc' => 'Thumbnail width' , 'type' => 'text' , ) ,
