@@ -95,7 +95,8 @@ class rcwidget_plugin extends Plugin
 	function SkinTag($params)
 	{
 		$rcPath = $this->Settings->get( 'rcroot' );
-		 	 
+		if( file_exists( $rcPath.'config/config.php' ) )
+		{ 	 
 		 //Make sure all this stuff is in the global scope.
 		 global $g_rcPrefix;
 		 global $g_rcDBHost;
@@ -146,7 +147,11 @@ class rcwidget_plugin extends Plugin
 		 
 		 RCSettings_Deinit();
 		 RCSql_Disconnect();
-		 
+		}
+		else
+		{
+			$c = 'Couldn\'t find RC Publisher Software.';
+		}
 		echo $c;
 		return true;
 	}
@@ -155,6 +160,8 @@ class rcwidget_plugin extends Plugin
 	{
 		$rcPath = $this->Settings->get( 'rcroot' );
 			 
+		if( file_exists( $rcPath.'config/config.php' ) )
+		{
 		//Make sure all this stuff is in the global scope.
 		global $g_rcPrefix;
 		global $g_rcDBHost;
@@ -177,6 +184,11 @@ class rcwidget_plugin extends Plugin
 		$c = $Settings->GetSetting( 'txtScriptHeader' );
 		echo $c;
 		RCSql_Disconnect();
+		}
+		else
+		{
+			$c = 'Couldn\'t find RC Publisher Software.';
+		}
 	}
 }
 

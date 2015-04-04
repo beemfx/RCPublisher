@@ -55,32 +55,39 @@ class rcformat_plugin extends Plugin
 		 $c = & $params['data'];
 		
 		 $rcPath = $this->Settings->get( 'rcroot' );
-		 	 
-		 //Make sure all this stuff is in the global scope.
-		 global $g_rcPrefix;
-		 global $g_rcDBHost;
-		 global $g_rcDBUser;
-		 global $g_rcDBPwd;
-		 global $g_rcDBName;
-		 global $g_rcFilepath;
 		 
-		 require_once($rcPath.'config/config.php');
-		 require_once($rcPath.'classes/rcsql.php');
-		 require_once($rcPath.'classes/rclibrary.php');
-		 require_once($rcPath.'classes/table_base.php');
-		 require_once($rcPath.'classes/table_settings.php');
-		 require_once($rcPath.'classes/RCMarkup.php');
-		 require_once($rcPath.'classes/file_manager.php');
-		 
-		 RCSql_Connect();
-		 RCSettings_Init();
-		 
-		 $Formatter = new CRCMarkup( $c );
-		 
-		 $c = $Formatter->GetHTML();
-		 
-		 RCSettings_Deinit();
-		 RCSql_Disconnect();
+		 if( file_exists( $rcPath.'config/config.php' ) )
+		 {
+			 //Make sure all this stuff is in the global scope.
+			 global $g_rcPrefix;
+			 global $g_rcDBHost;
+			 global $g_rcDBUser;
+			 global $g_rcDBPwd;
+			 global $g_rcDBName;
+			 global $g_rcFilepath;
+			 
+			 require_once($rcPath.'config/config.php');
+			 require_once($rcPath.'classes/rcsql.php');
+			 require_once($rcPath.'classes/rclibrary.php');
+			 require_once($rcPath.'classes/table_base.php');
+			 require_once($rcPath.'classes/table_settings.php');
+			 require_once($rcPath.'classes/RCMarkup.php');
+			 require_once($rcPath.'classes/file_manager.php');
+			 
+			 RCSql_Connect();
+			 RCSettings_Init();
+			 
+			 $Formatter = new CRCMarkup( $c );
+			 
+			 $c = $Formatter->GetHTML();
+			 
+			 RCSettings_Deinit();
+			 RCSql_Disconnect();
+		 }
+		 else
+		 {
+			 $c = 'Couldn\'t find RC Publisher Software.';
+		 }
 		 
 		 return true;
     }
