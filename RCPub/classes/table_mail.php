@@ -15,7 +15,7 @@ class CTableMail extends CTable
 	{
 		assert( 'integer' == gettype( $nUser ) );
 
-		$this->DoSelect( 'id' , 'idUser_To='.$nUser.' and bRead=0' );
+		$this->DoSelect( 'id' , 'idUser_To='.$nUser.' and bRead=0 and not bDeleted' );
 		return count( $this->m_rows );
 	}
 
@@ -24,7 +24,7 @@ class CTableMail extends CTable
 		assert( 'integer' == gettype( $nUser ) );
 
 		$this->DoSelect(
-			'* , date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt , if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName' , 'idUser_To='.$nUser , 'dtSent desc' );
+			'* , date_format(dtSent, "%a %c/%e/%Y %l:%i %p") as dt , if(txtName is not null, concat(txtName, " [", txtEmail, "]"), txtEmail) as txtDispName' , 'not bDeleted and idUser_To='.$nUser , 'dtSent desc' );
 
 		return $this->m_rows;
 	}
@@ -57,7 +57,19 @@ class CTableMail extends CTable
 	{
 		assert( 'integer' == gettype( $nUser ) );
 		assert( 'integer' == gettype( $nMsg ) );
-		$this->DoDelete( $nMsg , 'idUser_To='.$nUser );
+                $ActualDelete = false;
+                if( $ActualDelete )
+                {
+                    $this->DoDelete( $nMsg , 'idUser_To='.$nUser );
+                }
+                else
+                {
+                    $data = array
+			(
+			'bDeleted' => '1' ,
+                    );
+                    $this->DoUpdate( $nMsg , $data , 'idUser_To='.$nUser );
+                }
 	}
 	
 	public function PostMail( $nFromUser , $nToUser , $strName , $strFromEmail , $strSubject , $strMessage )
@@ -99,6 +111,7 @@ class CTableMail extends CTable
 			'txtSubject' => $strSubject ,
 			'txtMessage' => $strMessage ,
 			'bRead' => '0' ,
+                        'bDeleted' => '0' ,
 			'dtSent' => 'now()' ,
 		);
 

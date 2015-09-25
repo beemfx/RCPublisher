@@ -115,6 +115,7 @@ function DoInstall()
 			  `txtSubject` char(100) NOT NULL,
 			  `txtMessage` text NOT NULL,
 			  `bRead` tinyint(1) NOT NULL,
+                          `bDeleted` tinyint(1) NOT NULL,
 			  `dtSent` datetime NOT NULL,
 			  PRIMARY KEY  (`id`),
 			  KEY `idUser_To` (`idUser_To`,`dtSent`)' ,
