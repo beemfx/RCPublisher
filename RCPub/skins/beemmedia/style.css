@@ -73,7 +73,7 @@ div#rc_header
 	background:linear-gradient(to bottom,#333,#111);
 	text-align: left;
 	border-width:5px;
-	border-color: #fff;
+	border-color: #000;
 }
 
 div#rc_menu_main a
@@ -271,6 +271,7 @@ div#rc_content h2
 	font-size:175%;
 	line-height:105%;
 	box-shadow: 2px 2px 2px #333;
+	margin-bottom:.2em
 }
 
 div#rc_content h3
