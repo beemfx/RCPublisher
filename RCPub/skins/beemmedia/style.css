@@ -72,6 +72,7 @@ div#rc_header
 	background:-moz-linear-gradient(to bottom, #333, #111); /* For Firefox 3.6 to 15 */
 	background:linear-gradient(to bottom,#333,#111);
 	text-align: left;
+	border-width:5px;
 	border-color: #fff;
 }
 
