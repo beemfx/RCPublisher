@@ -30,8 +30,12 @@ class CPluginManager
 	public function GetPluginByName( $Name )
 	{
 		assert( 'string' == gettype( $Name ) );
-		assert( isset($this->m_Plugins[$Name]) );
-		return $this->m_Plugins[$Name];
+		if( isset($this->m_Plugins[$Name]) )
+		{
+			return $this->m_Plugins[$Name];
+		}
+
+		return NULL;
 	}
 	
 	public function GetPluginCount()

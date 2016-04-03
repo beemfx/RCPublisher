@@ -37,7 +37,10 @@ RCSql_Connect();
 RCSettings_Init();
 RCSession_Begin();
 PluginManager_Init();
-PluginManager_GetInstance()->RegisterPlugin('b2evoplug');
+if( !isset($g_rcDisableB2EvoPlugin) || !$g_rcDisableB2EvoPlugin)
+{
+	PluginManager_GetInstance()->RegisterPlugin('b2evoplug');
+}
 
 $strContent = RCWeb_GetGet( 'c' , '' );
 

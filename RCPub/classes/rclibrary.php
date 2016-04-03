@@ -53,7 +53,7 @@ function RCWeb_GetSession( $VarName , $NotSetValue = null , $AssertIfNotExists =
 
 function RCWeb_ValidateEmail( $strE )
 {
-	$strEmailRegEx = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
+	$strEmailRegEx = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,20}$/";
 	return preg_match( $strEmailRegEx , $strE ) != 0;
 }
 

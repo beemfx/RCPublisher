@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{33A274BC-9F3A-4158-9956-98305ED37E81}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeOutput>
+    </NMakeOutput>
+    <NMakePreprocessorDefinitions>
+    </NMakePreprocessorDefinitions>
+    <OutDir>$(BEEMOUT)\$(ProjectName)\</OutDir>
+    <IntDir>$(IntDir)</IntDir>
+    <NMakeBuildCommandLine>make.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>make.bat</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeOutput>
+    </NMakeOutput>
+    <NMakePreprocessorDefinitions>
+    </NMakePreprocessorDefinitions>
+    <OutDir>$(BEEMOUT)\$(ProjectName)\</OutDir>
+    <IntDir>$(IntDir)</IntDir>
+    <NMakeBuildCommandLine>make.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>make.bat</NMakeReBuildCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <BuildLog>
+      <Path />
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <BuildLog>
+      <Path />
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="B2EvoSkin\Beemb2Skin\index.main.php" />
+    <None Include="B2EvoSkin\Beemb2Skin\skinshot.png" />
+    <None Include="B2EvoSkin\Beemb2Skin\style.css" />
+    <None Include="B2EvoSkin\Beemb2Skin\_item_block.inc.php" />
+    <None Include="B2EvoSkin\Beemb2Skin\_item_content.inc.php" />
+    <None Include="B2EvoSkin\Beemb2Skin\_skin.class.php" />
+    <None Include="B2EvoSkin\RCPubSkin\index.main.php" />
+    <None Include="B2EvoSkin\RCPubSkin\rcbodybg.jpg" />
+    <None Include="B2EvoSkin\RCPubSkin\skinshot.png" />
+    <None Include="B2EvoSkin\RCPubSkin\style.css" />
+    <None Include="B2EvoSkin\RCPubSkin\_item_block.inc.php" />
+    <None Include="B2EvoSkin\RCPubSkin\_item_content.inc.php" />
+    <None Include="B2EvoSkin\RCPubSkin\_skin.class.php" />
+    <None Include="Img Src\Button.pspimage" />
+    <None Include="Img Src\EmailButtons.pspimage" />
+    <None Include="Img Src\HeaderBGTop.pspimage" />
+    <None Include="Img Src\rcbodybg.pspimage" />
+    <None Include="Img Src\TitleShort.pspimage" />
+    <None Include="make.bat" />
+    <None Include="RCExtra\_rcformat.plugin.php" />
+    <None Include="RCExtra\_rcwidget.plugin.php" />
+    <None Include="RCPub\index.php" />
+    <None Include="RCPub\captcha\captcha_config.php" />
+    <None Include="RCPub\captcha\captcha_image.php" />
+    <None Include="RCPub\captcha\captchas\1942.ttf" />
+    <None Include="RCPub\captcha\captchas\explbold.ttf" />
+    <None Include="RCPub\captcha\captchas\random-back-image4.jpg" />
+    <None Include="RCPub\captcha\captchas\yummy.ttf" />
+    <None Include="RCPub\classes\.htaccess" />
+    <None Include="RCPub\classes\file_manager.php" />
+    <None Include="RCPub\classes\pages.php" />
+    <None Include="RCPub\classes\page_base.php" />
+    <None Include="RCPub\classes\page_contact.php" />
+    <None Include="RCPub\classes\page_email.php" />
+    <None Include="RCPub\classes\page_home.php" />
+    <None Include="RCPub\classes\page_login.php" />
+    <None Include="RCPub\classes\page_news.php" />
+    <None Include="RCPub\classes\page_page.php" />
+    <None Include="RCPub\classes\page_postnews.php" />
+    <None Include="RCPub\classes\page_sample.php" />
+    <None Include="RCPub\classes\page_settings.php" />
+    <None Include="RCPub\classes\page_uploadfile.php" />
+    <None Include="RCPub\classes\page_user.php" />
+    <None Include="RCPub\classes\plugin_manager.php" />
+    <None Include="RCPub\classes\rcerror.php" />
+    <None Include="RCPub\classes\rclibrary.php" />
+    <None Include="RCPub\classes\RCMarkup.php" />
+    <None Include="RCPub\classes\rcsession.php" />
+    <None Include="RCPub\classes\rcsql.php" />
+    <None Include="RCPub\classes\skin_base.php" />
+    <None Include="RCPub\classes\table_base.php" />
+    <None Include="RCPub\classes\table_comment.php" />
+    <None Include="RCPub\classes\table_mail.php" />
+    <None Include="RCPub\classes\table_news.php" />
+    <None Include="RCPub\classes\table_page.php" />
+    <None Include="RCPub\classes\table_page_history.php" />
+    <None Include="RCPub\classes\table_settings.php" />
+    <None Include="RCPub\classes\table_user.php" />
+    <None Include="RCPub\config\.htaccess" />
+    <None Include="RCPub\images\email_delete.png" />
+    <None Include="RCPub\images\email_read.png" />
+    <None Include="RCPub\images\random-back-image4.jpg" />
+    <None Include="RCPub\images\title.png" />
+    <None Include="RCPub\install\index.php" />
+    <None Include="RCPub\js\functions.js" />
+    <None Include="RCPub\js\md5.js" />
+    <None Include="RCPub\js\rclibrary.js" />
+    <None Include="RCPub\js\sha1.js" />
+    <None Include="RCPub\phpmailer\changelog.md" />
+    <None Include="RCPub\phpmailer\class.phpmailer.php" />
+    <None Include="RCPub\phpmailer\class.pop3.php" />
+    <None Include="RCPub\phpmailer\class.smtp.php" />
+    <None Include="RCPub\phpmailer\composer.json" />
+    <None Include="RCPub\phpmailer\LICENSE" />
+    <None Include="RCPub\phpmailer\PHPMailerAutoload.php" />
+    <None Include="RCPub\phpmailer\README.md" />
+    <None Include="RCPub\phpmailer\travis.phpunit.xml.dist" />
+    <None Include="RCPub\phpmailer\VERSION" />
+    <None Include="RCPub\plugins\plugin.b2evoplug.php" />
+    <None Include="RCPub\skins\beemmedia\default.skin.php" />
+    <None Include="RCPub\skins\beemmedia\style.css" />
+    <None Include="RCPub\skins\beemsoftware\default.skin.php" />
+    <None Include="RCPub\skins\beemsoftware\style.css" />
+    <None Include="RCPub\skins\default\default.skin.php" />
+    <None Include="RCPub\skins\roughconcept\default.skin.php" />
+    <None Include="RCPub\skins\roughconcept\rcbodybg.jpg" />
+    <None Include="RCPub\skins\roughconcept\rcskin.css" />
+    <None Include="README.md" />
+    <None Include="Specs.docx" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

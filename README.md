@@ -11,7 +11,6 @@ The following features are still in development:
 Building
 ========
 
-A NetBEANS project is included.
 
 Installing
 ==========

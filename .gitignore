@@ -7,3 +7,10 @@ B2EvoSkin/nbproject/configs
 *.suo
 *.phppub
 *.phppub.user
+*.sdf
+Debug/*
+obj/*
+.vs/
+*.opendb
+rcpub.log
+*.tmp

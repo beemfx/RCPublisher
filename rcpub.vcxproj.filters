@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="B2EvoSkin\Beemb2Skin" />
+    <Filter Include="B2EvoSkin" />
+    <Filter Include="B2EvoSkin\RCPubSkin" />
+    <Filter Include="Img Src" />
+    <Filter Include="RCExtra" />
+    <Filter Include="RCPub" />
+    <Filter Include="RCPub\captcha" />
+    <Filter Include="RCPub\captcha\captchas" />
+    <Filter Include="RCPub\classes" />
+    <Filter Include="RCPub\config" />
+    <Filter Include="RCPub\images" />
+    <Filter Include="RCPub\install" />
+    <Filter Include="RCPub\js" />
+    <Filter Include="RCPub\phpmailer" />
+    <Filter Include="RCPub\plugins" />
+    <Filter Include="RCPub\skins\beemsoftware" />
+    <Filter Include="RCPub\skins" />
+    <Filter Include="RCPub\skins\default" />
+    <Filter Include="RCPub\skins\roughconcept" />
+    <Filter Include="RCPub\skins\beemmedia">
+      <UniqueIdentifier>{ab519ac1-64ee-49e7-a10d-abce02af48fe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="B2EvoSkin\Beemb2Skin\index.main.php">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\Beemb2Skin\skinshot.png">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\Beemb2Skin\style.css">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\Beemb2Skin\_item_block.inc.php">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\Beemb2Skin\_item_content.inc.php">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\Beemb2Skin\_skin.class.php">
+      <Filter>B2EvoSkin\Beemb2Skin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\index.main.php">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\rcbodybg.jpg">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\skinshot.png">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\style.css">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\_item_block.inc.php">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\_item_content.inc.php">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="B2EvoSkin\RCPubSkin\_skin.class.php">
+      <Filter>B2EvoSkin\RCPubSkin</Filter>
+    </None>
+    <None Include="Img Src\Button.pspimage">
+      <Filter>Img Src</Filter>
+    </None>
+    <None Include="Img Src\EmailButtons.pspimage">
+      <Filter>Img Src</Filter>
+    </None>
+    <None Include="Img Src\HeaderBGTop.pspimage">
+      <Filter>Img Src</Filter>
+    </None>
+    <None Include="Img Src\rcbodybg.pspimage">
+      <Filter>Img Src</Filter>
+    </None>
+    <None Include="Img Src\TitleShort.pspimage">
+      <Filter>Img Src</Filter>
+    </None>
+    <None Include="RCExtra\_rcformat.plugin.php">
+      <Filter>RCExtra</Filter>
+    </None>
+    <None Include="RCExtra\_rcwidget.plugin.php">
+      <Filter>RCExtra</Filter>
+    </None>
+    <None Include="RCPub\index.php">
+      <Filter>RCPub</Filter>
+    </None>
+    <None Include="RCPub\captcha\captcha_config.php">
+      <Filter>RCPub\captcha</Filter>
+    </None>
+    <None Include="RCPub\captcha\captcha_image.php">
+      <Filter>RCPub\captcha</Filter>
+    </None>
+    <None Include="RCPub\captcha\captchas\1942.ttf">
+      <Filter>RCPub\captcha\captchas</Filter>
+    </None>
+    <None Include="RCPub\captcha\captchas\explbold.ttf">
+      <Filter>RCPub\captcha\captchas</Filter>
+    </None>
+    <None Include="RCPub\captcha\captchas\random-back-image4.jpg">
+      <Filter>RCPub\captcha\captchas</Filter>
+    </None>
+    <None Include="RCPub\captcha\captchas\yummy.ttf">
+      <Filter>RCPub\captcha\captchas</Filter>
+    </None>
+    <None Include="RCPub\classes\.htaccess">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\file_manager.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\pages.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_base.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_contact.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_email.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_home.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_login.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_news.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_page.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_postnews.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_sample.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_settings.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_uploadfile.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\page_user.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\plugin_manager.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\rcerror.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\rclibrary.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\RCMarkup.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\rcsession.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\rcsql.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\skin_base.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_base.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_comment.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_mail.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_news.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_page.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_page_history.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_settings.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\classes\table_user.php">
+      <Filter>RCPub\classes</Filter>
+    </None>
+    <None Include="RCPub\config\.htaccess">
+      <Filter>RCPub\config</Filter>
+    </None>
+    <None Include="RCPub\images\email_delete.png">
+      <Filter>RCPub\images</Filter>
+    </None>
+    <None Include="RCPub\images\email_read.png">
+      <Filter>RCPub\images</Filter>
+    </None>
+    <None Include="RCPub\images\random-back-image4.jpg">
+      <Filter>RCPub\images</Filter>
+    </None>
+    <None Include="RCPub\images\title.png">
+      <Filter>RCPub\images</Filter>
+    </None>
+    <None Include="RCPub\install\index.php">
+      <Filter>RCPub\install</Filter>
+    </None>
+    <None Include="RCPub\js\functions.js">
+      <Filter>RCPub\js</Filter>
+    </None>
+    <None Include="RCPub\js\md5.js">
+      <Filter>RCPub\js</Filter>
+    </None>
+    <None Include="RCPub\js\rclibrary.js">
+      <Filter>RCPub\js</Filter>
+    </None>
+    <None Include="RCPub\js\sha1.js">
+      <Filter>RCPub\js</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\changelog.md">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\class.phpmailer.php">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\class.pop3.php">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\class.smtp.php">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\composer.json">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\LICENSE">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\PHPMailerAutoload.php">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\README.md">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\travis.phpunit.xml.dist">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\phpmailer\VERSION">
+      <Filter>RCPub\phpmailer</Filter>
+    </None>
+    <None Include="RCPub\plugins\plugin.b2evoplug.php">
+      <Filter>RCPub\plugins</Filter>
+    </None>
+    <None Include="RCPub\skins\beemsoftware\default.skin.php">
+      <Filter>RCPub\skins\beemsoftware</Filter>
+    </None>
+    <None Include="RCPub\skins\beemsoftware\style.css">
+      <Filter>RCPub\skins\beemsoftware</Filter>
+    </None>
+    <None Include="RCPub\skins\default\default.skin.php">
+      <Filter>RCPub\skins\default</Filter>
+    </None>
+    <None Include="RCPub\skins\roughconcept\default.skin.php">
+      <Filter>RCPub\skins\roughconcept</Filter>
+    </None>
+    <None Include="RCPub\skins\roughconcept\rcbodybg.jpg">
+      <Filter>RCPub\skins\roughconcept</Filter>
+    </None>
+    <None Include="RCPub\skins\roughconcept\rcskin.css">
+      <Filter>RCPub\skins\roughconcept</Filter>
+    </None>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+    <None Include="Specs.docx" />
+    <None Include="make.bat" />
+    <None Include="RCPub\skins\beemmedia\default.skin.php">
+      <Filter>RCPub\skins\beemmedia</Filter>
+    </None>
+    <None Include="RCPub\skins\beemmedia\style.css">
+      <Filter>RCPub\skins\beemmedia</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
