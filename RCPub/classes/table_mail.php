@@ -121,7 +121,7 @@ class CTableMail extends CTable
 	
 	private function PostMail_SendRealEmail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
 	{
-		if( true )
+		if( '0' == RCSettings_GetSetting( 'bUsePhpMail' ) )
 		{
 			$this->PostMail_SendRealEmail_PhpMailer( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body );
 		}
@@ -148,7 +148,7 @@ class CTableMail extends CTable
 
 		$mail->isSMTP();                                      // Set mailer to use SMTP
 		$mail->Host = RCSettings_GetSetting( 'txtEmailServer' ); // Specify main and backup SMTP servers
-		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->SMTPAuth = strlen(RCSettings_GetSetting( 'txtEmailUsername' )) > 0;                               // Enable SMTP authentication
 		$mail->Username = RCSettings_GetSetting( 'txtEmailUsername' );                 // SMTP username
 		$mail->Password = RCSettings_GetSetting( 'txtEmailPassword' );                           // SMTP password
 		$mail->SMTPSecure = RCSettings_GetSetting( 'txtEmailEncryption' );                            // Enable TLS encryption, `ssl` also accepted

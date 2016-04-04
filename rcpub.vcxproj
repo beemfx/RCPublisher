@@ -118,7 +118,9 @@
     <None Include="RCPub\classes\skin_base.php" />
     <None Include="RCPub\classes\table_base.php" />
     <None Include="RCPub\classes\table_comment.php" />
-    <None Include="RCPub\classes\table_mail.php" />
+    <None Include="RCPub\classes\table_mail.php">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="RCPub\classes\table_news.php" />
     <None Include="RCPub\classes\table_page.php" />
     <None Include="RCPub\classes\table_page_history.php" />

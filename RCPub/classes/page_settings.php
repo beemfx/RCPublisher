@@ -24,6 +24,7 @@ $g_Settings = array
 	'txtBlogLink' => array( 'desc' => 'Blog Link (use {{slug}} for the slug identifier)' , 'type' => 'text' , ) ,
 	//Email Settings
 	'txtHeaderEmail' => array( 'desc' => 'SMTP Settings' , 'help' => 'Settings required to send email from the RC Software.' , 'type' => 'header' , ) ,
+	'bUsePhpMail' => array( 'desc' => 'Use PHP mail' , 'help' => 'Use the simple PHP mail function to send mail from the RC Software to outside sources.' , 'type' => 'checkbox' , ) ,
 	'txtEmailServer' => array( 'desc' => 'Email SMTP Sever e.g. smtp.gmail.com' , 'type' => 'text' , ) ,
 	'txtEmailPort' => array( 'desc' => 'Email SMTP Port' , 'type' => 'text' , ) ,
 	'txtEmailEncryption' => array( 'desc' => 'Email Encryption (ssl or tls)' , 'type' => 'text' , ) ,
