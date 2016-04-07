@@ -40,15 +40,28 @@ class CTableMail extends CTable
 		return count( $this->m_rows ) != 1 ? false : $this->m_rows[ 0 ];
 	}
 
+	public function GetUnsentMessages()
+	{
+		$this->DoSelect( '*' , 'bExtMailed=0' );
+		return $this->m_rows;
+	}
+
 	public function MarkAsRead( $nUser , $nMsg )
 	{
 		assert( 'integer' == gettype( $nUser ) );
 		assert( 'integer' == gettype( $nMsg ) );
 
-		$data = array
-			(
-			'bRead' => '1' ,
-		);
+		$data = array( 'bRead' => '1' , );
+
+		$this->DoUpdate( $nMsg , $data , 'idUser_To='.$nUser );
+	}
+
+	public function MarkAsMailed( $nUser , $nMsg )
+	{
+		assert( 'integer' == gettype( $nUser ) );
+		assert( 'integer' == gettype( $nMsg ) );
+
+		$data = array( 'bExtMailed' => '1' , );
 
 		$this->DoUpdate( $nMsg , $data , 'idUser_To='.$nUser );
 	}
@@ -57,19 +70,16 @@ class CTableMail extends CTable
 	{
 		assert( 'integer' == gettype( $nUser ) );
 		assert( 'integer' == gettype( $nMsg ) );
-                $ActualDelete = false;
-                if( $ActualDelete )
-                {
-                    $this->DoDelete( $nMsg , 'idUser_To='.$nUser );
-                }
-                else
-                {
-                    $data = array
-			(
-			'bDeleted' => '1' ,
-                    );
-                    $this->DoUpdate( $nMsg , $data , 'idUser_To='.$nUser );
-                }
+		$ActualDelete = false;
+		if( $ActualDelete )
+		{
+			$this->DoDelete( $nMsg , 'idUser_To='.$nUser );
+		}
+		else
+		{
+			$data = array ( 'bDeleted' => '1' , );
+			$this->DoUpdate( $nMsg , $data , 'idUser_To='.$nUser );
+		}
 	}
 	
 	public function PostMail( $nFromUser , $nToUser , $strName , $strFromEmail , $strSubject , $strMessage )
@@ -88,6 +98,7 @@ class CTableMail extends CTable
 		$UserInfo = $UserTable->GetUserInfo( $nToUser );
 
 		//First send the message by actual mail:
+		if( false ) // This is now done in a cron job.
 		{
 			$msg = sprintf( "From: %s\nReply Email: %s\nSubject: %s\n\n%s" , $strName , $strFromEmail , $strSubject , $strMessage );	
 			$this->PostMail_SendRealEmail( $UserInfo[ 'txtEmail' ] , $strFromEmail , $strName , 'RC Mail: '.$strSubject , $msg );
@@ -103,7 +114,7 @@ class CTableMail extends CTable
 		$strMessage = '"'.addslashes( $strMessage ).'"';
 
 		$insert = array
-			(
+		(
 			'idUser_To' => $nToUser ,
 			'idUser_From' => (null == $nFromUser) ? 'null' : $nFromUser ,
 			'txtName' => $strName ,
@@ -111,7 +122,8 @@ class CTableMail extends CTable
 			'txtSubject' => $strSubject ,
 			'txtMessage' => $strMessage ,
 			'bRead' => '0' ,
-                        'bDeleted' => '0' ,
+			'bDeleted' => '0' ,
+			'bExtMailed' => '0' ,
 			'dtSent' => 'now()' ,
 		);
 
@@ -119,7 +131,7 @@ class CTableMail extends CTable
 		return true;
 	}
 	
-	private function PostMail_SendRealEmail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
+	public function PostMail_SendRealEmail( $ToAddr , $FromAddr , $FromPerson , $Subject , $Body )
 	{
 		if( '0' == RCSettings_GetSetting( 'bUsePhpMail' ) )
 		{

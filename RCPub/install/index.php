@@ -115,7 +115,8 @@ function DoInstall()
 			  `txtSubject` char(100) NOT NULL,
 			  `txtMessage` text NOT NULL,
 			  `bRead` tinyint(1) NOT NULL,
-                          `bDeleted` tinyint(1) NOT NULL,
+           `bDeleted` tinyint(1) NOT NULL,
+			  `bExtMailed` tinyint(1) NOT NULL,
 			  `dtSent` datetime NOT NULL,
 			  PRIMARY KEY  (`id`),
 			  KEY `idUser_To` (`idUser_To`,`dtSent`)' ,
@@ -251,6 +252,7 @@ function DoInstall()
 	fprintf( $fout , "\t\$g_rcDBUser = \"%s\";\n" , RCWeb_GetPost( 'db_user' ) );
 	fprintf( $fout , "\t\$g_rcDBPwd = \"%s\";\n" , RCWeb_GetPost( 'db_pass' ) );
 	fprintf( $fout , "\t\$g_rcDBName = \"%s\";\n" , RCWeb_GetPost( 'db_dbname' ) );
+	fprintf( $fout , "\t\$g_rcDisableB2EvoPlugin = true;\n" );
 
 	fprintf( $fout , "?>\n" );
 	fclose( $fout );

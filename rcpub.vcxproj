@@ -87,6 +87,7 @@
     <None Include="make.bat" />
     <None Include="RCExtra\_rcformat.plugin.php" />
     <None Include="RCExtra\_rcwidget.plugin.php" />
+    <None Include="RCPub\cron\cron.php" />
     <None Include="RCPub\index.php" />
     <None Include="RCPub\captcha\captcha_config.php" />
     <None Include="RCPub\captcha\captcha_image.php" />
