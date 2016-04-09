@@ -1,2 +1,0 @@
-#This folder should simply not be accessable by web surfers.
-deny from all
