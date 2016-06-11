@@ -92,7 +92,7 @@ class rcwidget_plugin extends Plugin
 		return $r;
 	}
 
-	function SkinTag($params)
+	function SkinTag(&$params)
 	{
 		$rcPath = $this->Settings->get( 'rcroot' );
 		if( file_exists( $rcPath.'config/config.php' ) )
@@ -156,7 +156,7 @@ class rcwidget_plugin extends Plugin
 		return true;
 	}
 	
-	function SkinBeginHtmlHead()
+	function SkinBeginHtmlHead(&$params)
 	{
 		$rcPath = $this->Settings->get( 'rcroot' );
 			 
