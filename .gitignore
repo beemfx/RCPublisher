@@ -14,3 +14,5 @@ obj/*
 *.opendb
 rcpub.log
 *.tmp
+*.vc.db
+*.vcxproj.user
