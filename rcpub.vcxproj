@@ -112,7 +112,9 @@
     <None Include="RCPub\classes\page_user.php" />
     <None Include="RCPub\classes\plugin_manager.php" />
     <None Include="RCPub\classes\rcerror.php" />
-    <None Include="RCPub\classes\rclibrary.php" />
+    <None Include="RCPub\classes\rclibrary.php">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="RCPub\classes\RCMarkup.php" />
     <None Include="RCPub\classes\rcsession.php" />
     <None Include="RCPub\classes\rcsql.php" />
