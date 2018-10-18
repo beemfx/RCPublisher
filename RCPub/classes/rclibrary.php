@@ -64,16 +64,43 @@ function RCWeb_ClearPostData()
 
 function RCSpam_DisplayQuestion()
 {
-	echo '<img src="captcha/captcha_image.php" alt="Security Image" border="0"/>';
+	// echo '<img src="captcha/captcha_image.php" alt="Security Image" border="0"/>';
+	// echo 'To verify you are real please type in the name of the author of this blog.';
 }
 
 function RCSpam_DisplayResponseArea()
 {
-	echo 'Type in the letters and numbers <input type="text" name="rcspam_secure"/>';
+	// echo 'Type in the letters and numbers <input type="text" name="rcspam_secure"/>';
+	echo '<div class="g-recaptcha" data-sitekey="6LdZl3UUAAAAAFl0QYDomTMckYcP0dNnsjaEJnyC"></div>';
+}
+
+function RCSpam_GetPreScript()
+{
+	return "<script src='https://www.google.com/recaptcha/api.js'></script>";
 }
 
 function RCSpam_IsAnswerCorrect()
 {
+	$post_data = http_build_query(
+		 array(
+			  'secret' => '6LdZl3UUAAAAAKoR7bs-wJeW_gIpfFacw6AANhyN',
+			  'response' => $_POST['g-recaptcha-response'],
+			  'remoteip' => $_SERVER['REMOTE_ADDR']
+		 )
+	);
+	$opts = array('http' =>
+		 array(
+			  'method'  => 'POST',
+			  'header'  => 'Content-type: application/x-www-form-urlencoded',
+			  'content' => $post_data
+		 )
+	);
+	$context  = stream_context_create($opts);
+	$response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+	$result = json_decode($response);
+	return $result->success;
+
+	/*
 	$Response = strtoupper( trim( strip_tags( RCWeb_GetPost( 'rcspam_secure' , '' , true ) ) ) );
 	$Correct = RCWeb_GetSession( 'captcha' , '' , true );
 
@@ -87,6 +114,7 @@ function RCSpam_IsAnswerCorrect()
 		return false;
 	}
 	return true;
+	*/
 }
 
 

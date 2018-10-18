@@ -26,6 +26,7 @@ abstract class CPageBase
 	public function GetPreClosingHeadScript()
 	{
 		$Scripts = "<script type=\"text/javascript\" src=\"js/rclibrary.js\"></script>\n";
+		$Scripts .= RCSpam_GetPreScript();
 		return $Scripts.$this->GetGlobalSetting( 'txtScriptHeader' );
 	}
 
