@@ -4,10 +4,6 @@ RCPublisher
 RC Publisher is website powering software. It is written in PHP and MySQL and is
 meant to be very basic wiki-type web page editing software.
 
-The following features are still in development:
-
-* Comments for pages
-
 Building
 ========
 
